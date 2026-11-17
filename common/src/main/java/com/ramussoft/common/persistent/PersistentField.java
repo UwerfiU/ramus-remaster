@@ -179,7 +179,8 @@ public class PersistentField extends PersistentStatus implements Serializable {
                     + ") REFERENCES " + prefix + "qualifiers(QUALIFIER_ID);\n");
         } else if (getType() == ID) {
             String sequenceName = getSequenceName(tableName);
-            sb.append("CREATE SEQUENCE " + sequenceName + " START 1;\n");
+            // H2 2.x requires "START WITH" (plain "START" is a syntax error)
+            sb.append("CREATE SEQUENCE " + sequenceName + " START WITH 1;\n");
         }
 
         return sb.toString();

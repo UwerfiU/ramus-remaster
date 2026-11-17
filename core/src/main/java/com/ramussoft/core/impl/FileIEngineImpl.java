@@ -320,7 +320,8 @@ public class FileIEngineImpl extends IEngineImpl {
                     } catch (SQLException e) {
 
                     }
-                    st.execute("CREATE SEQUENCE " + prefix + key + " START "
+                    // H2 2.x requires "START WITH <value>" (1.x accepted "START <value>")
+                    st.execute("CREATE SEQUENCE " + prefix + key + " START WITH "
                             + ps.getProperty(key) + ";");
                 }
                 st.close();

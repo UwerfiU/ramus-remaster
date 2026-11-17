@@ -8,7 +8,9 @@ import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Set;
 
 import com.ramussoft.common.attribute.Attribute;
 
@@ -130,6 +132,42 @@ public class PersistentWrapper {
         return sb.toString();
     }
 
+    /**
+     * Words that H2 2.x treats as reserved and therefore rejects as
+     * unquoted column names (verified against H2 2.5). Such names are
+     * stored as "&lt;name&gt;_column"; XML import applies the same mapping
+     * when matching field names, so files written by older versions keep
+     * loading.
+     */
+    private static final Set<String> H2_RESERVED_WORDS = new HashSet<String>(
+            Arrays.asList("all", "and", "any", "array", "as", "asymmetric",
+                    "authorization", "between", "case", "cast", "check",
+                    "constraint", "cross", "current_catalog", "current_date",
+                    "current_schema", "current_time", "current_timestamp",
+                    "current_user", "day", "default", "distinct", "else",
+                    "end", "except", "exists", "false", "fetch", "for",
+                    "foreign", "from", "full", "group", "having", "hour",
+                    "if", "in", "inner", "intersect", "interval", "is",
+                    "join", "key", "left", "like", "limit", "localtime",
+                    "localtimestamp", "minus", "minute", "month", "natural",
+                    "not", "null", "offset", "on", "or", "order", "primary",
+                    "qualify", "right", "row", "rownum", "second", "select",
+                    "session_user", "set", "some", "symmetric", "system_user",
+                    "table", "to", "true", "uescape", "union", "unique",
+                    "unknown", "user", "using", "value", "values", "when",
+                    "where", "window", "with", "year"));
+
+    /**
+     * Maps a database column name to a form that is valid as an unquoted
+     * H2 2.x identifier. Reserved words get a "_column" suffix; all other
+     * names pass through unchanged (the mapping is idempotent).
+     */
+    public static String safeDatabaseName(String databaseName) {
+        if (H2_RESERVED_WORDS.contains(databaseName))
+            return databaseName + "_column";
+        return databaseName;
+    }
+
     public String toDatabaseField(String fieldName) {
         StringBuffer sb = new StringBuffer();
         for (char c : fieldName.toCharArray()) {
@@ -139,7 +177,7 @@ public class PersistentWrapper {
             } else
                 sb.append(c);
         }
-        return sb.toString();
+        return safeDatabaseName(sb.toString());
     }
 
     public String[] getDatabaseFields() {

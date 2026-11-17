@@ -9,7 +9,7 @@ CREATE TABLE {0}persistents(
   CONSTRAINT {0}persistents_pkey PRIMARY KEY (PERSISTENT_ID)
 );
 
-CREATE SEQUENCE {0}persistents_sequence START 1;
+CREATE SEQUENCE {0}persistents_sequence START WITH 1;
 
 CREATE TABLE {0}persistent_fields
 (
@@ -28,7 +28,7 @@ CREATE TABLE {0}persistent_fields
   CONSTRAINT {0}persistents_unique UNIQUE (PERSISTENT_ID, FIELD_ID)
 );
 
-CREATE SEQUENCE {0}persistent_fields_sequence START 1;
+CREATE SEQUENCE {0}persistent_fields_sequence START WITH 1;
 
 CREATE TABLE {0}application_preferencies
 (
@@ -46,7 +46,7 @@ CREATE TABLE {0}qualifiers
   CONSTRAINT {0}qualifiers_fields_pkey PRIMARY KEY (QUALIFIER_ID)
 );
 
-CREATE SEQUENCE {0}qualifiers_sequence START 1;
+CREATE SEQUENCE {0}qualifiers_sequence START WITH 1;
 
 CREATE UNIQUE INDEX {0}qualifiers_pkey_index ON {0}qualifiers(QUALIFIER_ID);
 
@@ -60,7 +60,7 @@ CREATE TABLE {0}elements
       REFERENCES {0}qualifiers (QUALIFIER_ID)
 );
 
-CREATE SEQUENCE {0}elements_sequence START 1;
+CREATE SEQUENCE {0}elements_sequence START WITH 1;
 
 CREATE UNIQUE INDEX {0}elements_pkey_index ON {0}elements(ELEMENT_ID);
 
@@ -77,7 +77,7 @@ CREATE TABLE {0}attributes
   CONSTRAINT {0}attributes_pkey PRIMARY KEY (ATTRIBUTE_ID)
 );
 
-CREATE SEQUENCE {0}attributes_sequence START 1;
+CREATE SEQUENCE {0}attributes_sequence START WITH 1;
 
 
 CREATE TABLE {0}qualifiers_attributes

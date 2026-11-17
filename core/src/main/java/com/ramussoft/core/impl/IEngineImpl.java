@@ -191,8 +191,9 @@ public abstract class IEngineImpl extends AbstractIEngine implements IEngine {
         } catch (Exception e) {
         }
         try {
-            template.execute("CREATE SEQUENCE " + prefix + sequence + " START "
-                    + value + ";");
+            // H2 2.x requires "START WITH" (plain "START" is a syntax error)
+            template.execute("CREATE SEQUENCE " + prefix + sequence
+                    + " START WITH " + value + ";");
         } catch (SQLException e) {
             throw new RuntimeException("Can not restore the counter "
                     + sequence, e);
@@ -207,8 +208,9 @@ public abstract class IEngineImpl extends AbstractIEngine implements IEngine {
 
     private void createSequence(String sequence) {
         try {
+            // H2 2.x requires "START WITH" (plain "START" is a syntax error)
             template.execute("CREATE SEQUENCE " + prefix + sequence
-                    + " START 1;");
+                    + " START WITH 1;");
         } catch (Exception e) {
         }
     }
@@ -1080,7 +1082,9 @@ public abstract class IEngineImpl extends AbstractIEngine implements IEngine {
 
         long branchId = getActiveBranchId();
         return template
-                .query("SELECT elmts.ELEMENT_ID, elmts.QUALIFIER_ID, (SELECT value FROM "
+                .query("SELECT elmts.ELEMENT_ID, elmts.QUALIFIER_ID, (SELECT "
+                                + PersistentWrapper.safeDatabaseName("value")
+                                + " FROM "
                                 + prefix
                                 + "attribute_texts WHERE element_id=elmts.element_id AND attribute_id="
                                 + attr
@@ -1925,7 +1929,9 @@ public abstract class IEngineImpl extends AbstractIEngine implements IEngine {
 
         return (Element) template
                 .queryForObjects(
-                        "SELECT ELEMENT_ID, elmts.QUALIFIER_ID, (SELECT value FROM "
+                        "SELECT ELEMENT_ID, elmts.QUALIFIER_ID, (SELECT "
+                                + PersistentWrapper.safeDatabaseName("value")
+                                + " FROM "
                                 + prefix
                                 + "attribute_texts WHERE element_id=elmts.element_id AND attribute_id="
                                 + attr
@@ -2364,7 +2370,9 @@ public abstract class IEngineImpl extends AbstractIEngine implements IEngine {
                                 + prefix
                                 + "elements elmts, "
                                 + prefix
-                                + "qualifiers q  WHERE (SELECT value FROM "
+                                + "qualifiers q  WHERE (SELECT "
+                                + PersistentWrapper.safeDatabaseName("value")
+                                + " FROM "
                                 + prefix
                                 + "attribute_texts WHERE element_id=elmts.element_id AND attribute_id=attribute_for_name "
                                 + " AND (value_branch_id IN (SELECT MAX(branch_id) FROM "
@@ -2528,7 +2536,9 @@ public abstract class IEngineImpl extends AbstractIEngine implements IEngine {
         objects.add(branchId);
 
         return template
-                .query("SELECT ELEMENT_ID, elmts.QUALIFIER_ID, (SELECT value FROM "
+                .query("SELECT ELEMENT_ID, elmts.QUALIFIER_ID, (SELECT "
+                                + PersistentWrapper.safeDatabaseName("value")
+                                + " FROM "
                                 + prefix
                                 + "attribute_texts WHERE element_id=elmts.element_id AND attribute_id="
                                 + attr

@@ -3,6 +3,7 @@ package com.ramussoft.core.attribute.simple;
 import com.ramussoft.common.attribute.AttributeConverter;
 import com.ramussoft.common.attribute.FindObject;
 import com.ramussoft.common.persistent.Persistent;
+import com.ramussoft.common.persistent.PersistentWrapper;
 
 public class LongPlugin extends SimpleAttributePlugin {
 
@@ -30,7 +31,8 @@ public class LongPlugin extends SimpleAttributePlugin {
             public FindObject[] getFindObjects(Object object) {
                 if (object == null)
                     return null;
-                return new FindObject[]{new FindObject("value", object)};
+                return new FindObject[]{new FindObject(
+                        PersistentWrapper.safeDatabaseName("value"), object)};
             }
         };
     }

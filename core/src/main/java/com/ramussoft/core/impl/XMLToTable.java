@@ -24,6 +24,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.ramussoft.common.persistent.PersistentWrapper;
 import com.ramussoft.jdbc.JDBCCallback;
 import com.ramussoft.jdbc.JDBCTemplate;
 
@@ -276,16 +277,22 @@ public class XMLToTable {
                                 ids.put(attributes.getValue("id"),
                                         attributes.getValue("name"));
 
+                                // H2 2.x reports standard SQL type names in saved
+                                // files (e.g. "CHARACTER VARYING" instead of "VARCHAR").
                                 if ((type.equalsIgnoreCase("CLOB"))
                                         || (type.equalsIgnoreCase("CHAR"))
+                                        || (type.equalsIgnoreCase("CHARACTER"))
                                         || (type.equalsIgnoreCase("TEXT"))
-                                        || (type.equalsIgnoreCase("bpchar"))) {
+                                        || (type.equalsIgnoreCase("bpchar"))
+                                        || (type.equalsIgnoreCase("VARCHAR"))
+                                        || (type.equalsIgnoreCase("CHARACTER VARYING"))) {
                                     converter = new StringConverter();
                                 } else if ((type.equalsIgnoreCase("INTEGER"))
                                         || (type.equalsIgnoreCase("int4")))
                                     converter = new IntegerConverter();
                                 else if ((type.equalsIgnoreCase("BLOB"))
                                         || (type.equalsIgnoreCase("VARBINARY"))
+                                        || (type.equalsIgnoreCase("BINARY VARYING"))
                                         || (type.equalsIgnoreCase("bytea"))) {
                                     converter = new ByteAConverter();
                                 } else if (type.equalsIgnoreCase("TIMESTAMP")) {
@@ -298,6 +305,7 @@ public class XMLToTable {
                                         || (type.equalsIgnoreCase("BOOLEAN"))) {
                                     converter = new BooleanConverter();
                                 } else if ((type.equalsIgnoreCase("DOUBLE"))
+                                        || (type.equalsIgnoreCase("DOUBLE PRECISION"))
                                         || (type.equalsIgnoreCase("float8")))
                                     converter = new DoubleConverter();
                                 else {
@@ -305,8 +313,9 @@ public class XMLToTable {
                                             .println("ERROR: Converter not found for type "
                                                     + type);
                                 }
-                                converters.put(attributes.getValue("id"),
-                                        converter);
+                                if (converter != null)
+                                    converters.put(attributes.getValue("id"),
+                                            converter);
                             }
                         }
 
@@ -324,16 +333,23 @@ public class XMLToTable {
                                 String key = ids.get(id);
                                 int i = -1;
                                 try {
-                                    i = positions.get(key.toLowerCase());
+                                    // Old files store pre-H2-2.x names such
+                                    // as "VALUE"; map them the same way the
+                                    // column names are derived in code.
+                                    i = positions.get(PersistentWrapper
+                                            .safeDatabaseName(key
+                                                    .toLowerCase()));
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                                 if (i > 0) {
                                     Converter c = converters.get(id);
-                                    try {
-                                        c.fill(ps, i, sb.toString());
-                                    } catch (SQLException e) {
-                                        throw new RuntimeException(e);
+                                    if (c != null) {
+                                        try {
+                                            c.fill(ps, i, sb.toString());
+                                        } catch (SQLException e) {
+                                            throw new RuntimeException(e);
+                                        }
                                     }
                                 }
                             }
