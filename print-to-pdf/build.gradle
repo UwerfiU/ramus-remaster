@@ -6,6 +6,6 @@ apply plugin: 'java'
 dependencies {
     implementation project(':gui-framework-common')
     implementation project(':idef0-common')
-    implementation 'com.itextpdf:itextpdf:5.5.13'
+    implementation 'com.itextpdf:itextpdf:5.5.13.6'
     testImplementation group: 'junit', name: 'junit', version: '4.11'
 }
