@@ -3,6 +3,7 @@ package com.ramussoft.excel;
 import java.util.Hashtable;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import com.ramussoft.common.Attribute;
@@ -166,13 +167,13 @@ public class ComplexImport {
         } else {
             try {
                 EObject object = null;
-                if (cell.getCellType() == Cell.CELL_TYPE_STRING)
+                if (cell.getCellType() == CellType.STRING)
                     object = new EObject(cell.getStringCellValue());
-                else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC)
+                else if (cell.getCellType() == CellType.NUMERIC)
                     object = new EObject(cell.getNumericCellValue());
-                else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC)
+                else if (cell.getCellType() == CellType.NUMERIC)
                     object = new EObject(cell.getDateCellValue());
-                else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC)
+                else if (cell.getCellType() == CellType.NUMERIC)
                     object = new EObject(cell.getDateCellValue());
                 if (object == null)
                     try {

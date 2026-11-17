@@ -7,7 +7,7 @@ import java.util.List;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.renderer.category.BarRenderer3D;
+import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import com.ramussoft.common.Attribute;
@@ -46,7 +46,7 @@ public class BarChartDataPlugin extends AbstractChartDataPlugin implements
         }
 
         JFreeChart chart = ChartFactory
-                .createBarChart3D(
+                .createBarChart(
                         element.getName(),
                         source.getProperty(BAR_CATEGORY_AXIS_LABEL),
                         source.getProperty(BAR_VALUE_AXIS_LABEL),
@@ -58,7 +58,7 @@ public class BarChartDataPlugin extends AbstractChartDataPlugin implements
         GradientPaint gradientpaint0 = new GradientPaint(0.0F, 0.0F, new Color(
                 0, 0, 250), 0.0F, 0.0F, new Color(136, 136, 255));
 
-        BarRenderer3D r = (BarRenderer3D) chart.getCategoryPlot().getRenderer();
+        BarRenderer r = (BarRenderer) chart.getCategoryPlot().getRenderer();
         r.setSeriesPaint(0, gradientpaint0);
 
         return chart;
