@@ -13,6 +13,7 @@ import com.ramussoft.gui.common.AbstractViewPlugin;
 import com.ramussoft.gui.common.ActionDescriptor;
 import com.ramussoft.gui.common.ActionLevel;
 import com.ramussoft.gui.common.GlobalResourcesManager;
+import com.ramussoft.local.ui.RamusTheme;
 
 /**
  * T3.1: View menu item that switches between FlatLaf light and dark themes
@@ -66,6 +67,8 @@ public class ThemeTogglePlugin extends AbstractViewPlugin {
         try {
             boolean toDark = !(UIManager.getLookAndFeel() instanceof FlatDarkLaf);
             UIManager.setLookAndFeel(toDark ? new FlatDarkLaf() : new FlatLightLaf());
+            // T3.2: re-apply design tokens (setLookAndFeel resets them).
+            RamusTheme.apply();
             for (Window w : Window.getWindows()) {
                 SwingUtilities.updateComponentTreeUI(w);
             }

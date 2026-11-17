@@ -42,6 +42,7 @@ import com.ramussoft.gui.common.TabView;
 import com.ramussoft.gui.common.event.ActionEvent;
 import com.ramussoft.gui.common.event.ViewTitleEvent;
 import com.ramussoft.gui.common.prefrence.Options;
+import com.ramussoft.gui.common.ThemeColors;
 import com.ramussoft.gui.elist.ElistPanel.ElementInfo;
 import com.ramussoft.gui.qualifier.table.SelectType;
 import com.ramussoft.gui.qualifier.table.TreeTableNode;
@@ -138,7 +139,9 @@ public class ElistTabView extends AbstractView implements TabView {
             Graphics2D g = (Graphics2D) gr;
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
-            g.setColor(Color.black);
+            // T3.2: theme-aware line color (was Color.black, invisible in
+            // dark theme). blue/red below are semantic left/right markers.
+            g.setColor(ThemeColors.text());
             if (unique != null)
                 paint(value, g, isLeftUnique());
             else {
@@ -468,7 +471,8 @@ public class ElistTabView extends AbstractView implements TabView {
 
         JSplitPane pane1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         pane1.setRightComponent(rightContainer);
-        comp.setBackground(Color.white);
+        // T3.2: theme-aware background (was Color.white).
+        comp.setBackground(ThemeColors.panelBackground());
         pane1.setLeftComponent(comp);
 
         JSplitPane pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);

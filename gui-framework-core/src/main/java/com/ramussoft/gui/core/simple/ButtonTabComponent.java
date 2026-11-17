@@ -21,6 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.plaf.basic.BasicButtonUI;
 
+import com.ramussoft.gui.common.ThemeColors;
+
 public class ButtonTabComponent extends JPanel {
     /**
      *
@@ -123,7 +125,9 @@ public class ButtonTabComponent extends JPanel {
                 g2.translate(1, 1);
             }
             g2.setStroke(new BasicStroke(2));
-            g2.setColor(Color.BLACK);
+            // T3.2: theme-aware close cross (was Color.BLACK, invisible in
+            // dark theme). Magenta rollover is visible in both themes.
+            g2.setColor(ThemeColors.text());
             if (getModel().isRollover()) {
                 g2.setColor(Color.MAGENTA);
             }

@@ -16,6 +16,7 @@ import com.ramussoft.common.Plugin;
 import com.ramussoft.gui.common.GUIFramework;
 import com.ramussoft.gui.common.GUIPlugin;
 import com.ramussoft.gui.core.AboutDialog;
+import com.ramussoft.local.ui.RamusTheme;
 
 public class Main extends Runner {
 
@@ -26,6 +27,8 @@ public class Main extends Runner {
             boolean dark = "dark".equalsIgnoreCase(
                     System.getProperty("ramus.theme", "light"));
             UIManager.setLookAndFeel(dark ? new FlatDarkLaf() : new FlatLightLaf());
+            // T3.2: apply centralized design tokens after the L&F is set.
+            RamusTheme.apply();
         } catch (Exception e) {
             // Fallback: system look-and-feel if FlatLaf is unavailable.
             try {

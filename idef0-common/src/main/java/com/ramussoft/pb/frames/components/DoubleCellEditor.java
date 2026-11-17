@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import com.ramussoft.gui.common.ThemeColors;
 import com.ramussoft.localefix.DecimalFormatWithFix;
 
 public class DoubleCellEditor extends DefaultCellEditor {
@@ -49,7 +50,9 @@ public class DoubleCellEditor extends DefaultCellEditor {
     public Component getTableCellEditorComponent(final JTable table, Object value,
                                                  final boolean isSelected, final int row, final int column) {
         this.value = null;
-        ((JComponent) getComponent()).setBorder(new LineBorder(Color.black));
+        // T3.2: theme-aware editor border (was Color.black, invisible in
+        // dark theme).
+        ((JComponent) getComponent()).setBorder(new LineBorder(ThemeColors.focus()));
         if (value != null)
             value = format.format(value);
         return super.getTableCellEditorComponent(table, value, isSelected, row,

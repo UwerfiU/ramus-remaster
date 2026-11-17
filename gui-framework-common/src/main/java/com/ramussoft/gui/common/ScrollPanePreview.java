@@ -43,7 +43,8 @@ public class ScrollPanePreview extends JComponent {
     private static final Icon LAUNCH_SELECTOR_ICON = new Icon() {
         public void paintIcon(Component c, Graphics g, int x, int y) {
             Color tmpColor = g.getColor();
-            g.setColor(Color.BLACK);
+            // T3.2: theme-aware icon color (was Color.BLACK).
+            g.setColor(ThemeColors.text());
             g.drawRect(2, 2, 10, 10);
             g.drawRect(4, 5, 6, 4);
             g.setColor(tmpColor);
@@ -193,9 +194,11 @@ public class ScrollPanePreview extends JComponent {
         Area area = new Area(new Rectangle(xOffset, yOffset, availableWidth,
                 availableHeight));
         area.subtract(new Area(theRectangle));
-        g.setColor(new Color(200, 200, 200, 128));
+        // T3.2: theme-aware dim veil and selection outline (was a fixed
+        // gray/Color.BLACK pair).
+        g.setColor(ThemeColors.overlay(128));
         g.fill(area);
-        g.setColor(Color.BLACK);
+        g.setColor(ThemeColors.text());
         g.draw(theRectangle);
         g.setColor(tmpColor);
     }

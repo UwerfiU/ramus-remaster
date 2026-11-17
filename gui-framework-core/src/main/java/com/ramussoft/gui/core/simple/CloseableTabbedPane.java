@@ -22,6 +22,8 @@ import javax.swing.event.EventListenerList;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.plaf.metal.MetalTabbedPaneUI;
 
+import com.ramussoft.gui.common.ThemeColors;
+
 /**
  * A JTabbedPane which has a close ('X') icon on each tab.
  * <p/>
@@ -456,11 +458,14 @@ public class CloseableTabbedPane extends JTabbedPane implements MouseListener,
                     Color col = g.getColor();
 
                     if (mousepressed && mouseover) {
-                        g.setColor(Color.WHITE);
+                        // T3.2: theme-aware pressed fill (was Color.WHITE).
+                        g.setColor(ThemeColors.selectionBackground());
                         g.fillRect(x + 1, y_p, 12, 13);
                     }
 
-                    g.setColor(Color.black);
+                    // T3.2: theme-aware close icon (was Color.black).
+                    g.setColor((mousepressed && mouseover) ? ThemeColors
+                            .selectionForeground() : ThemeColors.text());
                     g.drawLine(x + 1, y_p, x + 12, y_p);
                     g.drawLine(x + 1, y_p + 13, x + 12, y_p + 13);
                     g.drawLine(x, y_p + 1, x, y_p + 12);

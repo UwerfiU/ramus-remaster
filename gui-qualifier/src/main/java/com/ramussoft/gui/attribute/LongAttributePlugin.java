@@ -18,6 +18,7 @@ import com.ramussoft.common.Attribute;
 import com.ramussoft.common.AttributeType;
 import com.ramussoft.common.Engine;
 import com.ramussoft.gui.common.AbstractAttributePlugin;
+import com.ramussoft.gui.common.ThemeColors;
 
 public class LongAttributePlugin extends AbstractAttributePlugin {
 
@@ -70,8 +71,10 @@ public class LongAttributePlugin extends AbstractAttributePlugin {
                                                      Object value, final boolean isSelected, final int row,
                                                      final int column) {
             this.value = null;
+            // T3.2: theme-aware editor border (was Color.black, invisible in
+            // dark theme).
             ((JComponent) getComponent())
-                    .setBorder(new LineBorder(Color.black));
+                    .setBorder(new LineBorder(ThemeColors.focus()));
             if (value != null)
                 value = String.valueOf(value);
             return super.getTableCellEditorComponent(table, value, isSelected,

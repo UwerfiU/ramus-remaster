@@ -4,7 +4,6 @@
 package com.ramussoft.pb.frames.components;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -26,6 +25,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListDataListener;
 
 import com.dsoft.pb.idef.ResourceLoader;
+import com.ramussoft.gui.common.ThemeColors;
 
 /**
  * @author ZDD
@@ -554,11 +554,13 @@ public class JFontChooser extends JPanel {
                 }
             };
             jPanel25.setLayout(null);
+            // T3.2: theme-aware title color (was new Color(51, 51, 51),
+            // nearly invisible in dark theme).
             jPanel25.setBorder(BorderFactory.createTitledBorder(null,
                     ResourceLoader.getString("sample"),
                     TitledBorder.DEFAULT_JUSTIFICATION,
                     TitledBorder.DEFAULT_POSITION, new Font("Dialog",
-                            Font.BOLD, 12), new Color(51, 51, 51)));
+                            Font.BOLD, 12), ThemeColors.text()));
         }
         return jPanel25;
     }

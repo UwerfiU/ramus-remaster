@@ -123,7 +123,9 @@ public class StartupPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
-        g2.setColor(Color.WHITE);
+        // T3.2: theme-aware dim veil (was Color.WHITE, which washed the UI
+        // out in dark theme).
+        g2.setColor(ThemeColors.panelBackground());
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 0.5f));
         g2.fillRect(0, 0, getWidth(), getHeight());
         g2.dispose();
