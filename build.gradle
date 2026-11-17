@@ -17,6 +17,13 @@ if (localPropsFile.exists()) {
 allprojects {
     apply plugin: 'java'
 
+    // T2.1: pin the Java toolchain to JDK 21 for every module.
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+
     repositories {
         mavenCentral()
         maven {
