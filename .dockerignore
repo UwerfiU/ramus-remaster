@@ -1,0 +1,14 @@
+# Everything the build context does not need: ~27 MB instead of ~208 MB.
+.git
+.gradle
+build/
+*/build/
+dest/full/
+dest/macos/
+dest/ramus-2.0/
+dest/ramus-2.0.zip
+gradle-local.properties
+.idea/
+*.iml
+*.md
+!README.md

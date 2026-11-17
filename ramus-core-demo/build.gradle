@@ -1,0 +1,45 @@
+group 'com.vitalex.ramus'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+dependencies {
+    implementation project(':core')
+    runtimeOnly project(':idef0-core')
+    runtimeOnly project(':report-core')
+    runtimeOnly project(':chart-core')
+    runtimeOnly 'com.h2database:h2:1.3.163'
+    implementation project(':core-simple-attributes')
+    implementation project(':common')
+    implementation project(':data-framework-common')
+    testImplementation group: 'junit', name: 'junit', version: '4.11'
+}
+
+tasks.register('rsfToYaml', JavaExec) {
+    group = 'ramus'
+    description = 'Converts an .rsf into a tree of YAML files'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.ramussoft.demo.RsfToYaml'
+    workingDir = rootProject.projectDir
+    doFirst {
+        if (!project.hasProperty('rsf') || !project.hasProperty('out')) {
+            throw new GradleException(
+                    '-Prsf=<file.rsf> and -Pout=<directory> are required')
+        }
+        args = [project.property('rsf'), project.property('out')]
+    }
+}
+
+tasks.register('yamlToRsf', JavaExec) {
+    group = 'ramus'
+    description = 'Builds an .rsf out of a tree of YAML files'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.ramussoft.demo.YamlToRsf'
+    workingDir = rootProject.projectDir
+    doFirst {
+        if (!project.hasProperty('in') || !project.hasProperty('rsf')) {
+            throw new GradleException('-Pin=<directory> and -Prsf=<file.rsf> are required')
+        }
+        args = [project.property('in'), project.property('rsf')]
+    }
+}

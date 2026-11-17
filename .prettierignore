@@ -1,0 +1,7 @@
+# Build output and third-party content: prettier formats nothing here.
+build/
+*/build/
+.gradle/
+dest/
+gradle/
+out/
