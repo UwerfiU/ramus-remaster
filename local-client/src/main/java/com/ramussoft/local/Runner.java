@@ -29,6 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import com.formdev.flatlaf.FlatLaf;
 import com.ramussoft.common.AccessRules;
 import com.ramussoft.common.Engine;
 import com.ramussoft.common.Metadata;
@@ -170,16 +171,24 @@ public class Runner implements Commands {
                     }
                 }
 
-                if (lookAndFeel != null)
-                    UIManager.setLookAndFeel(lookAndFeel);
-                else {
-                    if ("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
-                            .equals(UIManager.getSystemLookAndFeelClassName()))
-                        UIManager.setLookAndFeel(UIManager
-                                .getCrossPlatformLookAndFeelClassName());
-                    else
-                        UIManager.setLookAndFeel(UIManager
-                                .getSystemLookAndFeelClassName());
+                // T3.1: FlatLaf is installed once in
+                // com.ramussoft.local.Main.main() before any UI is created.
+                // Do not override it here; keep the legacy fallback only for
+                // cases when no custom L&F was applied (e.g. Runner.main()
+                // used directly).
+                if (!(UIManager.getLookAndFeel() instanceof FlatLaf)) {
+                    if (lookAndFeel != null)
+                        UIManager.setLookAndFeel(lookAndFeel);
+                    else {
+                        if ("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
+                                .equals(UIManager
+                                        .getSystemLookAndFeelClassName()))
+                            UIManager.setLookAndFeel(UIManager
+                                    .getCrossPlatformLookAndFeelClassName());
+                        else
+                            UIManager.setLookAndFeel(UIManager
+                                    .getSystemLookAndFeelClassName());
+                    }
                 }
             } catch (Exception e1) {
                 e1.printStackTrace();

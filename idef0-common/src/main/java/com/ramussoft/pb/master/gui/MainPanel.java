@@ -227,18 +227,11 @@ public class MainPanel extends JPanel {
 
     public static void main(final String[] args) {
 
-        try {
-            UIManager.put("swing.boldMetal", Boolean.FALSE);
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (final ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (final InstantiationException e) {
-            e.printStackTrace();
-        } catch (final IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (final UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
+        UIManager.put("swing.boldMetal", Boolean.FALSE);
+        // T3.1: look-and-feel is set once in
+        // com.ramussoft.local.Main.main() (FlatLaf). The previous call
+        // UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
+        // was removed because it overrode FlatLaf.
 
         UIManager.put("TextArea.font", new Font("Tymes New Roman", 0, 14));
 

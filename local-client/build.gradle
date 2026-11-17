@@ -30,6 +30,8 @@ dependencies {
     implementation project(':chart-gui')
 
     implementation 'com.h2database:h2:2.5.252'
+    // T3.1: FlatLaf look-and-feel (light/dark themes)
+    implementation 'com.formdev:flatlaf:3.8'
     testImplementation group: 'junit', name: 'junit', version: '4.11'
 }
 
@@ -39,6 +41,10 @@ task runLocal(type: JavaExec) {
     workingDir = rootProject.projectDir
     if (project.hasProperty('open')) {
         args = [project.property('open')]
+    }
+    // T3.1: optional theme selection, e.g. ./gradlew runLocal -Ptheme=dark
+    if (project.hasProperty('theme')) {
+        systemProperty 'ramus.theme', project.property('theme')
     }
 }
 

@@ -6,7 +6,11 @@ import java.util.List;
 
 import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+import com.ramussoft.common.AccessRules;
 import com.ramussoft.common.Engine;
 import com.ramussoft.common.Plugin;
 import com.ramussoft.gui.common.GUIFramework;
@@ -16,6 +20,22 @@ import com.ramussoft.gui.core.AboutDialog;
 public class Main extends Runner {
 
     public static void main(String[] args) {
+        // T3.1: install FlatLaf before any UI is created.
+        // Theme can be selected with -Dramus.theme=dark (default: light).
+        try {
+            boolean dark = "dark".equalsIgnoreCase(
+                    System.getProperty("ramus.theme", "light"));
+            UIManager.setLookAndFeel(dark ? new FlatDarkLaf() : new FlatLightLaf());
+        } catch (Exception e) {
+            // Fallback: system look-and-feel if FlatLaf is unavailable.
+            try {
+                UIManager.setLookAndFeel(
+                        UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception ignored) {
+                // Keep the default L&F.
+            }
+        }
+
         // Set macOS-specific system properties
         if (System.getProperty("os.name").toLowerCase().contains("mac")) {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
@@ -32,6 +52,14 @@ public class Main extends Runner {
             });
         }
         main.load(args);
+    }
+
+    @Override
+    protected void initAdditionalGUIPlugins(List<GUIPlugin> list,
+                                            Engine engine, AccessRules rules) {
+        super.initAdditionalGUIPlugins(list, engine, rules);
+        // T3.1: light/dark theme switcher in the View menu.
+        list.add(new ThemeTogglePlugin());
     }
 
     private void openFromSystem(File file) {
