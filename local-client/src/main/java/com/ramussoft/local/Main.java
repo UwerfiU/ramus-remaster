@@ -16,6 +16,7 @@ import com.ramussoft.common.Plugin;
 import com.ramussoft.gui.common.GUIFramework;
 import com.ramussoft.gui.common.GUIPlugin;
 import com.ramussoft.gui.core.AboutDialog;
+import com.ramussoft.local.ui.MenuSearch;
 import com.ramussoft.local.ui.RamusTheme;
 
 public class Main extends Runner {
@@ -82,6 +83,10 @@ public class Main extends Runner {
     @Override
     protected void postShowVisibaleMainFrame(Engine engine, GUIFramework framework) {
         super.postShowVisibaleMainFrame(engine, framework);
+
+        // T5.3: global Ctrl+K command palette (menu search); install() guards
+        // against repeated calls.
+        MenuSearch.install(framework.getMainFrame());
 
         // Properly wire the macOS About menu to the app's About dialog
         if (Desktop.isDesktopSupported() &&
