@@ -182,6 +182,8 @@ public class ShowWorkspacePlugin extends AbstractViewPlugin {
     public void createWorkspaceToolBar() {
         JToolBar workspaceToolBar = new JToolBar();
         workspaceToolBar.setFloatable(false);
+        // T5.2: modern hover (rollover) highlight on toolbar buttons.
+        workspaceToolBar.setRollover(true);
         for (ActionDescriptor descriptor : getActionDescriptors()) {
             final Action action = descriptor.getAction();
             if (action instanceof ShowWorkspaceAction) {

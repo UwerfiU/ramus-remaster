@@ -67,6 +67,11 @@ public class ThemeTogglePlugin extends AbstractViewPlugin {
         try {
             boolean toDark = !(UIManager.getLookAndFeel() instanceof FlatDarkLaf);
             UIManager.setLookAndFeel(toDark ? new FlatDarkLaf() : new FlatLightLaf());
+            // T5.2: setLookAndFeel resets put properties — keep the custom
+            // window decorations (Windows/Linux only; macOS stays native).
+            if (!System.getProperty("os.name", "").toLowerCase().contains("mac")) {
+                UIManager.put("flatlaf.windowDecorations", true);
+            }
             // T3.2: re-apply design tokens (setLookAndFeel resets them).
             RamusTheme.apply();
             for (Window w : Window.getWindows()) {

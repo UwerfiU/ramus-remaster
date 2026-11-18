@@ -27,6 +27,11 @@ public class Main extends Runner {
             boolean dark = "dark".equalsIgnoreCase(
                     System.getProperty("ramus.theme", "light"));
             UIManager.setLookAndFeel(dark ? new FlatDarkLaf() : new FlatLightLaf());
+            // T5.2: custom FlatLaf window title bars on Windows/Linux; macOS
+            // keeps its native frame and screen menu bar.
+            if (!System.getProperty("os.name", "").toLowerCase().contains("mac")) {
+                UIManager.put("flatlaf.windowDecorations", true);
+            }
             // T3.2: apply centralized design tokens after the L&F is set.
             RamusTheme.apply();
         } catch (Exception e) {

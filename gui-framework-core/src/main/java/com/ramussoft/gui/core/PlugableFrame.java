@@ -314,6 +314,8 @@ public class PlugableFrame extends JFrame {
             Entry<String, Object> entry = (Entry<String, Object>) object;
             List<Action> list = (List) entry.getValue();
             JToolBar toolBar = new JToolBar();
+            // T5.2: modern hover (rollover) highlight on toolbar buttons.
+            toolBar.setRollover(true);
             for (Action a : list) {
                 if (a == null)
                     toolBar.addSeparator();

@@ -1,6 +1,7 @@
 package com.ramussoft.local.ui;
 
 import java.awt.Color;
+import java.awt.Insets;
 
 import javax.swing.UIManager;
 
@@ -44,6 +45,28 @@ public final class RamusTheme {
         // NOTE: as of T3.2 no flatlaf.* override is needed — the default
         // FlatLight/FlatDark palettes, fonts and control sizes render this
         // app correctly in both themes (see docs/baseline/t32_*.png).
+
+        // T5.2: "airier" metrics on top of the built-in sizes. Every key
+        // below was verified to exist in FlatLaf 3.8's defaults table
+        // (UIManager.getLookAndFeel().getDefaults()); values are modest
+        // bumps over the built-in ones, identical for both themes.
+        UIManager.put("Button.margin", new Insets(4, 16, 4, 16));
+        // roomier push buttons in dialogs and option panes (toolbar buttons
+        // use the separate Button.toolbar.margin key and stay compact)
+        UIManager.put("MenuItem.margin", new Insets(5, 8, 5, 8));
+        // more breathing room between menu rows in this app's deep menus
+        UIManager.put("MenuBar.itemMargins", new Insets(5, 10, 5, 10));
+        // airier top-level menu bar
+        UIManager.put("TextField.margin", new Insets(4, 8, 4, 8));
+        // more padding inside text fields and other single-line inputs
+        UIManager.put("TabbedPane.tabInsets", new Insets(6, 14, 6, 14));
+        // roomier diagram/model tabs (the main workspace is tab-heavy)
+        UIManager.put("Table.cellMargins", new Insets(4, 6, 4, 6));
+        // taller table rows in attribute/entity tables
+        UIManager.put("List.cellMargins", new Insets(3, 8, 3, 8));
+        // roomier list and combo-drop-down rows
+        UIManager.put("ToolBar.borderMargins", new Insets(4, 4, 4, 4));
+        // uniform padding around all toolbars for a consistent look
 
         // T3.3: SwingX JXHeader (MainPanel wizard) paints a hardcoded
         // white->control gradient in BasicHeaderUI; under FlatDarkLaf the
