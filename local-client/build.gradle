@@ -331,8 +331,10 @@ tasks.register('winPackage', Exec) {
             throw new GradleException('winPackage must be executed on Windows:'
                     + ' jpackage builds Windows packages only on Windows.'
                     + ' See .github/workflows/windows-installer.yml')
-        if (!(type in ['msi', 'exe']))
-            throw new GradleException("packagingWinType must be msi or exe, not ${type}")
+        // app-image needs no installer tooling (WiX) and yields a portable
+        // folder; msi/exe need WiX Toolset 3 installed.
+        if (!(type in ['msi', 'exe', 'app-image']))
+            throw new GradleException("packagingWinType must be msi, exe or app-image, not ${type}")
         if (!winIconFile.isFile())
             throw new GradleException("Missing icon: ${winIconFile}")
         winDestDir.mkdirs()
@@ -345,7 +347,8 @@ tasks.register('winPackage', Exec) {
     def runtimePath = (runtimeImageDir.exists() && new File(runtimeImageDir, 'bin/java.exe').exists()) ? runtimeImageDir.absolutePath : javaHome.toString()
 
     workingDir packagingWorkDir
-    commandLine jpackageBin,
+    def args = [
+            jpackageBin,
             '--type', type,
             '--dest', winDestDir.absolutePath,
             '--name', 'Ramus',
@@ -356,13 +359,18 @@ tasks.register('winPackage', Exec) {
             '--icon', winIconFile.absolutePath,
             '--vendor', 'Ramus Project',
             '--description', 'Ramus — business process modelling (IDEF0, DFD)',
-            '--runtime-image', runtimePath,
-            '--win-per-user-install',
-            '--win-menu',
-            '--win-menu-group', 'Ramus',
-            '--win-shortcut',
-            '--win-upgrade-uuid', winUpgradeUuid,
-            '--file-associations', new File(winAssociations, 'association-rsf.properties').absolutePath
+            '--runtime-image', runtimePath]
+    if (type != 'app-image') {
+        // Installer-specific options; invalid for app-image.
+        args += [
+                '--win-per-user-install',
+                '--win-menu',
+                '--win-menu-group', 'Ramus',
+                '--win-shortcut',
+                '--win-upgrade-uuid', winUpgradeUuid,
+                '--file-associations', new File(winAssociations, 'association-rsf.properties').absolutePath]
+    }
+    commandLine args
 
     doLast {
         nameWithArch(winDestDir, ".${type}", packagingArch())
