@@ -57,7 +57,9 @@ jobs:
           if (-not (Test-Path $menu)) { throw "no Start menu group: $menu" }
           Get-ChildItem $menu | ForEach-Object { Write-Host "Shortcut: $($_.Name)" }
 
-          foreach ($ext in @('.ramus', '.rsf')) {
+          # .rsf is the document type; .ramus only exists as a project
+          # directory marker (project.ramus) and has no file association.
+          foreach ($ext in @('.rsf')) {
               $key = "HKCU:\Software\Classes\$ext"
               if (-not (Test-Path $key)) { throw "extension not registered: $ext" }
               Write-Host "$ext -> $((Get-ItemProperty $key).'(default)')"
