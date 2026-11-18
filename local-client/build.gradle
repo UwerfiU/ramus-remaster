@@ -183,7 +183,10 @@ tasks.register('jlinkImage') {
     dependsOn 'prepareJpackageInput'
     doLast {
         if (project.findProperty('packagingUseJlink')?.toString()?.toBoolean() == false) {
-            println 'jlinkImage skipped: packagingUseJlink=false'
+            println 'jlinkImage skipped: packagingUseJlink=false (using full JDK runtime)'
+            // Remove a stale jlinked image from an earlier step in the same
+            // build, otherwise the package would silently pick it up.
+            runtimeImageDir.deleteDir()
             return
         }
         def javaHome = (project.findProperty('packagingJavaHome') ?: project.findProperty('org.gradle.java.home') ?: System.getenv('JAVA_HOME') ?: System.getProperty('java.home'))
