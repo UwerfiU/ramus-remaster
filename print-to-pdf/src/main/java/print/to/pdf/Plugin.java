@@ -18,17 +18,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import com.itextpdf.awt.DefaultFontMapper;
-import com.itextpdf.awt.FontMapper;
-import com.itextpdf.awt.PdfGraphics2D;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.ExceptionConverter;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfWriter;
+// OpenPDF (LGPL-3.0) keeps the historical com.lowagie.* package names.
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.ExceptionConverter;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.DefaultFontMapper;
+import com.lowagie.text.pdf.FontMapper;
+import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfGraphics2D;
+import com.lowagie.text.pdf.PdfWriter;
 import com.ramussoft.gui.common.GUIFramework;
 import com.ramussoft.gui.common.GlobalResourcesManager;
 import com.ramussoft.gui.common.PrintPlugin;
@@ -188,9 +189,11 @@ public class Plugin implements PrintPlugin {
             for (int i = 0; i < pageCount; i++) {
                 PageFormat format = printable.getPageFormat(
                         printable.getPageFormat(), i);
+                // OpenPDF's PdfGraphics2D has no 4-arg constructor:
+                // (cb, width, height, fontMapper, onlyShapes, convertImagesToJPEG, quality)
                 Graphics2D g2d = new PdfGraphics2D(cb,
                         (float) format.getWidth(), (float) format.getHeight(),
-                        mapper);
+                        mapper, false, false, 0f);
 
                 printable.print(g2d, i);
 

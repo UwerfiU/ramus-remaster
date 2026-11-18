@@ -13,7 +13,7 @@ A modernized fork of **Ramus**, a Java-based IDEF0 & DFD business-process modell
 
 - **JDK 21** (оригинал — JDK 8) / modernized toolchain
 - **FlatLaf 3.8** — современный вид интерфейса, светлая и тёмная темы (переключатель: *View → Toggle light/dark theme*)
-- **Обновлены зависимости**: POI 5.5, iText 5.5.13, JFreeChart 1.5, H2 2.5
+- **Обновлены зависимости**: POI 5.5, OpenPDF (вместо AGPL iText), JFreeChart 1.5, H2 2.5
 - **Совместимость с .rsf в обе стороны**:
   - remaster открывает старые файлы, включая эпохи Ramus 1.x (отсутствующие плагины пропускаются с предупреждением в лог);
   - файлы, сохранённые remaster, открываются в оригинальном приложении.
@@ -118,3 +118,8 @@ compatible with original Ramus 2.x (and readable from 1.x-era files).
 
 GNU GPL v3, как и оригинал. / Same as the original: GNU GPL v3.
 Original work by Vitaliy Yakovchuk.
+
+Зависимости совместимы с GPL: OpenPDF (LGPL) вместо AGPL iText,
+FlatLaf (LGPL), H2 (MPL/EPL). Приложение можно распространять как GPLv3.
+/ Dependencies are GPL-compatible: OpenPDF (LGPL) instead of AGPL iText,
+FlatLaf (LGPL), H2 (MPL/EPL). The application can be distributed as GPLv3.

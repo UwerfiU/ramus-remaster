@@ -12,8 +12,6 @@ import com.ramussoft.common.AccessRules;
 import com.ramussoft.common.Attribute;
 import com.ramussoft.common.Element;
 import com.ramussoft.common.Engine;
-import edu.stanford.ejalbert.BrowserLauncher;
-
 public abstract class AbstractAttributePlugin implements AttributePlugin {
 
     protected GUIFramework framework;
@@ -137,17 +135,14 @@ public abstract class AbstractAttributePlugin implements AttributePlugin {
         try {
             return openUrl(new URI(url));
         } catch (Exception e) {
+            // Desktop.browse is the only mechanism used (the barchart
+            // BrowserLauncher fallback was removed during license cleanup).
             try {
                 Desktop.getDesktop().browse(new URI(url));
             } catch (Exception e1) {
-                try {
-                    new BrowserLauncher().openURLinBrowser(url);
-                } catch (Exception e2) {
-                    e1.printStackTrace();
-                    e2.printStackTrace();
-                    JOptionPane.showMessageDialog(framework.getMainFrame(),
-                            e1.getLocalizedMessage());
-                }
+                e1.printStackTrace();
+                JOptionPane.showMessageDialog(framework.getMainFrame(),
+                        e1.getLocalizedMessage());
             }
         }
         return false;

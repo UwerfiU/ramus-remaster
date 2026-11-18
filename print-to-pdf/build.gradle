@@ -6,6 +6,9 @@ apply plugin: 'java'
 dependencies {
     implementation project(':gui-framework-common')
     implementation project(':idef0-common')
-    implementation 'com.itextpdf:itextpdf:5.5.13.6'
+    // OpenPDF — LGPL-3.0 replacement for the AGPL-licensed itextpdf artifact.
+    // It keeps the historical com.lowagie.* package names (iText 4 lineage).
+    implementation 'com.github.librepdf:openpdf:2.2.2'
+    testImplementation project(':gui-framework-common')
     testImplementation group: 'junit', name: 'junit', version: '4.11'
 }
