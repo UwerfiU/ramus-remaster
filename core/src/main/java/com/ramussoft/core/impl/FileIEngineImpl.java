@@ -250,10 +250,26 @@ public class FileIEngineImpl extends IEngineImpl {
         List<String> required = new ArrayList<String>();
         for (Object plugin : (List<Object>) plugins)
             required.add(plugin.toString());
+        warnAboutMissingPlugins(names, required);
+    }
+
+    /**
+     * Files created with old Ramus versions (1.x) may reference plugins that do
+     * not exist anymore. Instead of failing to open such files we log a warning
+     * and continue: data of missing plugins is ignored on load and will be
+     * dropped permanently if the file is saved.
+     */
+    private void warnAboutMissingPlugins(String[] registered,
+            List<String> required) {
+        List<String> missing = new ArrayList<String>();
         for (String plugin : required)
-            if (Arrays.asList(names).indexOf(plugin) < 0)
-                throw new FileVersionException(names,
-                        required.toArray(new String[required.size()]), plugin);
+            if (Arrays.asList(registered).indexOf(plugin) < 0)
+                missing.add(plugin);
+        if (!missing.isEmpty()) {
+            System.err.println("[Ramus] File requires unregistered plugins "
+                    + missing
+                    + "; their data is ignored. Saving this file will drop it permanently.");
+        }
     }
 
     public void saveProject(File project) throws IOException {
@@ -344,18 +360,7 @@ public class FileIEngineImpl extends IEngineImpl {
         }
         String[] filePlugins = metadata.getPlugins();
         if (filePlugins != null) {
-            for (String fp : filePlugins) {
-                boolean p = true;
-                for (String name : names) {
-                    if (name.equals(fp)) {
-                        p = false;
-                        break;
-                    }
-                }
-                if (p) {
-                    throw new FileVersionException(names, filePlugins, fp);
-                }
-            }
+            warnAboutMissingPlugins(names, Arrays.asList(filePlugins));
         }
         return metadata;
     }
