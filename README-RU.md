@@ -25,6 +25,39 @@
 
 Подробности расследования багов открытия — в [`docs/rsf-load-bugs.md`](docs/rsf-load-bugs.md).
 
+## Скачать и установить
+
+Готовые сборки прикрепляются к [релизам](https://github.com/UwerfiU/ramus-remaster/releases)
+при каждом пуше тега `v*` (собирает GitHub Actions). Все сборки содержат
+собственный Java-рантайм — устанавливать JDK не нужно.
+
+### Windows
+
+1. Скачайте `Ramus-0.1.0.msi` и запустите: установка per-user, ярлык в меню Пуск,
+   ассоциация файлов `.rsf`. Удаление — через «Приложения и возможности».
+2. Портативная версия без установки (локальная сборка):
+   ```bat
+   gradlew.bat winPackage -PpackagingWinType=app-image
+   ```
+   → папка `dest\windows\Ramus\`, запускается `Ramus.exe`.
+
+### macOS
+
+1. Скачайте DMG под свой процессор: Apple Silicon (M1/M2/…) — `...-arm64.dmg`,
+   Intel — `...-x86_64.dmg`.
+2. Откройте DMG и перетащите **Ramus** в **Applications**.
+3. Приложение не подписано, поэтому при первом запуске macOS заблокирует его:
+   правый клик по Ramus в Finder → **Open** → **Open**, либо один раз выполните
+   `xattr -dr com.apple.quarantine /Applications/Ramus.app`.
+
+### Linux (x86_64)
+
+- Портативная версия (любой дистрибутив): распакуйте
+  `ramus-portable-linux-x86_64.tar.gz` и запустите `Ramus/bin/Ramus`
+  (удобно сделать symlink в `~/bin`).
+- Debian/Ubuntu: `sudo dpkg -i ramus_*.deb`
+- Fedora/RHEL: `sudo rpm -i ramus-*.rpm` (или `dnf install ./ramus-*.rpm`)
+
 ## Запуск из исходников
 
 Требуется JDK 21 (например, Temurin). На Windows:
@@ -47,14 +80,23 @@ Linux/macOS: `./gradlew ...` с теми же аргументами.
 ## Упаковка
 
 ```bash
-# Портативная версия (папка с Ramus.exe, без установки; WiX не нужен)
+# Windows: портативная версия (папка с Ramus.exe, без установки; WiX не нужен)
 ./gradlew winPackage -PpackagingWinType=app-image
 # → dest/windows/Ramus/  (Ramus.exe + app + runtime)
 
-# Инсталлятор MSI — только через GitHub Actions: пуш тега вида v0.1.0
-# запускает .github/workflows/windows-installer.yml, который собирает MSI,
-# проверяет установку/запуск/удаление и прикрепляет артефакты к релизу.
+# Linux: портативная папка / deb / rpm — только на Linux (jpackage)
+./gradlew linuxPackage -PpackagingLinuxType=app-image   # → dest/linux/Ramus/
+./gradlew linuxPackage -PpackagingLinuxType=deb         # → dest/linux/ramus_*.deb
+./gradlew linuxPackage -PpackagingLinuxType=rpm         # → dest/linux/ramus-*.rpm
 ```
+
+Инсталляторы собирает GitHub Actions при пуше тега вида `v0.1.0`:
+
+- Windows MSI — `.github/workflows/windows-installer.yml` (собирает, ставит,
+  проверяет запуск и удаление, прикрепляет артефакт к релизу);
+- macOS DMG (arm64 + x86_64) — `.github/workflows/macos-dmg.yml`;
+- Linux (портативная папка + deb + rpm) — `.github/workflows/linux-packages.yml`
+  (включая smoke-тест запуска под xvfb).
 
 ## Структура репозитория (кратко)
 

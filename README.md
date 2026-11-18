@@ -25,6 +25,62 @@ A modernized fork of **Ramus**, a Java-based IDEF0 & DFD business-process modell
 ![Dark theme](docs/baseline/t32_dark.png)
 *Тёмная тема / Dark theme*
 
+## Установка / Installation
+
+Готовые сборки появляются на странице [releases](https://github.com/UwerfiU/ramus-remaster/releases)
+при каждом пуше тега `v*`. Все сборки содержат собственный Java-рантайм —
+JDK на компьютере пользователя не нужен. / Ready-made builds are attached to
+[releases](https://github.com/UwerfiU/ramus-remaster/releases) on every `v*` tag;
+each one bundles its own Java runtime, so no JDK is needed on the user's machine.
+
+### Windows
+
+1. Скачайте `Ramus-0.1.0.msi` и запустите: установка per-user, ярлык в меню Пуск,
+   ассоциация файлов `.rsf`. Удаление — через «Приложения и возможности».
+2. Портативная версия без установки (собирается локально):
+   ```bat
+   gradlew.bat winPackage -PpackagingWinType=app-image
+   ```
+   → папка `dest\windows\Ramus\`, запускается `Ramus.exe`.
+
+1. Download `Ramus-0.1.0.msi` and run it: per-user install, Start menu shortcut,
+   `.rsf` file association. Uninstall via "Apps & features".
+2. Portable version without installation (built locally):
+   ```bat
+   gradlew.bat winPackage -PpackagingWinType=app-image
+   ```
+   → `dest\windows\Ramus\` folder, run `Ramus.exe`.
+
+### macOS
+
+1. Скачайте DMG под свой процессор: Apple Silicon (M1/M2/…) — `...-arm64.dmg`,
+   Intel — `...-x86_64.dmg`.
+2. Откройте DMG и перетащите **Ramus** в **Applications**.
+3. Приложение не подписано, поэтому при первом запуске macOS заблокирует его:
+   правый клик по Ramus в Finder → **Open** → **Open**
+   (либо один раз выполните `xattr -dr com.apple.quarantine /Applications/Ramus.app`).
+
+1. Download the DMG for your chip: Apple Silicon (M1/M2/…) — `...-arm64.dmg`,
+   Intel — `...-x86_64.dmg`.
+2. Open the DMG and drag **Ramus** into **Applications**.
+3. The app is unsigned, so macOS blocks it on first launch: right-click Ramus in
+   Finder → **Open** → **Open** (or run
+   `xattr -dr com.apple.quarantine /Applications/Ramus.app` once).
+
+### Linux
+
+- Портативная версия (любой дистрибутив, x86_64): распакуйте
+  `ramus-portable-linux-x86_64.tar.gz` и запустите `Ramus/bin/Ramus`
+  (удобно сделать symlink в `~/bin`).
+- Debian/Ubuntu: `sudo dpkg -i ramus_*.deb`
+- Fedora/RHEL: `sudo rpm -i ramus-*.rpm` (или `dnf install ./ramus-*.rpm`)
+
+- Portable build (any x86_64 distro): unpack
+  `ramus-portable-linux-x86_64.tar.gz` and run `Ramus/bin/Ramus`
+  (a symlink in `~/bin` is convenient).
+- Debian/Ubuntu: `sudo dpkg -i ramus_*.deb`
+- Fedora/RHEL: `sudo rpm -i ramus-*.rpm` (or `dnf install ./ramus-*.rpm`)
+
 ## Запуск из исходников / Run from source
 
 Требуется JDK 21. / Requires JDK 21.
@@ -38,15 +94,16 @@ A modernized fork of **Ramus**, a Java-based IDEF0 & DFD business-process modell
 ## Сборка / Building
 
 ```bash
-./gradlew build                         # compile + все тесты
+./gradlew build                         # compile + все тесты / all tests
 ./gradlew winPackage -PpackagingWinType=app-image   # портативная версия → dest/windows/Ramus/
+./gradlew linuxPackage -PpackagingLinuxType=app-image  # только на Linux → dest/linux/Ramus/
 ```
 
-Windows-инсталлятор (MSI) собирается GitHub Actions при пуше тега `v*`
-(см. `.github/workflows/windows-installer.yml`); артефакты попадают в релиз.
+Инсталляторы (Windows MSI, macOS DMG, Linux deb/rpm) собирает GitHub Actions
+при пуше тега `v*`; артефакты прикрепляются к релизу.
 
-The Windows installer (MSI) is built by GitHub Actions on `v*` tags;
-artifacts are attached to the release.
+Installers (Windows MSI, macOS DMG, Linux deb/rpm) are built by GitHub Actions
+on `v*` tags and attached to the release.
 
 ## Формат файлов / Project format
 
