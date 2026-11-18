@@ -312,9 +312,42 @@ public class Runner implements Commands {
             open(file);
         } else {
             if (recoveredCount == 0 && !openedBySystem) {
-                startupLauncher(false);
+                // T5.4: auto-open the last file instead of the blocking
+                // launcher; -Dramus.startup.ask=true keeps the old dialog.
+                if ("true".equals(System.getProperty("ramus.startup.ask"))) {
+                    startupLauncher(true);
+                } else {
+                    File last = getLastStartupFile();
+                    if (last != null) {
+                        Thread thread = new Thread() {
+                            public void run() {
+                                open(last);
+                            }
+
+                            ;
+                        };
+                        thread.start();
+                    } else
+                        startupLauncher(false);
+                }
             }
         }
+    }
+
+    /**
+     * T5.4: the file to auto-open on startup (LAST_FILE_FIRST, otherwise
+     * LAST_FILE); null when absent or unreadable.
+     */
+    static File getLastStartupFile() {
+        String last = Options.getString("LAST_FILE_FIRST");
+        if (last == null)
+            last = Options.getString("LAST_FILE");
+        if (last != null) {
+            File file = new File(last);
+            if (file.exists() && file.canRead())
+                return file;
+        }
+        return null;
     }
 
     protected FirstSwitchFrame launcher;
