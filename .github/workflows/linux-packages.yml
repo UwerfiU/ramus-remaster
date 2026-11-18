@@ -1,0 +1,66 @@
+name: Linux packages
+
+on:
+  push:
+    tags: ['v*']
+  pull_request:
+    paths:
+      - 'packaging/**'
+      - 'local-client/build.gradle'
+      - '.github/workflows/linux-packages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  packages:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Build portable app-image
+        run: ./gradlew linuxPackage -PpackagingLinuxType=app-image --no-daemon
+
+      - name: Smoke test under a virtual display
+        run: |
+          code=0
+          timeout 30 xvfb-run -a dest/linux/Ramus/Ramus || code=$?
+          if [ "$code" -ne 124 ]; then
+            echo "the application exited right after start, code $code"
+            exit 1
+          fi
+          echo 'Still running after 30 s — the application starts'
+
+      - name: Build deb package
+        run: ./gradlew linuxPackage -PpackagingLinuxType=deb --no-daemon
+
+      - name: Build rpm package
+        run: ./gradlew linuxPackage -PpackagingLinuxType=rpm --no-daemon
+
+      - name: Package the portable build
+        run: |
+          cd dest/linux
+          tar czf ramus-portable-linux-x86_64.tar.gz Ramus
+          rm -rf Ramus
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ramus-linux
+          path: dest/linux/*
+          if-no-files-found: error
+
+      - name: Attach to the release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" --generate-notes 2>/dev/null || true
+          gh release upload "$GITHUB_REF_NAME" \
+            dest/linux/*.tar.gz dest/linux/*.deb dest/linux/*.rpm --clobber

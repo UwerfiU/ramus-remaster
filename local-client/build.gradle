@@ -383,6 +383,57 @@ tasks.register('winInstaller') {
     dependsOn 'winPackage'
 }
 
+// --- Linux packaging (deb, rpm or portable app-image via jpackage) ---
+
+def linuxDestDir = file("${rootProject.projectDir}/dest/linux")
+
+tasks.register('linuxPackage', Exec) {
+    dependsOn 'prepareJpackageInput', 'jlinkImage'
+
+    def type = (project.findProperty('packagingLinuxType') ?: 'app-image').toString()
+
+    doFirst {
+        if (!org.gradle.internal.os.OperatingSystem.current().isLinux())
+            throw new GradleException('linuxPackage must be executed on Linux:'
+                    + ' jpackage builds Linux packages only on Linux.'
+                    + ' See .github/workflows/linux-packages.yml')
+        // app-image needs no extra tooling; deb needs dpkg tools and rpm
+        // needs rpmbuild (both preinstalled on GitHub runners).
+        if (!(type in ['deb', 'rpm', 'app-image']))
+            throw new GradleException("packagingLinuxType must be deb, rpm or app-image, not ${type}")
+        linuxDestDir.mkdirs()
+        packagingWorkDir.mkdirs()
+    }
+
+    def javaHome = (project.findProperty('packagingJavaHome') ?: project.findProperty('org.gradle.java.home') ?: System.getenv('JAVA_HOME') ?: System.getProperty('java.home'))
+    def jpackageBin = new File(javaHome, 'bin/jpackage').absolutePath
+
+    def runtimePath = (runtimeImageDir.exists() && new File(runtimeImageDir, 'bin/java').exists()) ? runtimeImageDir.absolutePath : javaHome.toString()
+
+    workingDir packagingWorkDir
+    def args = [
+            jpackageBin,
+            '--type', type,
+            '--dest', linuxDestDir.absolutePath,
+            '--name', 'Ramus',
+            '--app-version', packagingVersion(),
+            '--input', jpkgInputDir.absolutePath,
+            '--main-jar', 'ramus.jar',
+            '--main-class', 'com.ramussoft.local.Main',
+            '--vendor', 'Ramus Project',
+            '--description', 'Ramus — business process modelling (IDEF0, DFD)',
+            '--runtime-image', runtimePath]
+    if (type != 'app-image') {
+        // Installer-specific: create a .desktop launcher entry.
+        args += ['--linux-shortcut']
+    }
+    commandLine args
+
+    doLast {
+        nameWithArch(linuxDestDir, ".${type}", packagingArch())
+    }
+}
+
 task createMacApp(type: Copy, dependsOn: [shadowJar, makeIcns]) {
     // Resolve bundle directories eagerly so Gradle doesn't treat DirectoryProperty objects as strings.
     def appDir = new File(buildDir, 'mac-app/Ramus.app')
