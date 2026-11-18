@@ -106,3 +106,6 @@ tmp/
 /dest/LICENSE
 
 .DS_Store
+
+# jpackage build output (T4.3)
+dest/windows/
