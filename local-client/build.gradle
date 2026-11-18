@@ -278,33 +278,36 @@ tasks.register('jlinkImage') {
 
 tasks.register('jpackageDmg', Exec) {
     dependsOn 'prepareJpackageInput', 'makeIcns', 'jlinkImage'
+    workingDir packagingWorkDir
     doFirst {
         if (!org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {
             throw new GradleException('jpackageDmg must be executed on macOS')
         }
         dmgDestDir.mkdirs()
         packagingWorkDir.mkdirs()
+        // Resolve the command line at execution time (after jlinkImage has run)
+        // so that a retry in the same build sees the current filesystem state.
+        def javaHome = (project.findProperty('packagingJavaHome') ?: project.findProperty('org.gradle.java.home') ?: System.getenv('JAVA_HOME') ?: System.getProperty('java.home')).toString()
+        def jpackageBin = new File(javaHome, 'bin/jpackage').absolutePath
+        def appVer = packagingVersion()
+        // Choose a runtime image: prefer the jlink output, otherwise use the full JDK
+        def runtimePath = (runtimeImageDir.exists() && new File(runtimeImageDir, 'bin/java').exists()) ? runtimeImageDir.absolutePath : javaHome
+        commandLine = [
+                jpackageBin,
+                '--type', 'dmg',
+                '--dest', dmgDestDir.absolutePath,
+                '--name', 'Ramus',
+                '--app-version', appVer,
+                '--input', jpkgInputDir.absolutePath,
+                '--main-jar', 'ramus.jar',
+                '--main-class', 'com.ramussoft.local.Main',
+                '--icon', icnsFile.absolutePath,
+                '--vendor', 'Ramus Project',
+                '--mac-package-identifier', 'com.vitalex.ramus',
+                '--runtime-image', runtimePath,
+                '--java-options', '-Dapple.laf.useScreenMenuBar=true',
+                '--java-options', '-Dapple.awt.application.name=Ramus']
     }
-    workingDir packagingWorkDir
-    def javaHome = (project.findProperty('packagingJavaHome') ?: project.findProperty('org.gradle.java.home') ?: System.getenv('JAVA_HOME') ?: System.getProperty('java.home'))
-    def jpackageBin = new File(javaHome, 'bin/jpackage').absolutePath
-    def appVer = packagingVersion()
-    // Choose a runtime image: prefer the jlink output, otherwise use the full JDK
-    def runtimePath = (runtimeImageDir.exists() && new File(runtimeImageDir, 'bin/java').exists()) ? runtimeImageDir.absolutePath : javaHome
-    commandLine jpackageBin,
-            '--type', 'dmg',
-            '--dest', dmgDestDir.absolutePath,
-            '--name', 'Ramus',
-            '--app-version', appVer,
-            '--input', jpkgInputDir.absolutePath,
-            '--main-jar', 'ramus.jar',
-            '--main-class', 'com.ramussoft.local.Main',
-            '--icon', icnsFile.absolutePath,
-            '--vendor', 'Ramus Project',
-            '--mac-package-identifier', 'com.vitalex.ramus',
-            '--runtime-image', runtimePath,
-            '--java-options', '-Dapple.laf.useScreenMenuBar=true',
-            '--java-options', '-Dapple.awt.application.name=Ramus'
 }
 
 tasks.register('macDmg') {
@@ -342,38 +345,43 @@ tasks.register('winPackage', Exec) {
             throw new GradleException("Missing icon: ${winIconFile}")
         winDestDir.mkdirs()
         packagingWorkDir.mkdirs()
+        // jpackage refuses to build over an existing app-image root.
+        if (type == 'app-image') {
+            def existing = new File(winDestDir, 'Ramus')
+            if (existing.exists()) existing.deleteDir()
+        }
+        // Resolve the command line at execution time (after jlinkImage has run)
+        // so that a retry in the same build sees the current filesystem state.
+        def javaHome = (project.findProperty('packagingJavaHome') ?: project.findProperty('org.gradle.java.home') ?: System.getenv('JAVA_HOME') ?: System.getProperty('java.home')).toString()
+        def jpackageBin = new File(javaHome, 'bin/jpackage.exe').absolutePath
+        def runtimePath = (runtimeImageDir.exists() && new File(runtimeImageDir, 'bin/java.exe').exists()) ? runtimeImageDir.absolutePath : javaHome
+        def args = [
+                jpackageBin,
+                '--type', type,
+                '--dest', winDestDir.absolutePath,
+                '--name', 'Ramus',
+                '--app-version', packagingVersion(),
+                '--input', jpkgInputDir.absolutePath,
+                '--main-jar', 'ramus.jar',
+                '--main-class', 'com.ramussoft.local.Main',
+                '--icon', winIconFile.absolutePath,
+                '--vendor', 'Ramus Project',
+                '--description', 'Ramus — business process modelling (IDEF0, DFD)',
+                '--runtime-image', runtimePath]
+        if (type != 'app-image') {
+            // Installer-specific options; invalid for app-image.
+            args += [
+                    '--win-per-user-install',
+                    '--win-menu',
+                    '--win-menu-group', 'Ramus',
+                    '--win-shortcut',
+                    '--win-upgrade-uuid', winUpgradeUuid,
+                    '--file-associations', new File(winAssociations, 'association-rsf.properties').absolutePath]
+        }
+        commandLine = args
     }
-
-    def javaHome = (project.findProperty('packagingJavaHome') ?: project.findProperty('org.gradle.java.home') ?: System.getenv('JAVA_HOME') ?: System.getProperty('java.home'))
-    def jpackageBin = new File(javaHome, 'bin/jpackage.exe').absolutePath
-
-    def runtimePath = (runtimeImageDir.exists() && new File(runtimeImageDir, 'bin/java.exe').exists()) ? runtimeImageDir.absolutePath : javaHome.toString()
 
     workingDir packagingWorkDir
-    def args = [
-            jpackageBin,
-            '--type', type,
-            '--dest', winDestDir.absolutePath,
-            '--name', 'Ramus',
-            '--app-version', packagingVersion(),
-            '--input', jpkgInputDir.absolutePath,
-            '--main-jar', 'ramus.jar',
-            '--main-class', 'com.ramussoft.local.Main',
-            '--icon', winIconFile.absolutePath,
-            '--vendor', 'Ramus Project',
-            '--description', 'Ramus — business process modelling (IDEF0, DFD)',
-            '--runtime-image', runtimePath]
-    if (type != 'app-image') {
-        // Installer-specific options; invalid for app-image.
-        args += [
-                '--win-per-user-install',
-                '--win-menu',
-                '--win-menu-group', 'Ramus',
-                '--win-shortcut',
-                '--win-upgrade-uuid', winUpgradeUuid,
-                '--file-associations', new File(winAssociations, 'association-rsf.properties').absolutePath]
-    }
-    commandLine args
 
     doLast {
         nameWithArch(winDestDir, ".${type}", packagingArch())
@@ -406,31 +414,36 @@ tasks.register('linuxPackage', Exec) {
             throw new GradleException("packagingLinuxType must be deb, rpm or app-image, not ${type}")
         linuxDestDir.mkdirs()
         packagingWorkDir.mkdirs()
+        // jpackage refuses to build over an existing app-image root.
+        if (type == 'app-image') {
+            def existing = new File(linuxDestDir, 'Ramus')
+            if (existing.exists()) existing.deleteDir()
+        }
+        // Resolve the command line at execution time (after jlinkImage has run)
+        // so that a retry in the same build sees the current filesystem state.
+        def javaHome = (project.findProperty('packagingJavaHome') ?: project.findProperty('org.gradle.java.home') ?: System.getenv('JAVA_HOME') ?: System.getProperty('java.home')).toString()
+        def jpackageBin = new File(javaHome, 'bin/jpackage').absolutePath
+        def runtimePath = (runtimeImageDir.exists() && new File(runtimeImageDir, 'bin/java').exists()) ? runtimeImageDir.absolutePath : javaHome
+        def args = [
+                jpackageBin,
+                '--type', type,
+                '--dest', linuxDestDir.absolutePath,
+                '--name', 'Ramus',
+                '--app-version', packagingVersion(),
+                '--input', jpkgInputDir.absolutePath,
+                '--main-jar', 'ramus.jar',
+                '--main-class', 'com.ramussoft.local.Main',
+                '--vendor', 'Ramus Project',
+                '--description', 'Ramus — business process modelling (IDEF0, DFD)',
+                '--runtime-image', runtimePath]
+        if (type != 'app-image') {
+            // Installer-specific: create a .desktop launcher entry.
+            args += ['--linux-shortcut']
+        }
+        commandLine = args
     }
-
-    def javaHome = (project.findProperty('packagingJavaHome') ?: project.findProperty('org.gradle.java.home') ?: System.getenv('JAVA_HOME') ?: System.getProperty('java.home'))
-    def jpackageBin = new File(javaHome, 'bin/jpackage').absolutePath
-
-    def runtimePath = (runtimeImageDir.exists() && new File(runtimeImageDir, 'bin/java').exists()) ? runtimeImageDir.absolutePath : javaHome.toString()
 
     workingDir packagingWorkDir
-    def args = [
-            jpackageBin,
-            '--type', type,
-            '--dest', linuxDestDir.absolutePath,
-            '--name', 'Ramus',
-            '--app-version', packagingVersion(),
-            '--input', jpkgInputDir.absolutePath,
-            '--main-jar', 'ramus.jar',
-            '--main-class', 'com.ramussoft.local.Main',
-            '--vendor', 'Ramus Project',
-            '--description', 'Ramus — business process modelling (IDEF0, DFD)',
-            '--runtime-image', runtimePath]
-    if (type != 'app-image') {
-        // Installer-specific: create a .desktop launcher entry.
-        args += ['--linux-shortcut']
-    }
-    commandLine args
 
     doLast {
         nameWithArch(linuxDestDir, ".${type}", packagingArch())

@@ -43,8 +43,9 @@ jobs:
 
       - name: Smoke test under a virtual display
         run: |
+          # Linux app-image layout: the launcher lives in bin/, not at the root.
           code=0
-          timeout 30 xvfb-run -a dest/linux/Ramus/Ramus || code=$?
+          timeout 30 xvfb-run -a dest/linux/Ramus/bin/Ramus || code=$?
           if [ "$code" -ne 124 ]; then
             echo "the application exited right after start, code $code"
             exit 1
