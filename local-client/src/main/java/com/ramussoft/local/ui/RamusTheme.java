@@ -1,7 +1,10 @@
 package com.ramussoft.local.ui;
 
+import java.awt.Color;
+
 import javax.swing.UIManager;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 
 /**
@@ -40,8 +43,17 @@ public final class RamusTheme {
 
         // NOTE: as of T3.2 no flatlaf.* override is needed — the default
         // FlatLight/FlatDark palettes, fonts and control sizes render this
-        // app correctly in both themes (see docs/baseline/t32_*.png). This
-        // method exists so that future tokens have a single place to live
-        // and are re-applied on every runtime theme switch.
+        // app correctly in both themes (see docs/baseline/t32_*.png).
+
+        // T3.3: SwingX JXHeader (MainPanel wizard) paints a hardcoded
+        // white->control gradient in BasicHeaderUI; under FlatDarkLaf the
+        // light title/description text becomes unreadable on it. Point the
+        // gradient at theme-aware colors; the light theme keeps the SwingX
+        // defaults (verified in docs/baseline/t33_*).
+        if (UIManager.getLookAndFeel() instanceof FlatDarkLaf) {
+            Color headerBg = UIManager.getColor("Panel.background");
+            UIManager.put("JXHeader.startBackground", headerBg);
+            UIManager.put("JXHeader.background", headerBg);
+        }
     }
 }
