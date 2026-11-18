@@ -7,6 +7,8 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.zip.ZipFile;
 
@@ -14,6 +16,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import com.ramussoft.common.Engine;
 import com.ramussoft.core.impl.FileIEngineImpl;
@@ -21,14 +25,35 @@ import com.ramussoft.database.FileDatabaseFactory;
 import com.ramussoft.database.MemoryDatabase;
 
 /**
- * Round-trip test for the .rsf format: open the sample project in the
- * embedded H2 database (no GUI), save it to a temporary file, reopen the
- * saved file and verify that the row counts of the key tables
- * (ramus_elements, ramus_attributes, ramus_qualifiers) are preserved.
+ * Round-trip test for the .rsf format: open a sample project in the embedded
+ * H2 database (no GUI), save it to a temporary file, reopen the saved file
+ * and verify that the row counts of the key tables (ramus_elements,
+ * ramus_attributes, ramus_qualifiers, ramus_streams) are preserved.
+ *
+ * Run for every bundled sample. Legacy samples that reference plugins which
+ * no longer exist (e.g. Attribute.Doc.Way in «Пример модели.rsf») must open
+ * with a warning instead of failing; the data of those plugins is dropped on
+ * save and therefore does not take part in the comparison.
  */
+@RunWith(Parameterized.class)
 public class RsfRoundTripTest {
 
-    private static final String SAMPLE = "dest/doc/ru/Model example.rsf";
+    private final String name;
+    private final String samplePath;
+
+    @Parameterized.Parameters(name = "{0}")
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][]{
+                {"Model example", "dest/doc/ru/Model example.rsf"},
+                {"Пример модели (legacy 2009, Doc.Way)",
+                        "dest/doc/ru/Пример модели.rsf"},
+                {"Enterprise activity", "dest/doc/en/Enterprise activity.rsf"}});
+    }
+
+    public RsfRoundTripTest(String name, String samplePath) {
+        this.name = name;
+        this.samplePath = samplePath;
+    }
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
@@ -91,6 +116,8 @@ public class RsfRoundTripTest {
                     after[1]);
             assertEquals("ramus_qualifiers row count changed", before[2],
                     after[2]);
+            assertEquals("ramus_streams row count changed (binary data)",
+                    before[3], after[3]);
         } finally {
             close(second);
         }
@@ -113,14 +140,16 @@ public class RsfRoundTripTest {
         }
     }
 
-    /** Returns row counts of ramus_elements, ramus_attributes, ramus_qualifiers. */
+    /** Returns row counts of ramus_elements, ramus_attributes,
+     * ramus_qualifiers and ramus_streams. */
     private static int[] countKeyTables(MemoryDatabase database)
             throws Exception {
         Connection connection = database.getTemplate().getConnection();
         Statement st = connection.createStatement();
         try {
             return new int[]{count(st, "ramus_elements"),
-                    count(st, "ramus_attributes"), count(st, "ramus_qualifiers")};
+                    count(st, "ramus_attributes"), count(st, "ramus_qualifiers"),
+                    count(st, "ramus_streams")};
         } finally {
             st.close();
         }
@@ -144,8 +173,8 @@ public class RsfRoundTripTest {
         return false;
     }
 
-    private static File sampleFile() {
-        return new File(projectRoot(), SAMPLE);
+    private File sampleFile() {
+        return new File(projectRoot(), samplePath);
     }
 
     /** Walks up from the test working directory to the Gradle project root. */

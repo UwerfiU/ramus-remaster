@@ -19,6 +19,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
+import com.ramussoft.common.persistent.PersistentWrapper;
 import com.ramussoft.jdbc.JDBCCallback;
 import com.ramussoft.jdbc.JDBCTemplate;
 
@@ -147,10 +148,11 @@ public class TableToXML {
                 for (int i = 0; i < cc; i++) {
                     attrs.addAttribute("", "", "id", "CDATA", Integer
                             .toString(i));
-                    attrs.addAttribute("", "", "name", "CDATA", meta
-                            .getColumnName(i + 1));
-                    attrs.addAttribute("", "", "type", "CDATA", meta
-                            .getColumnTypeName(i + 1));
+                    attrs.addAttribute("", "", "name", "CDATA",
+                            PersistentWrapper.originalDatabaseName(meta
+                                    .getColumnName(i + 1)));
+                    attrs.addAttribute("", "", "type", "CDATA",
+                            legacyTypeName(meta.getColumnTypeName(i + 1)));
                     startElement("field");
                     attrs.clear();
                     endElement("field");
@@ -243,6 +245,33 @@ public class TableToXML {
             }
         } finally {
             st.close();
+        }
+    }
+
+    /**
+     * H2 2.x reports standard SQL type names (CHARACTER VARYING, BINARY
+     * VARYING, DOUBLE PRECISION), while files written by older Ramus versions
+     * use the H2 1.x names and the original application's XMLToTable only
+     * understands those. Export the legacy names so that files saved here can
+     * still be opened by the original application (both apps accept both sets
+     * on import).
+     */
+    private static String legacyTypeName(String h2v2Name) {
+        if (h2v2Name == null)
+            return h2v2Name;
+        switch (h2v2Name.toUpperCase()) {
+            case "CHARACTER VARYING":
+            case "VARCHAR":
+                return "CLOB";
+            case "CHARACTER":
+                return "CHAR";
+            case "BINARY VARYING":
+            case "BINARY":
+                return "VARBINARY";
+            case "DOUBLE PRECISION":
+                return "DOUBLE";
+            default:
+                return h2v2Name;
         }
     }
 

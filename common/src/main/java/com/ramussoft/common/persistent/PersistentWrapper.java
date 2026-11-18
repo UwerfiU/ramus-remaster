@@ -168,6 +168,27 @@ public class PersistentWrapper {
         return databaseName;
     }
 
+    /**
+     * Reverses {@link #safeDatabaseName(String)} for export: a column that
+     * was renamed because its name is an H2 2.x reserved word must be written
+     * back to the file with its ORIGINAL name, so that files saved by this
+     * application stay readable by older versions of Ramus (whose databases
+     * used the plain names).
+     */
+    public static String originalDatabaseName(String databaseName) {
+        // H2 reports unquoted identifiers in upper case, so the suffix check
+        // must be case-insensitive ("VALUE_COLUMN" -> "VALUE").
+        if (databaseName != null && databaseName.length() > 7
+                && databaseName.regionMatches(true,
+                        databaseName.length() - 7, "_column", 0, 7)) {
+            String base = databaseName.substring(0,
+                    databaseName.length() - 7);
+            if (H2_RESERVED_WORDS.contains(base.toLowerCase()))
+                return base;
+        }
+        return databaseName;
+    }
+
     public String toDatabaseField(String fieldName) {
         StringBuffer sb = new StringBuffer();
         for (char c : fieldName.toCharArray()) {
