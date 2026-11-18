@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -40,6 +41,7 @@ import com.ramussoft.gui.common.AdditionalGUIPluginLoader;
 import com.ramussoft.gui.common.GUIFramework;
 import com.ramussoft.gui.common.GUIPlugin;
 import com.ramussoft.gui.common.GlobalResourcesManager;
+import com.ramussoft.gui.common.StatusBar;
 import com.ramussoft.gui.common.StringGetter;
 import com.ramussoft.gui.common.TabView;
 import com.ramussoft.gui.common.TabbedView;
@@ -575,6 +577,18 @@ public class SimleGUIPluginFactory extends AbstractGUIPluginFactory {
         // control.setTheme(ThemeMap.KEY_ECLIPSE_THEME);
         contentArea = control.getContentArea();
         plugableFrame.add(contentArea, BorderLayout.CENTER);
+
+        // T5.6: status bar (open file name on the left, version on the right)
+        StatusBar statusBar = new StatusBar();
+        plugableFrame.add(statusBar, BorderLayout.SOUTH);
+        framework.addActionListener("FileOpened", new ActionListener() {
+            @Override
+            public void onAction(ActionEvent event) {
+                Object value = event.getValue();
+                if (value instanceof File)
+                    statusBar.setStatusText(((File) value).getName());
+            }
+        });
 
         for (UniqueView view : uniqueViews) {
             String id = view.getId();
