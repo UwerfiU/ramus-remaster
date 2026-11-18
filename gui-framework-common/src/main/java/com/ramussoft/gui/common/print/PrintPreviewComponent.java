@@ -1,5 +1,7 @@
 package com.ramussoft.gui.common.print;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -498,8 +500,7 @@ public abstract class PrintPreviewComponent extends JComponent {
             super(GlobalResourcesManager.getString("Action.Print"));
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/print.png")));
+                    RamusIcons.get("print"));
             putValue(ACTION_COMMAND_KEY, "Action.Print");
             putValue(SHORT_DESCRIPTION,
                     GlobalResourcesManager.getString("Action.Print"));
@@ -536,8 +537,7 @@ public abstract class PrintPreviewComponent extends JComponent {
             super(GlobalResourcesManager.getString("Action.PageSetup"));
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/page-setup.png")));
+                    RamusIcons.get("page-setup"));
             putValue(ACTION_COMMAND_KEY, "Action.PageSetup");
             putValue(SHORT_DESCRIPTION,
                     GlobalResourcesManager.getString("Action.PageSetup"));

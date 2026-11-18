@@ -1,5 +1,7 @@
 package com.ramussoft.gui.elist;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 
@@ -179,8 +181,7 @@ public class ElistView extends AbstractUniqueView implements UniqueView,
             putValue(ACTION_COMMAND_KEY, "Action.EListProperties");
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/preferencies.png")));
+                    RamusIcons.get("configure"));
             setEnabled(false);
         }
 
@@ -213,8 +214,7 @@ public class ElistView extends AbstractUniqueView implements UniqueView,
             putValue(ACTION_COMMAND_KEY, "Action.CreateElementList");
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/table/add.png")));
+                    RamusIcons.get("add"));
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_PLUS,
                     java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
@@ -249,8 +249,7 @@ public class ElistView extends AbstractUniqueView implements UniqueView,
             putValue(ACTION_COMMAND_KEY, "Action.DeleteElementList");
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/table/delete.png")));
+                    RamusIcons.get("delete"));
             putValue(ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
             setEnabled(false);
@@ -280,8 +279,7 @@ public class ElistView extends AbstractUniqueView implements UniqueView,
             putValue(ACTION_COMMAND_KEY, "Action.OpenElementListInTable");
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/open.png")));
+                    RamusIcons.get("open"));
             putValue(
                     ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_O, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
@@ -308,8 +306,7 @@ public class ElistView extends AbstractUniqueView implements UniqueView,
             putValue(ACTION_COMMAND_KEY, "Action.OpenElementList");
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/open-element-list.png")));
+                    RamusIcons.get("open-element-list"));
             putValue(
                     ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_L, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()

@@ -1,5 +1,8 @@
 package com.ramussoft.gui.branches;
 
+
+import com.ramussoft.gui.common.RamusIcons;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.table.TableCellRenderer;
@@ -15,23 +18,20 @@ public class BranchTreeTable extends JXTreeTable {
      */
     private static final long serialVersionUID = -6784013907857444376L;
 
-    private ImageIcon branchActual;
+    private Icon branchActual;
 
-    private ImageIcon branchTree;
+    private Icon branchTree;
 
-    private ImageIcon branch;
+    private Icon branch;
 
     private BranchView branchView;
 
     public BranchTreeTable(TreeTableModel treeModel, BranchView branchView) {
         super(treeModel);
         this.branchView = branchView;
-        branch = new ImageIcon(getClass().getResource(
-                "/com/ramussoft/gui/branch-down.png"));
-        branchActual = new ImageIcon(getClass().getResource(
-                "/com/ramussoft/gui/branch-actual.png"));
-        branchTree = new ImageIcon(getClass().getResource(
-                "/com/ramussoft/gui/branch-down-right.png"));
+        branch = RamusIcons.get("branch-down");
+        branchActual = RamusIcons.get("branch-actual");
+        branchTree = RamusIcons.get("branch-down-right");
     }
 
     @Override

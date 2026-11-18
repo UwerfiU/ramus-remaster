@@ -1,5 +1,7 @@
 package print.to.pdf;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.Font;
 
 import java.awt.Graphics2D;
@@ -58,8 +60,7 @@ public class Plugin implements PrintPlugin {
             this.printable = printable;
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/print/to/pdf/icon.jpg")));
+                    RamusIcons.get("pdf"));
             putValue(ACTION_COMMAND_KEY, "Action.Print");
             putValue(SHORT_DESCRIPTION,
                     GlobalResourcesManager.getString("Action.Print") + " (PDF)");

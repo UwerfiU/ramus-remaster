@@ -1,5 +1,7 @@
 package com.ramussoft.pb.idef.frames;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -8,6 +10,7 @@ import java.util.Vector;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultListSelectionModel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -145,11 +148,13 @@ public class StreamsEditDialog extends JDialog {
     }
 
     private Action createAction(final String action) {
+        if ("remove".equals(action))
+            return createAction(action, RamusIcons.get("delete"));
         return createAction(action, new ImageIcon(getClass().getResource(
                 "/images/" + action + ".png")));
     }
 
-    private Action createAction(final String action, final ImageIcon icon) {
+    private Action createAction(final String action, final Icon icon) {
         final Action res = new AbstractAction(null, icon) {
 
             public void actionPerformed(ActionEvent e) {
@@ -212,8 +217,7 @@ public class StreamsEditDialog extends JDialog {
      */
     private JButton getSelect() {
         if (select == null) {
-            select = new JButton(createAction(SELECT, new ImageIcon(getClass()
-                    .getResource("/images/sel_ather.png"))));
+            select = new JButton(createAction(SELECT, RamusIcons.get("eraser")));
         }
         return select;
     }

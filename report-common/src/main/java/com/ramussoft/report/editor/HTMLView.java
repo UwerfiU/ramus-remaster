@@ -1,5 +1,7 @@
 package com.ramussoft.report.editor;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -42,8 +44,7 @@ public class HTMLView extends SubView {
 
         {
             putValue(ACTION_COMMAND_KEY, "Refresh");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/refresh.png")));
+            putValue(SMALL_ICON, RamusIcons.get("refresh"));
         }
 
         @Override
@@ -96,8 +97,7 @@ public class HTMLView extends SubView {
 
         public FormatAction() {
             putValue(ACTION_COMMAND_KEY, "Format.HTML");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/report/format.png")));
+            putValue(SMALL_ICON, RamusIcons.get("format"));
             putValue(SELECTED_KEY, formatt);
         }
 

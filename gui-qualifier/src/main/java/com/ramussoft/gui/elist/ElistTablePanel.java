@@ -1,5 +1,7 @@
 package com.ramussoft.gui.elist;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -7,6 +9,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.Hashtable;
 import java.util.List;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -34,11 +37,11 @@ public class ElistTablePanel extends JTree {
 
     private DefaultTreeModel model;
 
-    private ImageIcon leafIcon;
+    private Icon leafIcon;
 
-    private ImageIcon folderIcon;
+    private Icon folderIcon;
 
-    private ImageIcon folderSheetIcon;
+    private Icon folderSheetIcon;
 
     private DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer() {
         /**
@@ -81,12 +84,9 @@ public class ElistTablePanel extends JTree {
     };
 
     public ElistTablePanel(GUIFramework framework, Qualifier qualifier) {
-        leafIcon = new ImageIcon(getClass().getResource(
-                "/com/ramussoft/gui/table/sheet.png"));
-        folderIcon = new ImageIcon(getClass().getResource(
-                "/com/ramussoft/gui/table/folder.png"));
-        folderSheetIcon = new ImageIcon(getClass().getResource(
-                "/com/ramussoft/gui/table/folder-sheet.png"));
+        leafIcon = RamusIcons.get("sheet");
+        folderIcon = RamusIcons.get("folder");
+        folderSheetIcon = RamusIcons.get("folder-sheet");
         setRootVisible(false);
         List<Attribute> list = qualifier.getAttributes();
         if (list.size() > 0)

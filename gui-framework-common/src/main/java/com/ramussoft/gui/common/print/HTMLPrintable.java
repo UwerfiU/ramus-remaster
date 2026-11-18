@@ -1,5 +1,7 @@
 package com.ramussoft.gui.common.print;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.Graphics;
 
 import java.awt.Graphics2D;
@@ -322,8 +324,7 @@ public class HTMLPrintable extends AbstractRamusPrintable implements Printable {
             super(GlobalResourcesManager.getString("Action.ExportToHTML"),
                     framework);
             putValue(ACTION_COMMAND_KEY, "Action.ExportToHTML");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/print/html.png")));
+            putValue(SMALL_ICON, RamusIcons.get("print"));
             putValue(SHORT_DESCRIPTION, GlobalResourcesManager
                     .getString("Action.ExportToHTML"));
         }

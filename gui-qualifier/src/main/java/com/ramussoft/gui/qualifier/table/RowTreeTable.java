@@ -1,5 +1,7 @@
 package com.ramussoft.gui.qualifier.table;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.Component;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -108,11 +110,11 @@ public class RowTreeTable extends JXTreeTable implements ImportExport,
 
     private int editingColumn;
 
-    private ImageIcon leafIcon;
+    private Icon leafIcon;
 
-    private ImageIcon folderIcon;
+    private Icon folderIcon;
 
-    private ImageIcon folderSheetIcon;
+    private Icon folderSheetIcon;
 
     public final class TextTransfer implements ClipboardOwner {
 
@@ -139,12 +141,9 @@ public class RowTreeTable extends JXTreeTable implements ImportExport,
     public RowTreeTable(AccessRules accessRules, RowSet rowSet,
                         AttributePlugin[] plugins, GUIFramework framework,
                         RowTreeTableModel model) {
-        setLeafIcon(new ImageIcon(getClass().getResource(
-                "/com/ramussoft/gui/table/sheet.png")));
-        setFolderIcon(new ImageIcon(getClass().getResource(
-                "/com/ramussoft/gui/table/folder.png")));
-        setFolderSheetIcon(new ImageIcon(getClass().getResource(
-                "/com/ramussoft/gui/table/folder-sheet.png")));
+        setLeafIcon(RamusIcons.get("sheet"));
+        setFolderIcon(RamusIcons.get("folder"));
+        setFolderSheetIcon(RamusIcons.get("folder-sheet"));
         this.accessRules = accessRules;
         this.rowSet = rowSet;
         this.plugins = plugins;
@@ -784,42 +783,42 @@ public class RowTreeTable extends JXTreeTable implements ImportExport,
     /**
      * @param leafIcon the leafIcon to set
      */
-    public void setLeafIcon(ImageIcon leafIcon) {
+    public void setLeafIcon(Icon leafIcon) {
         this.leafIcon = leafIcon;
     }
 
     /**
      * @return the leafIcon
      */
-    public ImageIcon getLeafIcon() {
+    public Icon getLeafIcon() {
         return leafIcon;
     }
 
     /**
      * @param folderIcon the folderIcon to set
      */
-    public void setFolderIcon(ImageIcon folderIcon) {
+    public void setFolderIcon(Icon folderIcon) {
         this.folderIcon = folderIcon;
     }
 
     /**
      * @return the folderIcon
      */
-    public ImageIcon getFolderIcon() {
+    public Icon getFolderIcon() {
         return folderIcon;
     }
 
     /**
      * @param folderSheetIcon the folderSheetIcon to set
      */
-    public void setFolderSheetIcon(ImageIcon folderSheetIcon) {
+    public void setFolderSheetIcon(Icon folderSheetIcon) {
         this.folderSheetIcon = folderSheetIcon;
     }
 
     /**
      * @return the folderSheetIcon
      */
-    public ImageIcon getFolderSheetIcon() {
+    public Icon getFolderSheetIcon() {
         return folderSheetIcon;
     }
 

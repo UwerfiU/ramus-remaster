@@ -1,5 +1,7 @@
 package com.ramussoft.pb.idef.frames;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -236,8 +238,7 @@ public class IDEF0ChackedPanel extends JPanel implements PageSelector {
             jButton = new JButton();
             jButton.setMnemonic(KeyEvent.VK_UNDEFINED);
             jButton.setToolTipText("check_all");
-            jButton.setIcon(new ImageIcon(getClass().getResource(
-                    "/images/check_all.gif")));
+            jButton.setIcon(RamusIcons.get("check-all"));
             jButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(final java.awt.event.ActionEvent e) {
                     checkAll();
@@ -263,8 +264,7 @@ public class IDEF0ChackedPanel extends JPanel implements PageSelector {
     private JButton getJButton1() {
         if (jButton1 == null) {
             jButton1 = new JButton();
-            jButton1.setIcon(new ImageIcon(getClass().getResource(
-                    "/images/uncheck_all.gif")));
+            jButton1.setIcon(RamusIcons.get("uncheck-all"));
             jButton1.setToolTipText("uncheck_all");
             jButton1.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(final java.awt.event.ActionEvent e) {

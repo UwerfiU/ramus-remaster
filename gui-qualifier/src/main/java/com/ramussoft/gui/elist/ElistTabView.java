@@ -1,5 +1,7 @@
 package com.ramussoft.gui.elist;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -238,8 +240,7 @@ public class ElistTabView extends AbstractView implements TabView {
             putValue(ACTION_COMMAND_KEY, "Action.ElementList.Revert");
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/revert.png")));
+                    RamusIcons.get("revert"));
             putValue(SELECTED_KEY, false);
         }
 

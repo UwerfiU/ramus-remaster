@@ -1,5 +1,7 @@
 package com.ramussoft.pb.print;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.event.KeyEvent;
 
 import javax.swing.BoxLayout;
@@ -48,8 +50,7 @@ public class UpDown extends JPanel {
                 }
             });
             buttonUp.setMnemonic(KeyEvent.VK_UNDEFINED);
-            buttonUp.setIcon(new ImageIcon(getClass().getResource(
-                    "/images/smallUp.gif")));
+            buttonUp.setIcon(RamusIcons.get("small-up"));
             buttonUp.setFocusable(false);
         }
         return buttonUp;
@@ -68,8 +69,7 @@ public class UpDown extends JPanel {
                     onDown();
                 }
             });
-            buttonDown.setIcon(new ImageIcon(getClass().getResource(
-                    "/images/smallDown.gif")));
+            buttonDown.setIcon(RamusIcons.get("small-down"));
             buttonDown.setFocusable(false);
         }
         return buttonDown;

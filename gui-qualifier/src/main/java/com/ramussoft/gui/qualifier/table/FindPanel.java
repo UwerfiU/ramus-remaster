@@ -1,5 +1,7 @@
 package com.ramussoft.gui.qualifier.table;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -88,8 +90,7 @@ public class FindPanel extends JPanel {
     private JButton getJButton() {
         if (jButton == null) {
             jButton = new JButton();
-            jButton.setIcon(new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/table/close.gif")));
+            jButton.setIcon(RamusIcons.get("close"));
             jButton.setPreferredSize(new java.awt.Dimension(14, 14));
             jButton.setToolTipText(GlobalResourcesManager
                     .getString("FindPanel.Close"));
@@ -189,8 +190,7 @@ public class FindPanel extends JPanel {
             jButton1 = new JButton();
             // jButton1.setText("find_next");
             jButton1.setPreferredSize(new java.awt.Dimension(14, 14));
-            jButton1.setIcon(new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/table/findnext.gif")));
+            jButton1.setIcon(RamusIcons.get("find-next"));
             jButton1.setToolTipText(GlobalResourcesManager
                     .getString("FindPanel.FindNext"));
             jButton1.addActionListener(new ActionListener() {

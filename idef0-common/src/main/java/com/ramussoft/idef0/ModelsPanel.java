@@ -1,5 +1,7 @@
 package com.ramussoft.idef0;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
@@ -242,11 +244,9 @@ public abstract class ModelsPanel extends AbstractModelsPanel {
     private Icon note = new ImageIcon(getClass()
             .getResource("/images/note.png"));
 
-    private Icon function = new ImageIcon(getClass().getResource(
-            "/images/function.png"));
+    private Icon function = RamusIcons.get("function-el");
 
-    private Icon model = new ImageIcon(getClass().getResource(
-            "/images/idef0-model.png"));
+    private Icon model = RamusIcons.get("idef0-model");
 
     /**
      * Метод визначає код функціонального блоку у відповідності до стандарту

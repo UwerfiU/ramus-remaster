@@ -1,5 +1,8 @@
 package com.ramussoft.gui.qualifier.select;
 
+
+import com.ramussoft.gui.common.RamusIcons;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.table.TableCellRenderer;
@@ -14,14 +17,11 @@ public class QualifierTable extends JXTreeTable {
      */
     private static final long serialVersionUID = 78357925573817284L;
 
-    private ImageIcon leafIcon = new ImageIcon(getClass().getResource(
-            "/com/ramussoft/gui/table/qualifier.png"));
+    private Icon leafIcon = RamusIcons.get("qualifier");
 
-    private ImageIcon folderIcon = new ImageIcon(getClass().getResource(
-            "/com/ramussoft/gui/table/folder.png"));
+    private Icon folderIcon = RamusIcons.get("folder");
 
-    private ImageIcon folderSheetIcon = new ImageIcon(getClass().getResource(
-            "/com/ramussoft/gui/table/folder-sheet.png"));
+    private Icon folderSheetIcon = RamusIcons.get("folder-sheet");
 
     @Override
     public TableCellRenderer getCellRenderer(final int row, final int column) {

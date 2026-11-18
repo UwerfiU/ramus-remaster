@@ -3,6 +3,8 @@
  */
 package com.ramussoft.pb.frames.components;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -91,8 +93,7 @@ public class RowFindPanel extends JPanel {
     private JButton getJButton() {
         if (jButton == null) {
             jButton = new JButton();
-            jButton.setIcon(new ImageIcon(getClass().getResource(
-                    "/images/x.png")));
+            jButton.setIcon(RamusIcons.get("close"));
             jButton.setPreferredSize(new java.awt.Dimension(14, 14));
             jButton.setToolTipText("close_find_panel");
             jButton.addActionListener(new java.awt.event.ActionListener() {
@@ -191,8 +192,7 @@ public class RowFindPanel extends JPanel {
             jButton1 = new JButton();
             // jButton1.setText("find_next");
             jButton1.setPreferredSize(new java.awt.Dimension(14, 14));
-            jButton1.setIcon(new ImageIcon(getClass().getResource(
-                    "/images/findnext_1.gif")));
+            jButton1.setIcon(RamusIcons.get("find-next"));
             jButton1.setToolTipText("find_next_word");
             jButton1.addActionListener(new ActionListener() {
 

@@ -1,5 +1,7 @@
 package com.ramussoft.gui.qualifier.table;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -216,8 +218,7 @@ public abstract class TableTabView extends TableView {
             putValue(ACTION_COMMAND_KEY, "Action.Recalculate");
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/table/recalculate.png")));
+                    RamusIcons.get("recalculate"));
         }
     }
 
@@ -234,8 +235,7 @@ public abstract class TableTabView extends TableView {
             putValue(ACTION_COMMAND_KEY, "Action.SetFormula");
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/table/formula.png")));
+                    RamusIcons.get("formula"));
             setEnabled(false);
         }
 

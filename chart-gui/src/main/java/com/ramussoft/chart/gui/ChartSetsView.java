@@ -1,5 +1,7 @@
 package com.ramussoft.chart.gui;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import static com.ramussoft.gui.qualifier.QualifierView.EDIT_NAME_CLICK_DELAY;
 
 
@@ -197,8 +199,7 @@ public class ChartSetsView extends AbstractUniqueView implements UniqueView {
 
         public CreateChartSetAction() {
             putValue(ACTION_COMMAND_KEY, "Action.CreateChartSet");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/table/add.png")));
+            putValue(SMALL_ICON, RamusIcons.get("add"));
         }
 
         @Override
@@ -219,8 +220,7 @@ public class ChartSetsView extends AbstractUniqueView implements UniqueView {
 
         public OpenChartSetAction() {
             putValue(ACTION_COMMAND_KEY, "Action.OpenChartSet");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/open.png")));
+            putValue(SMALL_ICON, RamusIcons.get("open"));
             setEnabled(false);
         }
 
@@ -242,8 +242,7 @@ public class ChartSetsView extends AbstractUniqueView implements UniqueView {
 
         public DeleteChartSetAction() {
             putValue(ACTION_COMMAND_KEY, "Action.DeleteChartSet");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/table/delete.png")));
+            putValue(SMALL_ICON, RamusIcons.get("delete"));
             setEnabled(false);
         }
 

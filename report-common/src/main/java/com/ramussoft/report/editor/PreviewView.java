@@ -1,5 +1,7 @@
 package com.ramussoft.report.editor;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 
 import java.awt.event.ActionEvent;
@@ -35,8 +37,7 @@ public class PreviewView extends SubView {
 
         {
             putValue(ACTION_COMMAND_KEY, "Refresh");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/refresh.png")));
+            putValue(SMALL_ICON, RamusIcons.get("refresh"));
         }
 
         @Override

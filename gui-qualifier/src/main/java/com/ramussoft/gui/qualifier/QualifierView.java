@@ -1,5 +1,7 @@
 package com.ramussoft.gui.qualifier;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 
@@ -103,8 +105,7 @@ public class QualifierView extends TableView implements UniqueView {
             putValue(ACTION_COMMAND_KEY, "Action.OpenQualifier");
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/open.png")));
+                    RamusIcons.get("open"));
             this.putValue(
                     ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK
@@ -287,8 +288,7 @@ public class QualifierView extends TableView implements UniqueView {
             putValue(ACTION_COMMAND_KEY, "QualifierPreferencies");
             this.putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/preferencies.png")));
+                    RamusIcons.get("configure"));
             this.putValue(
                     ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_P, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()
@@ -442,8 +442,7 @@ public class QualifierView extends TableView implements UniqueView {
         ((AbstractTableModel) component.getTable().getModel())
                 .fireTableStructureChanged();
         component.getTable().setLeafIcon(
-                new ImageIcon(getClass().getResource(
-                        "/com/ramussoft/gui/table/qualifier.png")));
+                RamusIcons.get("qualifier"));
         getComponent().getRowSet().addRowChildListener(new RowChildAdapter() {
 
             @Override

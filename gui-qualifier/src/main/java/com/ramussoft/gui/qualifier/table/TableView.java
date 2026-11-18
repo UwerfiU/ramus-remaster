@@ -1,5 +1,7 @@
 package com.ramussoft.gui.qualifier.table;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.event.ActionEvent;
 
 import java.util.ArrayList;
@@ -59,8 +61,7 @@ public abstract class TableView extends AbstractTableView implements TabView {
             putValue(Action.ACTION_COMMAND_KEY, "TableViewPreferencies");
             putValue(
                     Action.SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/table/table-preferencies.png")));
+                    RamusIcons.get("table-preferencies"));
         }
 
         @Override

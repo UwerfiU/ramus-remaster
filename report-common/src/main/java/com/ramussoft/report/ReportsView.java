@@ -1,5 +1,7 @@
 package com.ramussoft.report;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import static com.ramussoft.report.ReportViewPlugin.OPEN_SCRIPT_REPORT;
 
 import java.awt.BorderLayout;
@@ -58,8 +60,7 @@ public class ReportsView extends TableView implements UniqueView {
             putValue(ACTION_COMMAND_KEY, "Action.OpenReport");
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/open.png")));
+                    RamusIcons.get("open"));
         }
 
         @Override

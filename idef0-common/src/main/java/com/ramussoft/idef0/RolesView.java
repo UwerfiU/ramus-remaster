@@ -1,5 +1,7 @@
 package com.ramussoft.idef0;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import static com.ramussoft.pb.data.AbstractDataPlugin.PROPERTIES;
 
 import java.awt.BorderLayout;
@@ -79,7 +81,7 @@ public class RolesView extends AbstractUniqueView implements UniqueView {
         {
             putValue(SHORT_DESCRIPTION, getString("Owners.Clasificator"));
             putValue(SMALL_ICON,
-                    new ImageIcon(getClass().getResource("/images/roles.png")));
+                    RamusIcons.get("roles"));
         }
 
         @Override

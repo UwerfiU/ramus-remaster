@@ -1,5 +1,7 @@
 package com.ramussoft.idef0;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 
 import java.awt.event.ActionEvent;
@@ -60,8 +62,7 @@ public class ModelsView extends AbstractUniqueView implements UniqueView {
             putValue(ACTION_COMMAND_KEY, "OpenFunction");
             this.putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/open.png")));
+                    RamusIcons.get("open"));
             int menuMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
             this.putValue(
                     ACCELERATOR_KEY,
@@ -397,8 +398,7 @@ public class ModelsView extends AbstractUniqueView implements UniqueView {
             putValue(ACTION_COMMAND_KEY, "DeleteModel");
             this.putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/table/delete.png")));
+                    RamusIcons.get("delete"));
             this.putValue(ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
         }
@@ -424,8 +424,7 @@ public class ModelsView extends AbstractUniqueView implements UniqueView {
             putValue(ACTION_COMMAND_KEY, "ModelProperties");
             this.putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/preferencies.png")));
+                    RamusIcons.get("configure"));
             int menuMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
             this.putValue(
                     ACCELERATOR_KEY,
@@ -464,8 +463,7 @@ public class ModelsView extends AbstractUniqueView implements UniqueView {
             this.putValue(ACTION_COMMAND_KEY, "CollapseAll");
             this.putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/table/collapse.png")));
+                    RamusIcons.get("collapse"));
             int menuMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
             this.putValue(
                     ACCELERATOR_KEY,
@@ -490,8 +488,7 @@ public class ModelsView extends AbstractUniqueView implements UniqueView {
             this.putValue(ACTION_COMMAND_KEY, "ExpandAll");
             this.putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/table/expand.png")));
+                    RamusIcons.get("expand"));
             int menuMask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
             this.putValue(
                     ACCELERATOR_KEY,

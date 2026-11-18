@@ -1,5 +1,7 @@
 package com.ramussoft.gui.attribute;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -376,8 +378,7 @@ public class HTMLEditPanel extends JPanel implements AttributeEditor {
                 {
                     putValue(TOOL_TIP_TEXT_KEY, GlobalResourcesManager
                             .getString("HTMLEditor.OpenInEditor"));
-                    putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/open.png")));
+                    putValue(SMALL_ICON, RamusIcons.get("open"));
                     putValue(ACTION_COMMAND_KEY, "HTMLEditor.OpenInEditor");
                 }
 
@@ -415,8 +416,7 @@ public class HTMLEditPanel extends JPanel implements AttributeEditor {
                 {
                     putValue(TOOL_TIP_TEXT_KEY, GlobalResourcesManager
                             .getString("HTMLEditor.Options"));
-                    putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/preferencies.png")));
+                    putValue(SMALL_ICON, RamusIcons.get("configure"));
                     putValue(ACTION_COMMAND_KEY, "HTMLEditor.Options");
                 }
 

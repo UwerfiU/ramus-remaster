@@ -1,5 +1,7 @@
 package com.ramussoft.excel;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
@@ -61,8 +63,7 @@ public class ExcelPlugin extends AbstractElementActionPlugin {
             this.tableView = tableView;
             putValue(ACTION_COMMAND_KEY, "Action.ExportToExcel");
             putValue(ACTION_STRING_GETTER, ExcelPlugin.this);
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/excel/export-to-excel.png")));
+            putValue(SMALL_ICON, RamusIcons.get("excel-export"));
         }
 
         @Override
@@ -122,8 +123,7 @@ public class ExcelPlugin extends AbstractElementActionPlugin {
             this.tableView = tableView;
             putValue(ACTION_COMMAND_KEY, "Action.ImportFromExcel");
             putValue(ACTION_STRING_GETTER, ExcelPlugin.this);
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/excel/import-from-excel.png")));
+            putValue(SMALL_ICON, RamusIcons.get("excel-import"));
         }
 
         @Override

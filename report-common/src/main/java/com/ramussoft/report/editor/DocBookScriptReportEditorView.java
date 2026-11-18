@@ -1,5 +1,7 @@
 package com.ramussoft.report.editor;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -185,8 +187,7 @@ public class DocBookScriptReportEditorView extends ReportEditorView {
                     putValue(ACTION_COMMAND_KEY, "Action.ExportReportToFile");
                     putValue(
                             SMALL_ICON,
-                            new ImageIcon(getClass().getResource(
-                                    "/com/ramussoft/gui/export.png")));
+                            RamusIcons.get("export"));
                 }
 
                 @Override

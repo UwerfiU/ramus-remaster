@@ -1,5 +1,7 @@
 package com.ramussoft.idef0;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import static com.ramussoft.idef0.IDEF0ViewPlugin.ACTIVE_DIAGRAM;
 
 import java.awt.BorderLayout;
@@ -83,8 +85,7 @@ public class IDEF0TabView extends AbstractView implements TabView {
             putValue(ACTION_COMMAND_KEY, "Action.CreateFromText");
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/table/add.png")));
+                    RamusIcons.get("add"));
         }
 
         @Override
@@ -101,7 +102,7 @@ public class IDEF0TabView extends AbstractView implements TabView {
             setEnabled(false);
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource("/images/dropper.png")));
+                    RamusIcons.get("dropper"));
 
             addPropertyChangeListener(new PropertyChangeListener() {
 

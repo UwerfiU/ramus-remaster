@@ -1,5 +1,7 @@
 package com.ramussoft.report.editor.xml;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.Graphics2D;
 
 import java.awt.event.ActionEvent;
@@ -71,8 +73,7 @@ public class ReportEditor extends GEFComponent {
 
         public AddLabalAction() {
             putValue(ACTION_COMMAND_KEY, "Action.AddLabel");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/report/label.png")));
+            putValue(SMALL_ICON, RamusIcons.get("label"));
         }
 
         @Override
@@ -92,8 +93,7 @@ public class ReportEditor extends GEFComponent {
 
         public AddTableAction() {
             putValue(ACTION_COMMAND_KEY, "Action.AddTable");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/report/table.png")));
+            putValue(SMALL_ICON, RamusIcons.get("table"));
         }
 
         @Override
@@ -113,8 +113,7 @@ public class ReportEditor extends GEFComponent {
 
         public AddTableColumnAction() {
             putValue(ACTION_COMMAND_KEY, "Action.AddTableColumn");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/report/table-insert-column.png")));
+            putValue(SMALL_ICON, RamusIcons.get("table-insert-column"));
             setEnabled(false);
         }
 
@@ -137,8 +136,7 @@ public class ReportEditor extends GEFComponent {
                     "Action.RemoveReportSelectedComponents");
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_DELETE, 0));
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/table/delete.png")));
+            putValue(SMALL_ICON, RamusIcons.get("delete"));
             setEnabled(false);
         }
 
@@ -266,8 +264,7 @@ public class ReportEditor extends GEFComponent {
 
         public ExportToXML() {
             putValue(ACTION_COMMAND_KEY, "Action.ExportReportToXML");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/export.png")));
+            putValue(SMALL_ICON, RamusIcons.get("export"));
         }
 
         @Override
@@ -288,8 +285,7 @@ public class ReportEditor extends GEFComponent {
 
         public ImportFromXML() {
             putValue(ACTION_COMMAND_KEY, "Action.ImportReportFromXML");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/import.png")));
+            putValue(SMALL_ICON, RamusIcons.get("import"));
         }
 
         @Override

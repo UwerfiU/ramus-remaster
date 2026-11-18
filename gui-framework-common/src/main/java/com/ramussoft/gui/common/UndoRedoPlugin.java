@@ -66,7 +66,7 @@ public class UndoRedoPlugin extends AbstractViewPlugin {
 
         undoAction.putValue(Action.ACTION_COMMAND_KEY, "Undo");
         undoAction.putValue(Action.SMALL_ICON,
-                getIcon("/com/ramussoft/gui/undo.png"));
+                RamusIcons.get("undo"));
 
         undo.setAction(undoAction);
         undo.setMenu("Edit");
@@ -75,7 +75,7 @@ public class UndoRedoPlugin extends AbstractViewPlugin {
         ActionDescriptor redo = new ActionDescriptor();
         redoAction.putValue(Action.ACTION_COMMAND_KEY, "Redo");
         redoAction.putValue(Action.SMALL_ICON,
-                getIcon("/com/ramussoft/gui/redo.png"));
+                RamusIcons.get("redo"));
 
         redo.setAction(redoAction);
         redo.setMenu("Edit");
@@ -85,9 +85,6 @@ public class UndoRedoPlugin extends AbstractViewPlugin {
         return new ActionDescriptor[]{undo, redo};
     }
 
-    private ImageIcon getIcon(String resourceName) {
-        return new ImageIcon(getClass().getResource(resourceName));
-    }
 
     protected void updateUndoRedo() {
         redoAction.setEnabled(false);

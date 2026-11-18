@@ -1,5 +1,7 @@
 package com.ramussoft.pb.frames;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import static com.ramussoft.gui.common.GUIFramework.BUTTON_GROUP;
 import static com.ramussoft.gui.common.GUIFramework.BUTTON_GROUP_ADDED;
 
@@ -70,8 +72,7 @@ public class MainFrame implements ActionListener {
     public static Image mainIcon = Toolkit.getDefaultToolkit().getImage(
             MainFrame.class.getResource("/images/main.gif"));
 
-    public ImageIcon clasificatorIcon = new ImageIcon(getClass().getResource(
-            "/images/clasificatorIcon.png"));
+    public Icon classificatorIcon = RamusIcons.get("classificator");
 
     static public final int MAIN_MODEL = GlobalId.GLOBAL_RESERVED + 1;
 
@@ -463,12 +464,10 @@ public class MainFrame implements ActionListener {
                         .getResource("/images/new.png")),
                 KeyStroke.getKeyStroke(KeyEvent.VK_N, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         createAction(OPEN_PROJECT, ResourceLoader.getString(OPEN_PROJECT),
-                ResourceLoader.getString(OPEN_PROJECT), new ImageIcon(
-                        getClass().getResource("/images/open.png")),
+                ResourceLoader.getString(OPEN_PROJECT), RamusIcons.get("open"),
                 KeyStroke.getKeyStroke(KeyEvent.VK_O, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         createAction(SAVE_PROJECT, ResourceLoader.getString(SAVE_PROJECT),
-                ResourceLoader.getString(SAVE_PROJECT), new ImageIcon(
-                        getClass().getResource("/images/save.png")),
+                ResourceLoader.getString(SAVE_PROJECT), RamusIcons.get("save"),
                 KeyStroke.getKeyStroke(KeyEvent.VK_S, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         createAction(SAVE_PROJECT_AS,
                 ResourceLoader.getString(SAVE_PROJECT_AS),
@@ -539,8 +538,7 @@ public class MainFrame implements ActionListener {
 		 */
 
         createAction(SELECT_CLEAN, ResourceLoader.getString(SELECT_CLEAN),
-                ResourceLoader.getString(SELECT_CLEAN), new ImageIcon(
-                        getClass().getResource("/images/sel_ather.png")), null);
+                ResourceLoader.getString(SELECT_CLEAN), RamusIcons.get("eraser"), null);
 
         createAction(CUT, ResourceLoader.getString(CUT),
                 ResourceLoader.getString(CUT), new ImageIcon(getClass()
@@ -564,18 +562,17 @@ public class MainFrame implements ActionListener {
         // --------IDEF0-------------
 
         createAction(IDEF0_UNDO,
-                new ImageIcon(getClass().getResource("/images/iUndo.png")),
+                RamusIcons.get("undo"),
                 KeyStroke
                         .getKeyStroke(KeyEvent.VK_Z, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
         createAction(IDEF0_REDO,
-                new ImageIcon(getClass().getResource("/images/iRedo.png")),
+                RamusIcons.get("redo"),
                 KeyStroke
                         .getKeyStroke(KeyEvent.VK_Y, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
         createAction(FUNCTION_TOOL, ResourceLoader.getString(FUNCTION_TOOL),
-                ResourceLoader.getString(FUNCTION_TOOL), new ImageIcon(
-                        getClass().getResource("/images/block.gif")),
+                ResourceLoader.getString(FUNCTION_TOOL), RamusIcons.get("block"),
                 KeyStroke.getKeyStroke(KeyEvent.VK_X, 0));
 
         createAction(CURSOR_TOOL, ResourceLoader.getString(CURSOR_TOOL),
@@ -609,12 +606,10 @@ public class MainFrame implements ActionListener {
                 EXTERNAL_REFERENCE_TOOL,
                 ResourceLoader.getString(EXTERNAL_REFERENCE_TOOL),
                 ResourceLoader.getString(EXTERNAL_REFERENCE_TOOL),
-                new ImageIcon(getClass().getResource(
-                        "/images/external-reference.gif")), null);
+                RamusIcons.get("external-reference"), null);
 
         createAction(DFDS_ROLE_TOOL, ResourceLoader.getString(DFDS_ROLE_TOOL),
-                ResourceLoader.getString(DFDS_ROLE_TOOL), new ImageIcon(
-                        getClass().getResource("/images/role.png")), null);
+                ResourceLoader.getString(DFDS_ROLE_TOOL), RamusIcons.get("role"), null);
 
         createAction(DFDS_ROLE_COPY_VISUAL);
 
@@ -622,12 +617,10 @@ public class MainFrame implements ActionListener {
 
         createAction(DATA_STORE_TOOL,
                 ResourceLoader.getString(DATA_STORE_TOOL),
-                ResourceLoader.getString(DATA_STORE_TOOL), new ImageIcon(
-                        getClass().getResource("/images/data-store.gif")), null);
+                ResourceLoader.getString(DATA_STORE_TOOL), RamusIcons.get("data-store"), null);
 
         createAction(GO_TO_PARENT, ResourceLoader.getString(GO_TO_PARENT),
-                ResourceLoader.getString(GO_TO_PARENT), new ImageIcon(
-                        getClass().getResource("/images/up.gif")), null);
+                ResourceLoader.getString(GO_TO_PARENT), RamusIcons.get("up"), null);
 
         createAction(GO_TO_CHILD, ResourceLoader.getString(GO_TO_CHILD),
                 ResourceLoader.getString(GO_TO_CHILD), new ImageIcon(getClass()
@@ -725,12 +718,11 @@ public class MainFrame implements ActionListener {
         createAction(IMPORT_REPORT_FROM_XML,
                 ResourceLoader.getString(IMPORT_REPORT_FROM_XML),
                 ResourceLoader.getString(IMPORT_REPORT_FROM_XML),
-                new ImageIcon(getClass().getResource("/images/import.png")),
+                RamusIcons.get("import"),
                 null);
         createAction(EXPORT_REPORT_TO_XML,
                 ResourceLoader.getString(EXPORT_REPORT_TO_XML),
-                ResourceLoader.getString(EXPORT_REPORT_TO_XML), new ImageIcon(
-                        getClass().getResource("/images/export.png")), null);
+                ResourceLoader.getString(EXPORT_REPORT_TO_XML), RamusIcons.get("export"), null);
 
         // -------------help------------
 
@@ -743,7 +735,7 @@ public class MainFrame implements ActionListener {
         createAction(name, ResourceLoader.getString(name), null, null, null);
     }
 
-    public Action createAction(final String actionName, final ImageIcon icon,
+    public Action createAction(final String actionName, final Icon icon,
                                final KeyStroke keyStroke) {
         return createAction(actionName, ResourceLoader.getString(actionName),
                 ResourceLoader.getString(actionName), icon, keyStroke);

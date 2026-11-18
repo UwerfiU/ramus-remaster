@@ -1,5 +1,7 @@
 package com.ramussoft.idef0.idef0.oldmodelsview;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
@@ -56,8 +58,7 @@ public abstract class ModelsPanel extends AbstractModelsPanel {
                 TreeCellRenderer renderer = super.getCellRenderer();
                 if (renderer == null)
                     return null;
-                ((DefaultTreeCellRenderer) renderer).setLeafIcon(new ImageIcon(
-                        getClass().getResource("/images/function.png")));
+                ((DefaultTreeCellRenderer) renderer).setLeafIcon(RamusIcons.get("function-el"));
                 return renderer;
             }
         };
@@ -96,14 +97,11 @@ public abstract class ModelsPanel extends AbstractModelsPanel {
 
     private class Renderer extends DefaultTreeCellRenderer {
 
-        private Icon note = new ImageIcon(getClass().getResource(
-                "/images/note.png"));
+        private Icon note = RamusIcons.get("note");
 
-        private Icon function = new ImageIcon(getClass().getResource(
-                "/images/function.png"));
+        private Icon function = RamusIcons.get("function-el");
 
-        private Icon model = new ImageIcon(getClass().getResource(
-                "/images/idef0-model.png"));
+        private Icon model = RamusIcons.get("idef0-model");
 
         {
             setLeafIcon(note);

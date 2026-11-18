@@ -1,5 +1,7 @@
 package com.ramussoft.gui.attribute;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -94,8 +96,7 @@ public class TablePlugin extends AbstractAttributePlugin implements
                 {
                     this.putValue(ACTION_COMMAND_KEY, "DeleteAttribute");
                     this.putValue(SMALL_ICON,
-                            new ImageIcon(getClass().getResource(
-                                    "/com/ramussoft/gui/table/delete.png")));
+                            RamusIcons.get("delete"));
                     this.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                             KeyEvent.VK_DELETE, 0));
                 }

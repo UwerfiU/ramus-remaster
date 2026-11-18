@@ -1,5 +1,7 @@
 package com.ramussoft.gui.attribute;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 
 import java.awt.Color;
@@ -569,8 +571,7 @@ public class OtherElementTableCellEditor extends AbstractCellEditor implements
                 edit();
             }
         });
-        edit.setIcon(new ImageIcon(getClass().getResource(
-                "/com/ramussoft/gui/edit.png")));
+        edit.setIcon(RamusIcons.get("edit"));
         edit.setToolTipText(GlobalResourcesManager.getString("edit"));
         edit.setFocusable(false);
         edit.setPreferredSize(new Dimension(16, 16));

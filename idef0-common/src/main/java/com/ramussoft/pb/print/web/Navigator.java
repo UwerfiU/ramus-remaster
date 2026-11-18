@@ -1,5 +1,7 @@
 package com.ramussoft.pb.print.web;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
 
@@ -259,8 +261,7 @@ public class Navigator extends AbstractUniqueView implements UniqueView {
 
         {
             putValue(ACTION_COMMAND_KEY, "toStart");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/images/go_home.png")));
+            putValue(SMALL_ICON, RamusIcons.get("go-home"));
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_HOME,
                     KeyEvent.ALT_MASK));
         }
@@ -282,8 +283,7 @@ public class Navigator extends AbstractUniqueView implements UniqueView {
 
         {
             putValue(ACTION_COMMAND_KEY, "GoBack");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/images/go_back.png")));
+            putValue(SMALL_ICON, RamusIcons.get("go-back"));
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_LEFT,
                     KeyEvent.ALT_MASK));
             setEnabled(false);
@@ -301,8 +301,7 @@ public class Navigator extends AbstractUniqueView implements UniqueView {
 
         {
             putValue(ACTION_COMMAND_KEY, "GoForward");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/images/go_forward.png")));
+            putValue(SMALL_ICON, RamusIcons.get("go-forward"));
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT,
                     KeyEvent.ALT_MASK));
             setEnabled(false);
@@ -490,8 +489,7 @@ public class Navigator extends AbstractUniqueView implements UniqueView {
 
             {
                 putValue(ACTION_COMMAND_KEY, "refresh_current_page");
-                putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                        "/com/ramussoft/gui/refresh.png")));
+                putValue(SMALL_ICON, RamusIcons.get("refresh"));
                 putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R,
                         java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             }
@@ -590,8 +588,7 @@ public class Navigator extends AbstractUniqueView implements UniqueView {
 
         public ExportToHTMLAction() {
             putValue(ACTION_COMMAND_KEY, "Action.ExportToHTML");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/print/html.png")));
+            putValue(SMALL_ICON, RamusIcons.get("print"));
             setEnabled(false);
         }
 

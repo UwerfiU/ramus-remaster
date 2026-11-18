@@ -11,5 +11,8 @@ dependencies {
     implementation project(':common')
     implementation project(':core')
     implementation 'org.swinglabs.swingx:swingx-all:1.6.5-1'
+    // FlatLaf + extras (FlatSVGIcon): theme-aware vector icons for the UI
+    implementation 'com.formdev:flatlaf:3.8'
+    implementation 'com.formdev:flatlaf-extras:3.8'
     testImplementation group: 'junit', name: 'junit', version: '4.11'
 }

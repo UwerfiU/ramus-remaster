@@ -1,5 +1,7 @@
 package com.ramussoft.gui.qualifier;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.event.ActionEvent;
 import java.util.Hashtable;
 
@@ -51,8 +53,7 @@ public class QualifierHistoryPlugin extends AbstractQualifierSetupPlugin
 
                 {
                     putValue(ACTION_COMMAND_KEY, "Action.ShowHistory");
-                    putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/table/history.png")));
+                    putValue(SMALL_ICON, RamusIcons.get("history"));
                     setEnabled(false);
                 }
 

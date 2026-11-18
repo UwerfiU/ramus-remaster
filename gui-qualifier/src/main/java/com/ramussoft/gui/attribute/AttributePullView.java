@@ -1,5 +1,7 @@
 package com.ramussoft.gui.attribute;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.event.ActionEvent;
 
 import java.awt.event.KeyEvent;
@@ -183,8 +185,7 @@ public class AttributePullView extends AbstractUniqueView implements UniqueView,
 
             {
                 this.putValue(ACTION_COMMAND_KEY, "Action.SortByName");
-                this.putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                        "/com/ramussoft/gui/table/sort-incr.png")));
+                this.putValue(SMALL_ICON, RamusIcons.get("sort-incr"));
             }
 
             @Override
@@ -250,8 +251,7 @@ public class AttributePullView extends AbstractUniqueView implements UniqueView,
 
         public CreateAttributeAction() {
             this.putValue(ACTION_COMMAND_KEY, "CreateAttribute");
-            this.putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/table/add.png")));
+            this.putValue(SMALL_ICON, RamusIcons.get("add"));
             this.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_ADD, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
@@ -273,8 +273,7 @@ public class AttributePullView extends AbstractUniqueView implements UniqueView,
 
         public DeleteAttributeAction() {
             this.putValue(ACTION_COMMAND_KEY, "DeleteAttribute");
-            this.putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/table/delete.png")));
+            this.putValue(SMALL_ICON, RamusIcons.get("delete"));
             this.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_DELETE, 0));
         }
@@ -325,8 +324,7 @@ public class AttributePullView extends AbstractUniqueView implements UniqueView,
 
         public AttributePreferencesAction() {
             this.putValue(ACTION_COMMAND_KEY, "AttributePreferencies");
-            this.putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/preferencies.png")));
+            this.putValue(SMALL_ICON, RamusIcons.get("configure"));
         }
 
         @Override

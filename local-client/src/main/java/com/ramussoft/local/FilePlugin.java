@@ -1,5 +1,7 @@
 package com.ramussoft.local;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.BorderLayout;
@@ -115,8 +117,7 @@ public class FilePlugin extends AbstractViewPlugin implements Commands {
 
         {
             putValue(ACTION_COMMAND_KEY, "FileSave");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/file-save.png")));
+            putValue(SMALL_ICON, RamusIcons.get("save"));
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S,
                     Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
@@ -378,8 +379,7 @@ public class FilePlugin extends AbstractViewPlugin implements Commands {
 
             {
                 putValue(ACTION_COMMAND_KEY, "NewProject");
-                putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                        "/com/ramussoft/gui/new.png")));
+                putValue(SMALL_ICON, RamusIcons.get("new"));
                 putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N,
                         KeyEvent.CTRL_MASK));
             }
@@ -402,8 +402,7 @@ public class FilePlugin extends AbstractViewPlugin implements Commands {
 
             {
                 putValue(ACTION_COMMAND_KEY, "FileOpen");
-                putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                        "/com/ramussoft/gui/file-open.png")));
+                putValue(SMALL_ICON, RamusIcons.get("open"));
                 putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O,
                         Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             }

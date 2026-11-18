@@ -1,5 +1,7 @@
 package com.ramussoft.chart.gui;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.event.ActionEvent;
 
 import java.awt.event.KeyEvent;
@@ -172,8 +174,7 @@ public class ChartsView extends AbstractUniqueView implements UniqueView {
 
         public CreateChartAction() {
             putValue(ACTION_COMMAND_KEY, "Action.CreateChart");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/table/add.png")));
+            putValue(SMALL_ICON, RamusIcons.get("add"));
         }
 
         @Override
@@ -195,8 +196,7 @@ public class ChartsView extends AbstractUniqueView implements UniqueView {
 
         public ChartPrefernecesAction() {
             putValue(ACTION_COMMAND_KEY, "Action.ChartPreferences");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/preferencies.png")));
+            putValue(SMALL_ICON, RamusIcons.get("configure"));
             setEnabled(false);
         }
 
@@ -228,8 +228,7 @@ public class ChartsView extends AbstractUniqueView implements UniqueView {
 
         public OpenChartAction() {
             putValue(ACTION_COMMAND_KEY, "Action.OpenChart");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/open.png")));
+            putValue(SMALL_ICON, RamusIcons.get("open"));
             setEnabled(false);
         }
 
@@ -251,8 +250,7 @@ public class ChartsView extends AbstractUniqueView implements UniqueView {
 
         public DeleteChartAction() {
             putValue(ACTION_COMMAND_KEY, "Action.DeleteChart");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/table/delete.png")));
+            putValue(SMALL_ICON, RamusIcons.get("delete"));
             setEnabled(false);
         }
 

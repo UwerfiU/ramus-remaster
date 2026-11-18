@@ -1,5 +1,7 @@
 package com.ramussoft.pb.master.gui;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 
 import java.awt.Component;
@@ -53,8 +55,7 @@ public class MainPanel extends JPanel {
     private JXHeader header = new JXHeader();
 
     private final Action back = new AbstractAction(Factory.getString("Back"),
-            new ImageIcon(getClass().getResource(
-                    "/com/dsoft/pb/master/icons/back.png"))) {
+            RamusIcons.get("back")) {
 
         public void actionPerformed(ActionEvent e) {
             MainPanel.this.back();
@@ -63,8 +64,7 @@ public class MainPanel extends JPanel {
     };
 
     private final Action next = new AbstractAction(Factory.getString("Next"),
-            new ImageIcon(getClass().getResource(
-                    "/com/dsoft/pb/master/icons/next.png"))) {
+            RamusIcons.get("next")) {
 
         public void actionPerformed(ActionEvent e) {
             MainPanel.this.next();
@@ -73,8 +73,7 @@ public class MainPanel extends JPanel {
     };
 
     private final Action finish = new AbstractAction(Factory
-            .getString("Finish"), new ImageIcon(getClass().getResource(
-            "/com/dsoft/pb/master/icons/finish.png"))) {
+            .getString("Finish"), RamusIcons.get("finish")) {
 
         public void actionPerformed(ActionEvent e) {
             MainPanel.this.finish();
@@ -83,8 +82,7 @@ public class MainPanel extends JPanel {
     };
 
     private final Action cancel = new AbstractAction(Factory
-            .getString("Cancel"), new ImageIcon(getClass().getResource(
-            "/com/dsoft/pb/master/icons/cancel.png"))) {
+            .getString("Cancel"), RamusIcons.get("cancel")) {
 
         public void actionPerformed(ActionEvent e) {
             MainPanel.this.cancel();
@@ -181,8 +179,7 @@ public class MainPanel extends JPanel {
         // pane.setViewportView(textPane);
         // p.add(header, BorderLayout.CENTER);
 
-        header.setIcon(new ImageIcon(getClass().getResource(
-                "/com/dsoft/pb/master/icons/configure.png")));
+        header.setIcon(RamusIcons.get("configure"));
 
         this.add(panel, BorderLayout.CENTER);
         this.add(createBottom(), BorderLayout.SOUTH);

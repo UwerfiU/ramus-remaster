@@ -1,5 +1,7 @@
 package com.ramussoft.idef0;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import info.clearthought.layout.TableLayout;
 
 import java.awt.BorderLayout;
@@ -418,8 +420,7 @@ public class ModelPropertiesDialog extends BaseDialog {
                 this.putValue(ACTION_COMMAND_KEY, "Action.SortByName");
                 this.putValue(
                         SMALL_ICON,
-                        new ImageIcon(getClass().getResource(
-                                "/com/ramussoft/gui/table/sort-incr.png")));
+                        RamusIcons.get("sort-incr"));
             }
 
             @Override
@@ -443,8 +444,7 @@ public class ModelPropertiesDialog extends BaseDialog {
             this.putValue(ACTION_COMMAND_KEY, "CreateAttribute");
             this.putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/table/add.png")));
+                    RamusIcons.get("add"));
             this.putValue(ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_ADD, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
@@ -464,8 +464,7 @@ public class ModelPropertiesDialog extends BaseDialog {
             this.putValue(ACTION_COMMAND_KEY, "DeleteAttribute");
             this.putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/table/delete.png")));
+                    RamusIcons.get("delete"));
             this.putValue(ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
         }
@@ -586,8 +585,7 @@ public class ModelPropertiesDialog extends BaseDialog {
             this.putValue(ACTION_COMMAND_KEY, "AttributePreferencies");
             this.putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/preferencies.png")));
+                    RamusIcons.get("configure"));
             setEnabled(false);
         }
 

@@ -1,5 +1,7 @@
 package com.ramussoft.gui.attribute.table;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -202,8 +204,7 @@ public class TableEditor extends AbstractAttributeEditor {
 
         {
             this.putValue(ACTION_COMMAND_KEY, "CreateElement");
-            this.putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/table/add.png")));
+            this.putValue(SMALL_ICON, RamusIcons.get("add"));
             this.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_ADD, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
@@ -223,8 +224,7 @@ public class TableEditor extends AbstractAttributeEditor {
 
         {
             this.putValue(ACTION_COMMAND_KEY, "DeleteElement");
-            this.putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/table/delete.png")));
+            this.putValue(SMALL_ICON, RamusIcons.get("delete"));
         }
 
         @Override
@@ -258,8 +258,7 @@ public class TableEditor extends AbstractAttributeEditor {
 
         public SetFormulaAction() {
             putValue(ACTION_COMMAND_KEY, "Action.SetFormula");
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/table/formula.png")));
+            putValue(SMALL_ICON, RamusIcons.get("formula"));
             setEnabled(false);
         }
 

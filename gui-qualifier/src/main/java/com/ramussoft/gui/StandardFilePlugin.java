@@ -1,5 +1,7 @@
 package com.ramussoft.gui;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -136,8 +138,7 @@ public class StandardFilePlugin extends AbstractViewPlugin {
 
         public PrintPreviewAction() {
             putValue(ACTION_COMMAND_KEY, ACTION_PRINT_PREVIEW);
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/print-preview.png")));
+            putValue(SMALL_ICON, RamusIcons.get("print-preview"));
         }
 
         @Override
@@ -157,8 +158,7 @@ public class StandardFilePlugin extends AbstractViewPlugin {
 
         public PrintAction() {
             putValue(ACTION_COMMAND_KEY, ACTION_PRINT);
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/print.png")));
+            putValue(SMALL_ICON, RamusIcons.get("print"));
             putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_P,
                     java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
@@ -181,8 +181,7 @@ public class StandardFilePlugin extends AbstractViewPlugin {
 
         public PageSetupAction() {
             putValue(ACTION_COMMAND_KEY, ACTION_PAGE_SETUP);
-            putValue(SMALL_ICON, new ImageIcon(getClass().getResource(
-                    "/com/ramussoft/gui/page-setup.png")));
+            putValue(SMALL_ICON, RamusIcons.get("page-setup"));
         }
 
         @Override

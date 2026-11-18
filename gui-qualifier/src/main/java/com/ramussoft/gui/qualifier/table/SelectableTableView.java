@@ -1,5 +1,7 @@
 package com.ramussoft.gui.qualifier.table;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -47,8 +49,7 @@ public class SelectableTableView extends TableView {
             putValue(ACTION_COMMAND_KEY, "Action.CheckAll");
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/table/check-all.png")));
+                    RamusIcons.get("check-all"));
             // setEnabled(false);
         }
 
@@ -70,8 +71,7 @@ public class SelectableTableView extends TableView {
             putValue(ACTION_COMMAND_KEY, "Action.UncheckAll");
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/table/uncheck-all.png")));
+                    RamusIcons.get("uncheck-all"));
             // setEnabled(false);
         }
 

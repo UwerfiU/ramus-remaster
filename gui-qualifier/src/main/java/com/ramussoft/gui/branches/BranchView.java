@@ -1,5 +1,7 @@
 package com.ramussoft.gui.branches;
 
+
+import com.ramussoft.gui.common.RamusIcons;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.text.DateFormat;
@@ -52,10 +54,8 @@ public class BranchView extends AbstractUniqueView implements UniqueView {
 
     private long actualBranch;
 
-/*	private ImageIcon branch = new ImageIcon(getClass().getResource(
-            "/com/ramussoft/gui/branch-down.png"));
-	private ImageIcon branchTree = new ImageIcon(getClass().getResource(
-			"/com/ramussoft/gui/branch-down-right.png"));*/
+/*	private ImageIcon branch = RamusIcons.get("branch-down");
+	private ImageIcon branchTree = RamusIcons.get("branch-down-right");*/
 
     public BranchView(GUIFramework framework) {
         super(framework);
@@ -192,8 +192,7 @@ public class BranchView extends AbstractUniqueView implements UniqueView {
             putValue(ACTION_COMMAND_KEY, "Action.AddBranchChild");
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/branch-down.png")));
+                    RamusIcons.get("branch-down"));
             setEnabled(false);
         }
 
@@ -216,8 +215,7 @@ public class BranchView extends AbstractUniqueView implements UniqueView {
             putValue(ACTION_COMMAND_KEY, "Action.ActivateBranch");
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/branch-actual.png")));
+                    RamusIcons.get("branch-actual"));
             setEnabled(false);
         }
 
@@ -244,8 +242,7 @@ public class BranchView extends AbstractUniqueView implements UniqueView {
             putValue(ACTION_COMMAND_KEY, "Action.EditBranchComment");
             putValue(
                     SMALL_ICON,
-                    new ImageIcon(getClass().getResource(
-                            "/com/ramussoft/gui/table/edit-comment-branch.png")));
+                    RamusIcons.get("edit-comment-branch"));
             setEnabled(false);
         }
 
