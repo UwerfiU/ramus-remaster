@@ -112,9 +112,11 @@ public class StandardFilePlugin extends AbstractViewPlugin {
         exportQualifiersDescriptor.setMenu("File");
         exportQualifiersDescriptor.setAction(exportQualifiersToFileAction);
 
-        return new ActionDescriptor[]{importQualifiersDescriptor,
-                exportQualifiersDescriptor, separator, pageSetupDescriptor,
-                printPreviewDescriptor, printDescriptor, separator, exit};
+        // T5.5: group the print actions together (used more often) and move
+        // the rarely used qualifier import/export below them.
+        return new ActionDescriptor[]{printDescriptor, pageSetupDescriptor,
+                printPreviewDescriptor, separator, importQualifiersDescriptor,
+                exportQualifiersDescriptor, separator, exit};
     }
 
     public Action getPrintAction() {
