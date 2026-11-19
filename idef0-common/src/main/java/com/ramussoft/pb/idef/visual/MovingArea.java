@@ -2626,7 +2626,8 @@ public class MovingArea extends JPanel {
                     "Panel.background");
             if (panel != null
                     && (panel.getRed() + panel.getGreen() + panel.getBlue()) / 3 < 128)
-                return new Color(240, 236, 214);
+                // T5.9: darker warm paper (#D8D2BE) so black lines stay crisp in dark theme
+                return new Color(216, 210, 190);
         } catch (Exception ignored) {
         }
         return getBackground();
