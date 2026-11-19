@@ -2,6 +2,12 @@
 
 **Современный форк [Ramus](https://github.com/Vitaliy-Yakovchuk/ramus)** — Java-редактора бизнес-процессов в нотациях IDEF0 и DFD.
 
+![Светлая тема](docs/baseline/t58_main_light.png)
+*Светлая тема*
+
+![Тёмная тема](docs/baseline/t58_main_dark.png)
+*Тёмная тема (Вид → Переключить светлую/тёмную тему)*
+
 ## Что изменено по сравнению с оригиналом
 
 | Область | Оригинал | Remaster |

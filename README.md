@@ -19,11 +19,11 @@ A modernized fork of **Ramus**, a Java-based IDEF0 & DFD business-process modell
   - файлы, сохранённые remaster, открываются в оригинальном приложении.
 - **Упаковка**: портативная сборка (`app-image`), Windows EXE (мастер: каталог + ярлыки) и MSI (тихая установка) через CI.
 
-![Light theme](docs/baseline/t32_light.png)
+![Light theme](docs/baseline/t58_main_light.png)
 *Светлая тема / Light theme*
 
-![Dark theme](docs/baseline/t32_dark.png)
-*Тёмная тема / Dark theme*
+![Dark theme](docs/baseline/t58_main_dark.png)
+*Тёмная тема / Dark theme (View → Switch light/dark theme)*
 
 ## Установка / Installation
 
