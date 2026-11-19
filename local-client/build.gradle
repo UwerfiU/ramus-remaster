@@ -276,25 +276,34 @@ tasks.register('jlinkImage') {
     }
 }
 
-tasks.register('jpackageDmg', Exec) {
+// Build the .app bundle only (no package); the DMG is assembled by
+// buildCustomDmg so it can carry a background image and icon layout.
+tasks.register('jpackageMacApp', Exec) {
     dependsOn 'prepareJpackageInput', 'makeIcns', 'jlinkImage'
     workingDir packagingWorkDir
     doFirst {
         if (!org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {
-            throw new GradleException('jpackageDmg must be executed on macOS')
+            throw new GradleException('jpackageMacApp must be executed on macOS')
         }
         dmgDestDir.mkdirs()
         packagingWorkDir.mkdirs()
+        // jpackage refuses to build over an existing app bundle.
+        def existing = new File(dmgDestDir, 'Ramus.app')
+        if (existing.exists()) existing.deleteDir()
         // Resolve the command line at execution time (after jlinkImage has run)
         // so that a retry in the same build sees the current filesystem state.
-        def javaHome = (project.findProperty('packagingJavaHome') ?: project.findProperty('org.gradle.java.home') ?: System.getenv('JAVA_HOME') ?: System.getProperty('java.home')).toString()
+        def javaHome = (project.findProperty('packagingJavaHome')
+                ?: project.findProperty('org.gradle.java.home')
+                ?: System.getenv('JAVA_HOME')
+                ?: System.getProperty('java.home')).toString()
         def jpackageBin = new File(javaHome, 'bin/jpackage').absolutePath
         def appVer = packagingVersion()
         // Choose a runtime image: prefer the jlink output, otherwise use the full JDK
-        def runtimePath = (runtimeImageDir.exists() && new File(runtimeImageDir, 'bin/java').exists()) ? runtimeImageDir.absolutePath : javaHome
+        def runtimePath = (runtimeImageDir.exists() && new File(runtimeImageDir,
+                'bin/java').exists()) ? runtimeImageDir.absolutePath : javaHome
         commandLine = [
                 jpackageBin,
-                '--type', 'dmg',
+                '--type', 'app-image',
                 '--dest', dmgDestDir.absolutePath,
                 '--name', 'Ramus',
                 '--app-version', appVer,
@@ -310,15 +319,88 @@ tasks.register('jpackageDmg', Exec) {
     }
 }
 
+// Assemble a classic "drag to Applications" DMG: a background image with an
+// arrow, the app on the left and an Applications shortcut on the right.
+tasks.register('buildCustomDmg') {
+    dependsOn 'jpackageMacApp'
+    doLast {
+        if (!org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {
+            throw new GradleException('buildCustomDmg must be executed on macOS (hdiutil, osascript)')
+        }
+        def bgFile = file("${rootProject.projectDir}/packaging/macos/dmg-background.png")
+        if (!bgFile.isFile()) {
+            throw new GradleException("Missing DMG background image: ${bgFile}")
+        }
+        def stageDir = new File(packagingWorkDir, 'dmg-stage')
+        def workDir = new File(packagingWorkDir, 'dmg-work')
+        stageDir.deleteDir()
+        workDir.deleteDir()
+        stageDir.mkdirs()
+        workDir.mkdirs()
+
+        // 1. Stage folder: the app + a symlink to /Applications.
+        exec { commandLine 'cp', '-R', new File(dmgDestDir, 'Ramus.app').absolutePath, stageDir.absolutePath }
+        exec { commandLine 'ln', '-s', '/Applications', new File(stageDir, 'Applications').absolutePath }
+
+        // 2. Read/write intermediate image (a plain folder copy keeps no view
+        //    settings, so the layout is applied to the mounted volume).
+        def rwDmg = new File(workDir, 'ramus-rw.dmg')
+        exec { commandLine 'hdiutil', 'create', '-srcfolder', stageDir.absolutePath,
+                '-volname', 'Ramus', '-fs', 'HFS+', '-size', '600m', '-ov', rwDmg.absolutePath }
+
+        // 3. Mount and teach Finder the window layout + background picture.
+        def mountDir = new File(workDir, 'mount')
+        mountDir.mkdirs()
+        exec { commandLine 'hdiutil', 'attach', rwDmg.absolutePath,
+                '-nobrowse', '-mountpoint', mountDir.absolutePath }
+        try {
+            def scpt = new File(workDir, 'dmg-view.scpt')
+            scpt.text = '''on run argv
+    set theMount to item 1 of argv
+    set theBg to item 2 of argv
+    tell application "Finder"
+        tell ((POSIX file theMount) as alias)
+            open
+            delay 1
+            set theWindow to container window
+            set current view of theWindow to icon view
+            set toolbar visible of theWindow to false
+            set statusbar visible of theWindow to false
+            set true view width of theWindow to 640
+            set true view height of theWindow to 400
+            set position of theWindow to {100, 100}
+            set viewOptions to icon view options of theWindow
+            set arrangement of viewOptions to none
+            set icon size of viewOptions to 100
+            set background picture of viewOptions to (POSIX file theBg) as alias
+            set position of item "Ramus.app" of theWindow to {170, 175}
+            set position of item "Applications" of theWindow to {450, 175}
+            delay 1
+        end tell
+    end tell
+end run'''
+            exec { commandLine 'osascript', scpt.absolutePath, mountDir.absolutePath, bgFile.absolutePath }
+        } finally {
+            exec { commandLine 'hdiutil', 'detach', mountDir.absolutePath, '-quiet' }
+        }
+
+        // 4. Compress the laid-out image into the distributable DMG.
+        def outDmg = new File(dmgDestDir, 'Ramus.dmg')
+        if (outDmg.exists()) outDmg.delete()
+        exec { commandLine 'hdiutil', 'convert', rwDmg.absolutePath,
+                '-o', outDmg.absolutePath, '-format', 'UDZO' }
+        println "Custom DMG: ${outDmg}"
+    }
+}
+
 tasks.register('macDmg') {
     group = 'distribution'
-    description = 'Builds a DMG at dest/macos using jpackage.'
-    dependsOn 'jpackageDmg'
+    description = 'Builds a drag-to-Applications DMG (with background) at dest/macos.'
+    dependsOn 'buildCustomDmg'
     doLast {
         nameWithArch(dmgDestDir, '.dmg', packagingArch())
     }
 }
-
 // --- Windows packaging (MSI or EXE via jpackage + WiX) ---
 
 def winDestDir = file("${rootProject.projectDir}/dest/windows")
@@ -444,8 +526,9 @@ tasks.register('linuxPackage', Exec) {
                 '--description', 'Ramus — business process modelling (IDEF0, DFD)',
                 '--runtime-image', runtimePath]
         if (type != 'app-image') {
-            // Installer-specific: create a .desktop launcher entry.
-            args += ['--linux-shortcut']
+            // Installer-specific: create a .desktop launcher entry in the
+            // "Office" menu category (freedesktop.org standard category).
+            args += ['--linux-shortcut', '--linux-app-category', 'Office']
         }
         commandLine = args
     }
