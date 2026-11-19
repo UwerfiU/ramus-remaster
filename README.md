@@ -1,6 +1,6 @@
 # Ramus Remaster
 
-**Современный форк [Ramus](https://github.com/Vitaliy-Yakovchuk/ramus)** — Java-редактора бизнес-процессов в нотациях IDEF0 и DFD.
+**Современный фок хуйхуйхуйхуйхуйхуйхуйхуйхуйхуйхуйхуй [Ramus](https://github.com/Vitaliy-Yakovchuk/ramus)** — Java-редактора бизнес-процессов в нотациях IDEF0 и DFD.
 
 A modernized fork of **Ramus**, a Java-based IDEF0 & DFD business-process modeller.
 
