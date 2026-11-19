@@ -1,5 +1,7 @@
 package com.ramussoft.local;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 
@@ -13,7 +15,9 @@ import com.ramussoft.gui.common.AbstractViewPlugin;
 import com.ramussoft.gui.common.ActionDescriptor;
 import com.ramussoft.gui.common.ActionLevel;
 import com.ramussoft.gui.common.GlobalResourcesManager;
+import com.ramussoft.gui.common.prefrence.Options;
 import com.ramussoft.local.ui.RamusTheme;
+import com.ramussoft.pb.idef.visual.MovingArea;
 
 /**
  * T3.1: View menu item that switches between FlatLaf light and dark themes
@@ -39,10 +43,18 @@ public class ThemeTogglePlugin extends AbstractViewPlugin {
     public ActionDescriptor[] getActionDescriptors() {
         ActionDescriptor ad = new ActionDescriptor();
         ad.setActionLevel(ActionLevel.GLOBAL);
-        ad.setMenu("View/SwitchTheme");
+        // T5.9: no menu path here — Main.installThemeMenu() adds the item
+        // directly to the View menu (framework two-segment paths create
+        // submenus, and single-segment "View" clashes with the TreeList
+        // created by other plugins' "View/..." paths). The ACTION_COMMAND_KEY
+        // lets the framework resolve the localized name; without it the
+        // label would be overwritten with the literal "Null".
 
         AbstractAction action = new AbstractAction(
-                getString("Menu.SwitchTheme")) {
+                getString("SwitchTheme")) {
+            {
+                putValue(ACTION_COMMAND_KEY, "SwitchTheme");
+            }
 
             /**
              *
@@ -76,9 +88,28 @@ public class ThemeTogglePlugin extends AbstractViewPlugin {
             RamusTheme.apply();
             for (Window w : Window.getWindows()) {
                 SwingUtilities.updateComponentTreeUI(w);
+                invalidateCanvasCaches(w);
             }
+            // T5.9: remember the theme across restarts (options.conf).
+            Options.setString("Theme", toDark ? "dark" : "light");
+            Options.save();
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    /**
+     * T5.9: diagram canvases cache their painted background in an image;
+     * drop the caches so they repaint with the new theme's paper color.
+     */
+    private static void invalidateCanvasCaches(Component c) {
+        if (c instanceof MovingArea) {
+            ((MovingArea) c).invalidateBackgroundCache();
+            return;
+        }
+        if (c instanceof Container) {
+            for (Component child : ((Container) c).getComponents())
+                invalidateCanvasCaches(child);
         }
     }
 }

@@ -161,6 +161,21 @@ public class ModelsView extends AbstractUniqueView implements UniqueView {
                     }
                 });
         engine.addQualifierListener(qualifierListener);
+
+        // T5.9: after a file is opened re-evaluate the toolbar states, so the
+        // buttons reflect the restored selection instead of staying disabled.
+        framework.addActionListener("FileOpened", new ActionListener() {
+            @Override
+            public void onAction(
+                    com.ramussoft.gui.common.event.ActionEvent event) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshActionStates();
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -224,21 +239,25 @@ public class ModelsView extends AbstractUniqueView implements UniqueView {
                         @Override
                         public void treeNodesChanged(TreeModelEvent e) {
                             ch1();
+                            refreshActionStates();
                         }
 
                         @Override
                         public void treeNodesInserted(TreeModelEvent e) {
                             ch1();
+                            refreshActionStates();
                         }
 
                         @Override
                         public void treeNodesRemoved(TreeModelEvent e) {
                             ch1();
+                            refreshActionStates();
                         }
 
                         @Override
                         public void treeStructureChanged(TreeModelEvent e) {
                             ch1();
+                            refreshActionStates();
                         }
 
                     });
@@ -253,6 +272,30 @@ public class ModelsView extends AbstractUniqueView implements UniqueView {
                     return disableUpdated;
                 }
             };
+            // T5.9: the table can be populated after the file is opened;
+            // re-evaluate the toolbar states when its tree model changes.
+            modelsPanel.getTree().getTable().getTreeTableModel()
+                    .addTreeModelListener(new TreeModelListener() {
+                        @Override
+                        public void treeNodesChanged(TreeModelEvent e) {
+                            refreshActionStates();
+                        }
+
+                        @Override
+                        public void treeNodesInserted(TreeModelEvent e) {
+                            refreshActionStates();
+                        }
+
+                        @Override
+                        public void treeNodesRemoved(TreeModelEvent e) {
+                            refreshActionStates();
+                        }
+
+                        @Override
+                        public void treeStructureChanged(TreeModelEvent e) {
+                            refreshActionStates();
+                        }
+                    });
             modelsPanel.getTree().getTable().getSelectionModel()
                     .addListSelectionListener(new ListSelectionListener() {
                         @Override
@@ -285,6 +328,54 @@ public class ModelsView extends AbstractUniqueView implements UniqueView {
             modelsPanel.getTree().getTable()
                     .setComponentPopupMenu(createPopupMenu());
             this.modelsPanel = modelsPanel;
+        }
+        // T5.9: at startup (auto-opened file) the tree selection can be
+        // restored without firing the listeners, leaving every toolbar
+        // button looking disabled until the first click.
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                refreshActionStates();
+            }
+        });
+    }
+
+    /**
+     * T5.9: re-evaluates the toolbar action states from the current tree
+     * selection (same rules as the selection listeners).
+     */
+    private void refreshActionStates() {
+        if (modelsPanel == null)
+            return;
+        try {
+            if (modelsPanel instanceof com.ramussoft.idef0.idef0.oldmodelsview.ModelsPanel) {
+                com.ramussoft.idef0.idef0.oldmodelsview.ModelsPanel panel =
+                        (com.ramussoft.idef0.idef0.oldmodelsview.ModelsPanel) modelsPanel;
+                // T5.9: after a file is opened nothing is selected, so the
+                // context buttons stay disabled; select the first row.
+                if (panel.getTree().getSelectionPath() == null
+                        && panel.getTree().getRowCount() > 0)
+                    panel.getTree().setSelectionRow(0);
+                openDiagram.setEnabled(panel.getTree().getSelectionPath() != null);
+                Object object = getActiveNode1();
+                modelProperties.setEnabled((object instanceof ModelsNode)
+                        && (rules.canUpdateQualifier(((ModelsNode) object)
+                                .getQualifier().getId())));
+                ch1();
+            } else {
+                ModelsPanel panel = (ModelsPanel) modelsPanel;
+                if (panel.getTree().getTable().getSelectedRow() < 0
+                        && panel.getTree().getTable().getRowCount() > 0)
+                    panel.getTree().getTable()
+                            .setRowSelectionInterval(0, 0);
+                openDiagram.setEnabled(panel.canOpen());
+                Object object = getActiveNode();
+                modelProperties.setEnabled((object instanceof ModelsNode)
+                        && (rules.canUpdateQualifier(((ModelsNode) object)
+                                .getQualifier().getId())));
+                ch();
+            }
+        } catch (Exception ignored) {
         }
     }
 

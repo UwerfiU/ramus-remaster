@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -22,6 +23,7 @@ import com.ramussoft.common.Plugin;
 import com.ramussoft.gui.common.GUIFramework;
 import com.ramussoft.gui.common.GUIPlugin;
 import com.ramussoft.gui.common.GlobalResourcesManager;
+import com.ramussoft.gui.common.prefrence.Options;
 import com.ramussoft.gui.core.AboutDialog;
 import com.ramussoft.local.ui.MenuSearch;
 import com.ramussoft.local.ui.RamusTheme;
@@ -30,10 +32,14 @@ public class Main extends Runner {
 
     public static void main(String[] args) {
         // T3.1: install FlatLaf before any UI is created.
-        // Theme can be selected with -Dramus.theme=dark (default: light).
+        // Theme: -Dramus.theme=... overrides; otherwise the last used theme
+        // is remembered in options.conf (T5.9); default: light.
         try {
-            boolean dark = "dark".equalsIgnoreCase(
-                    System.getProperty("ramus.theme", "light"));
+            String themeProp = System.getProperty("ramus.theme");
+            boolean dark = themeProp != null
+                    ? "dark".equalsIgnoreCase(themeProp)
+                    : "dark".equalsIgnoreCase(
+                            Options.getString("Theme", "light"));
             UIManager.setLookAndFeel(dark ? new FlatDarkLaf() : new FlatLightLaf());
             // T5.2: custom FlatLaf window title bars on Windows/Linux; macOS
             // keeps its native frame and screen menu bar.
@@ -147,7 +153,45 @@ public class Main extends Runner {
         new Thread(() -> open(file)).start();
     }
 
-    @Override
+    private void installThemeMenu(JFrame frame) {
+        JMenuBar bar = frame.getJMenuBar();
+        if (bar == null)
+            return;
+        String viewName = GlobalResourcesManager.getString("Menu.View");
+        for (int i = 0; i < bar.getMenuCount(); i++) {
+            JMenu menu = bar.getMenu(i);
+            if (viewName != null && !viewName.equals(menu.getText()))
+                continue;
+            String themeText = GlobalResourcesManager.getString("SwitchTheme");
+            for (int j = 0; j < menu.getItemCount(); j++) {
+                JMenuItem existing = menu.getItem(j);
+                if (existing != null && themeText != null
+                        && themeText.equals(existing.getText()))
+                    return; // already installed (repeated call)
+            }
+            AbstractAction action = new AbstractAction(themeText) {
+                private static final long serialVersionUID = 1L;
+
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    ThemeTogglePlugin.toggleTheme();
+                }
+            };
+            // JMenu has no indexed add: append first, then move to the top.
+            final JMenuItem item = new JMenuItem(action);
+            final javax.swing.JSeparator separator = new javax.swing.JSeparator();
+            final java.awt.Container c = menu;
+            c.add(item);
+            c.add(separator);
+            c.remove(item);
+            c.remove(separator);
+            // AWT-style indexed add: (component, position)
+            c.add(separator, 0);
+            c.add(item, 0);
+            return;
+        }
+    }
+
     protected void postShowVisibaleMainFrame(Engine engine, GUIFramework framework) {
         super.postShowVisibaleMainFrame(engine, framework);
 
@@ -158,6 +202,10 @@ public class Main extends Runner {
         // T5.4: "Recent files" submenu in the File menu; guarded against
         // repeated installation on the same frame.
         installRecentFilesMenu(framework.getMainFrame());
+
+        // T5.9: "Switch light/dark theme" as a direct item at the top of the
+        // View menu (framework two-segment menu paths create submenus).
+        installThemeMenu(framework.getMainFrame());
 
         // Properly wire the macOS About menu to the app's About dialog
         if (Desktop.isDesktopSupported() &&

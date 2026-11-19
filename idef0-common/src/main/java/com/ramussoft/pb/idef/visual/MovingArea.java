@@ -50,6 +50,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.UIManager;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
@@ -2611,21 +2612,54 @@ public class MovingArea extends JPanel {
         });
     }
 
+    /**
+     * T5.9: the diagram sheet stays "paper" in both themes (T3.5), but in a
+     * dark theme a slightly darker cream is used: on a bright sheet
+     * surrounded by dark chrome the black diagram lines look washed out,
+     * while the darker paper restores their perceived contrast.
+     */
+    private Color paperColor() {
+        if (Options.getString("DEFAULT_BACKGROUND.RED") != null)
+            return getBackground();
+        try {
+            final java.awt.Color panel = UIManager.getColor(
+                    "Panel.background");
+            if (panel != null
+                    && (panel.getRed() + panel.getGreen() + panel.getBlue()) / 3 < 128)
+                return new Color(240, 236, 214);
+        } catch (Exception ignored) {
+        }
+        return getBackground();
+    }
+
+    /**
+     * T5.9: drops the cached background image so the canvas repaints with the
+     * current theme's paper color (called on light/dark theme switch).
+     */
+    public void invalidateBackgroundCache() {
+        synchronized (backgroundPaintlock) {
+            bImage = null;
+        }
+    }
+
     public synchronized void paintBackground(final Graphics gr) {
 
         final Graphics2D g = (Graphics2D) gr;
         if (!isPrinting()) {
             PStringBounder.FONT_CONTEXT = g.getFontRenderContext();
 
-            g.setColor(getBackground());
+            // T5.9: theme-aware sheet color (see paperColor()). A user-defined
+            // background from idef0-options.conf always wins.
+            final Color paper = paperColor();
+            g.setColor(paper);
 
             if (showNet) {
-                g.setColor(getBackground());
+                g.setColor(paper);
                 g.fillRect(0, 0, getSize().width, getSize().height);
                 g.setColor(Color.black);
                 drawNet(g, 0, 0, getSize().width, getSize().height);
             } else {
-                g.setColor(getBackground());
+                g.setColor(paper);
                 g.fillRect(0, 0, getSize().width, getSize().height);
             }
             g.setColor(getForeground());
