@@ -31,8 +31,61 @@ jobs:
           "${env:ProgramFiles(x86)}\WiX Toolset v3.14\bin" |
             Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
 
-      - name: Build the installer
-        run: .\packaging\windows\build-installer.ps1 -Jdk "$env:JAVA_HOME"
+      - name: Build the installers (MSI + EXE)
+        run: |
+          .\packaging\windows\build-installer.ps1 -Jdk "$env:JAVA_HOME" -Type msi
+          .\packaging\windows\build-installer.ps1 -Jdk "$env:JAVA_HOME" -Type exe
+
+      # The EXE (WiX Burn bundle) is tested first, on a clean machine state:
+      # it carries the same upgrade UUID as the MSI, so installing both in one
+      # job without an uninstall in between would be an upgrade, not an install.
+      - name: Install the EXE installer (quiet)
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $installer = Get-ChildItem dest\windows\*.exe | Select-Object -First 1
+          Write-Host "Installing $($installer.Name)"
+          $p = Start-Process $installer.FullName -ArgumentList @('/quiet', '/norestart') -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "the EXE installer exited with code $($p.ExitCode)" }
+
+      - name: Check the EXE install
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $exe = Join-Path $env:LOCALAPPDATA 'Ramus\Ramus.exe'
+          if (-not (Test-Path $exe)) { throw "not found: $exe" }
+          Write-Host "Executable: $exe"
+
+          $menu = Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\Ramus'
+          if (-not (Test-Path $menu)) { throw 'no Start menu group' }
+          Get-ChildItem $menu | ForEach-Object { Write-Host "Shortcut: $($_.Name)" }
+
+          # Desktop shortcut is created by default; the wizard page lets the
+          # user remove it, but a quiet install keeps the defaults.
+          $desktop = Join-Path $env:USERPROFILE 'Desktop\Ramus.lnk'
+          if (Test-Path $desktop) { Write-Host "Desktop shortcut: $desktop" }
+          else { Write-Host "note: no desktop shortcut at $desktop" }
+
+          $key = 'HKCU:\Software\Classes\.rsf'
+          if (-not (Test-Path $key)) { throw 'extension not registered: .rsf' }
+          Write-Host '.rsf ->' ((Get-ItemProperty $key).'(default)')
+
+      - name: Uninstall the EXE install
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $wi = New-Object -ComObject WindowsInstaller.Installer
+          $code = $null
+          foreach ($c in $wi.GetType().InvokeMember('Products', 'GetProperty', $null, $wi, $null)) {
+              try {
+                  $n = $wi.GetType().InvokeMember('ProductInfo', 'GetProperty',
+                      $null, $wi, @($c, 'ProductName'))
+              } catch { continue }
+              if ($n -eq 'Ramus') { $code = $c; break }
+          }
+          if (-not $code) { throw 'no Ramus product registered after the EXE install' }
+          $p = Start-Process msiexec -ArgumentList @('/x', $code, '/qn') -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "uninstall exited with code $($p.ExitCode)" }
+          $dir = Join-Path $env:LOCALAPPDATA 'Ramus'
+          if (Test-Path $dir) { throw "the directory survived the uninstall: $dir" }
+          Write-Host 'EXE install uninstalled cleanly'
 
       - name: Install
         run: |

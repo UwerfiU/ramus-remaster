@@ -377,6 +377,13 @@ tasks.register('winPackage', Exec) {
                     '--win-shortcut',
                     '--win-upgrade-uuid', winUpgradeUuid,
                     '--file-associations', new File(winAssociations, 'association-rsf.properties').absolutePath]
+            if (type == 'exe') {
+                // EXE is a WiX Burn bundle with a full wizard: let the user
+                // pick the install directory and choose which shortcuts to
+                // create (desktop / Start menu). MSI stays a basic package
+                // for silent/enterprise installs.
+                args += ['--win-dir-chooser', '--win-shortcut-prompt']
+            }
         }
         commandLine = args
     }

@@ -17,7 +17,7 @@ A modernized fork of **Ramus**, a Java-based IDEF0 & DFD business-process modell
 - **Совместимость с .rsf в обе стороны**:
   - remaster открывает старые файлы, включая эпохи Ramus 1.x (отсутствующие плагины пропускаются с предупреждением в лог);
   - файлы, сохранённые remaster, открываются в оригинальном приложении.
-- **Упаковка**: портативная сборка (`app-image`) и Windows MSI через CI.
+- **Упаковка**: портативная сборка (`app-image`), Windows EXE (мастер: каталог + ярлыки) и MSI (тихая установка) через CI.
 
 ![Light theme](docs/baseline/t32_light.png)
 *Светлая тема / Light theme*
@@ -35,17 +35,25 @@ each one bundles its own Java runtime, so no JDK is needed on the user's machine
 
 ### Windows
 
-1. Скачайте `Ramus-0.1.0.msi` и запустите: установка per-user, ярлык в меню Пуск,
+1. Рекомендуемый вариант — установщик `Ramus-<версия>.exe`: мастер установки
+   позволяет выбрать каталог установки и поставить/снять галки ярлыков
+   (рабочий стол и меню Пуск). Установка per-user, без прав администратора,
    ассоциация файлов `.rsf`. Удаление — через «Приложения и возможности».
-2. Портативная версия без установки (собирается локально):
+2. `Ramus-<версия>.msi` — тот же продукт в виде MSI (для тихой установки:
+   `msiexec /i Ramus.msi /qn`), без мастера выбора параметров.
+3. Портативная версия без установки (собирается локально):
    ```bat
    gradlew.bat winPackage -PpackagingWinType=app-image
    ```
    → папка `dest\windows\Ramus\`, запускается `Ramus.exe`.
 
-1. Download `Ramus-0.1.0.msi` and run it: per-user install, Start menu shortcut,
-   `.rsf` file association. Uninstall via "Apps & features".
-2. Portable version without installation (built locally):
+1. Recommended: the `Ramus-<version>.exe` installer — its wizard lets you choose
+   the install directory and tick/untick the shortcuts (desktop and Start menu).
+   Per-user install, no administrator rights, `.rsf` file association. Uninstall
+   via "Apps & features".
+2. `Ramus-<version>.msi` — the same product as an MSI (for silent installs:
+   `msiexec /i Ramus.msi /qn`), without the wizard options.
+3. Portable version without installation (built locally):
    ```bat
    gradlew.bat winPackage -PpackagingWinType=app-image
    ```
