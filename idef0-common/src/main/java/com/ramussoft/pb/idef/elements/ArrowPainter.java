@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Stroke;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
@@ -71,6 +72,26 @@ public class ArrowPainter {
     private static final String DATE_T = ResourceLoader.getString("DATE:");
 
     public static final BasicStroke THIN_STROKE = new BasicStroke(0.5f);
+
+    /**
+     * With anti-aliasing OFF (screen rendering) a sub-pixel stroke width may
+     * not be rasterized at all: the aliased pipeline can drop a 0.5px band
+     * entirely, depending on where the line falls in device space — i.e. at
+     * certain zoom levels arrow segments silently vanish. Bump thin strokes
+     * to a full device pixel for AA-off rendering; printing renders with AA
+     * ON and keeps the hairline width.
+     */
+    public static Stroke strokeFor(final Graphics2D g, final Stroke s) {
+        if (s instanceof BasicStroke) {
+            final BasicStroke b = (BasicStroke) s;
+            final boolean aaOn = Boolean.TRUE.equals(
+                    g.getRenderingHint(RenderingHints.KEY_ANTIALIASING));
+            if (!aaOn && b.getLineWidth() < 1f)
+                return new BasicStroke(1f, b.getEndCap(), b.getLineJoin(),
+                        b.getMiterLimit(), b.getDashArray(), b.getDashPhase());
+        }
+        return s;
+    }
 
     /**
      * Ширина половини стрілки.
@@ -159,7 +180,7 @@ public class ArrowPainter {
     }
 
     public void paintTilda(final Graphics2D g, final PaintSector sector) {
-        g.setStroke(ArrowPainter.THIN_STROKE);
+        g.setStroke(strokeFor(g, THIN_STROKE));
         final MovingText movingText = sector.getText();
         final FloatPoint t = sector.getTildaPoint();
         final double x1 = movingArea.getIDoubleOrdinate(t.getX());
@@ -237,8 +258,7 @@ public class ArrowPainter {
 
     public void paintTunnel(final Graphics2D g, final FloatPoint point,
                             final int type, boolean soft) {
-        g.setStroke(ArrowPainter.THIN_STROKE);
-        g.setStroke(new BasicStroke(0.5f));
+        g.setStroke(strokeFor(g, new BasicStroke(0.5f)));
         double x = movingArea.getIDoubleOrdinate(point.getX());
         double y = movingArea.getIDoubleOrdinate(point.getY());
         soft = !soft;
@@ -949,8 +969,7 @@ public class ArrowPainter {
         }
 
         tunnelLength = movingArea.getIDoubleOrdinate(TUNNEL_LENGTH) * 1;
-        g.setStroke(ArrowPainter.THIN_STROKE);
-        g.setStroke(new BasicStroke(0.5f));
+        g.setStroke(strokeFor(g, new BasicStroke(0.5f)));
 
         double x = movingArea.getIDoubleOrdinate(point.getX());
         double y = movingArea.getIDoubleOrdinate(point.getY());

@@ -99,6 +99,7 @@ import com.ramussoft.pb.dmaster.UserTemplate;
 import com.ramussoft.pb.frames.BaseDialog;
 import com.ramussoft.pb.frames.MainFrame;
 import com.ramussoft.pb.frames.docking.MChangeListener;
+import com.ramussoft.pb.idef.elements.ArrowPainter;
 import com.ramussoft.pb.idef.elements.Ordinate;
 import com.ramussoft.pb.idef.elements.PaintSector;
 import com.ramussoft.pb.idef.elements.PaintSector.Pin;
@@ -2729,10 +2730,11 @@ public class MovingArea extends JPanel {
                 element.paint(g, this);
 
         if (hPageCountSize > 1) {
-            g.setStroke(new BasicStroke(0.7f, 1, 1, 2, new float[]{
-                    (float) getIDoubleOrdinate(6),
-                    (float) getIDoubleOrdinate(10)},
-                    (float) getIDoubleOrdinate(10)));
+            g.setStroke(ArrowPainter.strokeFor(g,
+                    new BasicStroke(0.7f, 1, 1, 2, new float[]{
+                            (float) getIDoubleOrdinate(6),
+                            (float) getIDoubleOrdinate(10)},
+                            (float) getIDoubleOrdinate(10))));
             double x = getIDoubleOrdinate(CLIENT_WIDTH) / hPageCountSize;
             double px = x;
             for (int i = 0; i < hPageCountSize; i++) {

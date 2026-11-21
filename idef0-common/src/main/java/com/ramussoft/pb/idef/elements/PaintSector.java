@@ -1861,7 +1861,8 @@ public class PaintSector {
                     arrowedStroke.setArrowHeight(arrowHeight / 3);
                 }
             }
-            g.setStroke(stroke);
+            // sub-pixel widths may vanish with AA off — see ArrowPainter.strokeFor
+            g.setStroke(ArrowPainter.strokeFor(g, stroke));
         }
 
         for (int i = 0; i < getPinCount(); i++)
