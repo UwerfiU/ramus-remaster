@@ -1154,9 +1154,14 @@ public class IDEFPanel extends ViewPanel {
                 @Override
                 public void paint(final Graphics gr) {
                     final Graphics2D g = (Graphics2D) gr;
-                    g.setColor(getBackground());
+                    // T5.11d: the strip sits on sheet paper — use the theme-aware
+                    // paper color and black/white ink by paper luminance. The old
+                    // panel foreground is light gray in dark theme, which made the
+                    // frame lines (and АВТОР/ПРОЕКТ/ЗАМЕЧАНИЯ text) pale.
+                    final Color paper = movingArea.paperColor();
+                    g.setColor(paper);
                     g.fillRect(0, 0, getSize().width, getSize().height);
-                    g.setColor(getForeground());
+                    g.setColor(frameInk(paper));
 
                     final ArrowPainter painter = new ArrowPainter(movingArea);
                     try {
@@ -1173,6 +1178,12 @@ public class IDEFPanel extends ViewPanel {
             jTopPanel.setComponentPopupMenu(createTopPanelPopupMenu());
         }
         return jTopPanel;
+    }
+
+    /** Ink (lines + text) for the page-frame strips: black on light paper, white on dark. */
+    private Color frameInk(final Color paper) {
+        return (paper.getRed() + paper.getGreen() + paper.getBlue()) / 3 < 128
+                ? Color.WHITE : Color.BLACK;
     }
 
     private JPopupMenu createTopPanelPopupMenu() {
@@ -1200,9 +1211,11 @@ public class IDEFPanel extends ViewPanel {
                 @Override
                 public void paint(final Graphics gr) {
                     final Graphics2D g = (Graphics2D) gr;
-                    g.setColor(getBackground());
+                    // T5.11d: same theme-aware paper + ink as the top strip.
+                    final Color paper = movingArea.paperColor();
+                    g.setColor(paper);
                     g.fillRect(0, 0, getSize().width, getSize().height);
-                    g.setColor(getForeground());
+                    g.setColor(frameInk(paper));
 
                     final ArrowPainter painter = new ArrowPainter(movingArea);
                     painter.paintBottom(g, getHeight(), movingArea);

@@ -2623,7 +2623,11 @@ public class MovingArea extends JPanel {
      * surrounded by dark chrome the black diagram lines look washed out,
      * while the darker paper restores their perceived contrast.
      */
-    private Color paperColor() {
+    /**
+     * Theme-aware sheet (paper) color used by the canvas and the page-frame
+     * strips. A user-defined background from idef0-options.conf wins.
+     */
+    public Color paperColor() {
         if (Options.getString("DEFAULT_BACKGROUND.RED") != null)
             return getBackground();
         try {
