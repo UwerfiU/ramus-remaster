@@ -98,6 +98,14 @@ def packagingVersion = {
     def raw = (project.version ?: '1.0.0').toString().replaceAll(/[^0-9.]/, '')
     return (raw ==~ /\d+(\.\d+){0,2}/) ? raw : '1.0.0'
 }
+// jpackage on macOS rejects app versions whose first number is zero
+// ("The first number in an app-version cannot be zero or negative").
+// Bump the major 0 -> 1 for the embedded app version only; distributable
+// file names still use packagingVersion() (Ramus-0.2.1-macos-arm64.dmg).
+def macAppVersion = {
+    def v = packagingVersion()
+    return v.startsWith('0.') ? '1.' + v.substring(2) : v
+}
 
 // Final release file names: Ramus-<version>-<platform>-<arch>[-purpose].<ext>.
 // jpackage's own output names differ per OS (Ramus-0.2.1.exe, ramus_0.2.1_amd64.deb,
@@ -301,7 +309,7 @@ tasks.register('jpackageMacApp', Exec) {
                 ?: System.getenv('JAVA_HOME')
                 ?: System.getProperty('java.home')).toString()
         def jpackageBin = new File(javaHome, 'bin/jpackage').absolutePath
-        def appVer = packagingVersion()
+        def appVer = macAppVersion()
         // Choose a runtime image: prefer the jlink output, otherwise use the full JDK
         def runtimePath = (runtimeImageDir.exists() && new File(runtimeImageDir,
                 'bin/java').exists()) ? runtimeImageDir.absolutePath : javaHome
