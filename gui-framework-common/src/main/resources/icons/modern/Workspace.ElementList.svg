@@ -8,12 +8,9 @@
   stroke-width="2"
   stroke-linecap="round"
   stroke-linejoin="round"
-  class="icon icon-tabler icons-tabler-outline icon-tabler-workspace.elementlist"
+  class="icon icon-tabler icons-tabler-outline icon-tabler-paperclip"
 >
   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-  <path d="M9 6h11" />
-  <path d="M9 12h11" />
-  <path d="M9 18h11" />
-  <path d="M5 6h.01" />
-  <path d="M5 12h.01" />
-  <path d="M5 18h.01" /></svg>
+  <path d="M4 7m0 4a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v9a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z" />
+  <path d="M8 7v-2a4 4 0 0 1 4 -4h0a4 4 0 0 1 4 4v14a2 2 0 0 1 -2 2h-4a2 2 0 0 1 -2 -2z" />
+</svg>

@@ -2419,7 +2419,9 @@ public class MovingArea extends JPanel {
             g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                     RenderingHints.VALUE_INTERPOLATION_BICUBIC);
             g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-                    RenderingHints.VALUE_STROKE_NORMALIZE);
+                    // T5.11: PURE keeps thin black lines solid; NORMALIZE
+                    // faded 1-2px strokes to gray (complaint in dark theme).
+                    RenderingHints.VALUE_STROKE_PURE);
             g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                     RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         }
@@ -2677,7 +2679,9 @@ public class MovingArea extends JPanel {
                 g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                         RenderingHints.VALUE_INTERPOLATION_BICUBIC);
                 g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-                        RenderingHints.VALUE_STROKE_NORMALIZE);
+                        // T5.11: PURE keeps thin black lines solid; NORMALIZE
+                        // faded 1-2px strokes to gray (complaint in dark theme).
+                        RenderingHints.VALUE_STROKE_PURE);
                 g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             }
