@@ -21,7 +21,19 @@ public class StatusBar extends JPanel {
 
     private final JLabel statusLabel = new JLabel("");
 
-    private final JLabel infoLabel = new JLabel("Ramus v0.2");
+    private final JLabel infoLabel = new JLabel(appVersion());
+
+    /** "Ramus v<version>" from the jar manifest (Implementation-Version);
+     *  falls back to plain "Ramus" when running without a versioned jar. */
+    private static String appVersion() {
+        try {
+            Package p = StatusBar.class.getPackage();
+            String v = (p == null) ? null : p.getImplementationVersion();
+            return (v == null || v.isEmpty()) ? "Ramus" : "Ramus v" + v;
+        } catch (Throwable t) {
+            return "Ramus";
+        }
+    }
 
     public StatusBar() {
         super(new BorderLayout());

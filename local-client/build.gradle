@@ -5,7 +5,8 @@ plugins {
 }
 
 group 'com.vitalex.ramus'
-version '0.2.1'
+// Must stay in sync with the root build.gradle version (single release line).
+version '1.0.0'
 
 repositories {
     mavenCentral()
@@ -61,7 +62,8 @@ shadowJar {
     mergeServiceFiles()
     
     manifest {
-        attributes 'Main-Class': 'com.ramussoft.local.Main'
+        attributes 'Main-Class': 'com.ramussoft.local.Main',
+                   'Implementation-Version': project.version.toString()
     }
 }
 
@@ -98,18 +100,13 @@ def packagingVersion = {
     def raw = (project.version ?: '1.0.0').toString().replaceAll(/[^0-9.]/, '')
     return (raw ==~ /\d+(\.\d+){0,2}/) ? raw : '1.0.0'
 }
-// jpackage on macOS rejects app versions whose first number is zero
-// ("The first number in an app-version cannot be zero or negative").
-// Bump the major 0 -> 1 for the embedded app version only; distributable
-// file names still use packagingVersion() (Ramus-0.2.1-macos-arm64.dmg).
-def macAppVersion = {
-    def v = packagingVersion()
-    return v.startsWith('0.') ? '1.' + v.substring(2) : v
-}
+// Note: jpackage on macOS rejects app versions whose first number is zero
+// ("The first number in an app-version cannot be zero or negative") — the
+// release line is 1.x, so this never triggers.
 
 // Final release file names: Ramus-<version>-<platform>-<arch>[-purpose].<ext>.
-// jpackage's own output names differ per OS (Ramus-0.2.1.exe, ramus_0.2.1_amd64.deb,
-// ramus-0.2.1-1.x86_64.rpm), so the newest matching file is renamed to one
+// jpackage's own output names differ per OS (Ramus-1.0.0.exe, ramus_1.0.0_amd64.deb,
+// ramus-1.0.0-1.x86_64.rpm), so the newest matching file is renamed to one
 // intuitive scheme; the README's downloads table documents it.
 def renameForRelease = { File destDir, String platform, String arch, String purpose, String ext ->
     def v = packagingVersion()
@@ -309,7 +306,7 @@ tasks.register('jpackageMacApp', Exec) {
                 ?: System.getenv('JAVA_HOME')
                 ?: System.getProperty('java.home')).toString()
         def jpackageBin = new File(javaHome, 'bin/jpackage').absolutePath
-        def appVer = macAppVersion()
+        def appVer = packagingVersion()
         // Choose a runtime image: prefer the jlink output, otherwise use the full JDK
         def runtimePath = (runtimeImageDir.exists() && new File(runtimeImageDir,
                 'bin/java').exists()) ? runtimeImageDir.absolutePath : javaHome

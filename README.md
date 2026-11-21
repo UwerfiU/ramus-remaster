@@ -11,7 +11,7 @@ A modernized fork of **Ramus**, a Java-based IDEF0 & DFD business-process modell
 
 ## Что в remaster / What's new
 
-### v0.2 — новый интерфейс / fresh UI
+### v1.0 — новый интерфейс / fresh UI
 
 - **FlatLaf 3.8** — современный вид, светлая и тёмная темы; выбор темы
   сохраняется между запусками (переключатель: *View → Switch light/dark theme*);
