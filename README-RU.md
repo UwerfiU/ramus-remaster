@@ -2,11 +2,24 @@
 
 **Современный форк [Ramus](https://github.com/Vitaliy-Yakovchuk/ramus)** — Java-редактора бизнес-процессов в нотациях IDEF0 и DFD.
 
-![Светлая тема](docs/baseline/t58_main_light.png)
+![Светлая тема](docs/screenshots/main-light.png)
 *Светлая тема*
 
-![Тёмная тема](docs/baseline/t58_main_dark.png)
+![Тёмная тема](docs/screenshots/main-dark.png)
 *Тёмная тема (Вид → Переключить светлую/тёмную тему)*
+
+## v0.2 — новый интерфейс
+
+- **FlatLaf 3.8** — современный вид, светлая и тёмная темы; выбор темы
+  сохраняется между запусками (переключатель: *Вид → Переключить светлую/тёмную тему*);
+- **Современные иконки**: весь набор перерисован в едином outline-стиле (SVG)
+  и следует за темой — включая кнопки рабочих пространств;
+- **Палитра команд** `Ctrl+K` — быстрый переход к любому пункту меню;
+- **Строка состояния** внизу окна (имя файла, версия);
+- **Недавние файлы** в меню «Файл», автоматическое открытие последней модели;
+- **Простой режим**: панель инструментов активна сразу после запуска;
+- **Чёткие линии схем**: контуры элементов и стрелок — сплошные, рамка листа
+  (АВТОР/ПРОЕКТ/ЗАМЕЧАНИЯ) — контрастная в обеих темах.
 
 ## Что изменено по сравнению с оригиналом
 
@@ -37,14 +50,26 @@
 при каждом пуше тега `v*` (собирает GitHub Actions). Все сборки содержат
 собственный Java-рантайм — устанавливать JDK не нужно.
 
+### Имена файлов в релизе
+
+| Файл | Что это |
+|---|---|
+| `Ramus-<версия>-windows-x64-setup.exe` | установщик Windows с мастером (каталог + ярлыки) |
+| `Ramus-<версия>-windows-x64.msi` | MSI для тихой/корпоративной установки |
+| `Ramus-<версия>-macos-arm64.dmg` | macOS, Apple Silicon (M1/M2/…) |
+| `Ramus-<версия>-macos-x86_64.dmg` | macOS, Intel |
+| `Ramus-<версия>-linux-x64.deb` | Debian / Ubuntu |
+| `Ramus-<версия>-linux-x64.rpm` | Fedora / RHEL / openSUSE |
+| `Ramus-<версия>-linux-x64-portable.tar.gz` | портативная версия, установка не нужна |
+
 ### Windows
 
-1. Рекомендуемый вариант — установщик `Ramus-<версия>.exe`: мастер установки
-   позволяет выбрать каталог установки и поставить/снять галки ярлыков
+1. Рекомендуемый вариант — `Ramus-<версия>-windows-x64-setup.exe`: мастер
+   установки позволяет выбрать каталог и поставить/снять галки ярлыков
    (рабочий стол и меню Пуск). Установка per-user, без прав администратора,
    ассоциация файлов `.rsf`. Удаление — через «Приложения и возможности».
-2. `Ramus-<версия>.msi` — тот же продукт в виде MSI (для тихой установки:
-   `msiexec /i Ramus.msi /qn`), без мастера выбора параметров.
+2. `Ramus-<версия>-windows-x64.msi` — тот же продукт в виде MSI (тихая
+   установка: `msiexec /i Ramus-…-windows-x64.msi /qn`), без мастера.
 3. Портативная версия без установки (локальная сборка):
    ```bat
    gradlew.bat winPackage -PpackagingWinType=app-image
@@ -53,8 +78,8 @@
 
 ### macOS
 
-1. Скачайте DMG под свой процессор: Apple Silicon (M1/M2/…) — `...-arm64.dmg`,
-   Intel — `...-x86_64.dmg`.
+1. Скачайте DMG под свой процессор: Apple Silicon (M1/M2/…) —
+   `Ramus-<версия>-macos-arm64.dmg`, Intel — `Ramus-<версия>-macos-x86_64.dmg`.
 2. Откройте DMG и перетащите **Ramus** в **Applications**.
 3. Приложение не подписано, поэтому при первом запуске macOS заблокирует его:
    правый клик по Ramus в Finder → **Open** → **Open**, либо один раз выполните
@@ -63,10 +88,10 @@
 ### Linux (x86_64)
 
 - Портативная версия (любой дистрибутив): распакуйте
-  `ramus-portable-linux-x86_64.tar.gz` и запустите `Ramus/bin/Ramus`
+  `Ramus-<версия>-linux-x64-portable.tar.gz` и запустите `Ramus/bin/Ramus`
   (удобно сделать symlink в `~/bin`).
-- Debian/Ubuntu: `sudo dpkg -i ramus_*.deb`
-- Fedora/RHEL: `sudo rpm -i ramus-*.rpm` (или `dnf install ./ramus-*.rpm`)
+- Debian/Ubuntu: `sudo dpkg -i Ramus-…-linux-x64.deb`
+- Fedora/RHEL: `sudo rpm -i Ramus-…-linux-x64.rpm` (или `dnf install ./Ramus-…-linux-x64.rpm`)
 
 ## Запуск из исходников
 
@@ -96,8 +121,9 @@ Linux/macOS: `./gradlew ...` с теми же аргументами.
 
 # Linux: портативная папка / deb / rpm — только на Linux (jpackage)
 ./gradlew linuxPackage -PpackagingLinuxType=app-image   # → dest/linux/Ramus/
-./gradlew linuxPackage -PpackagingLinuxType=deb         # → dest/linux/ramus_*.deb
-./gradlew linuxPackage -PpackagingLinuxType=rpm         # → dest/linux/ramus-*.rpm
+./gradlew linuxPortable                                 # → Ramus-<версия>-linux-x64-portable.tar.gz
+./gradlew linuxPackage -PpackagingLinuxType=deb         # → Ramus-<версия>-linux-x64.deb
+./gradlew linuxPackage -PpackagingLinuxType=rpm         # → Ramus-<версия>-linux-x64.rpm
 ```
 
 Инсталляторы собирает GitHub Actions при пуше тега вида `v0.1.0`:

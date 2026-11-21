@@ -66,9 +66,8 @@ jobs:
 
       - name: Package the portable build
         run: |
-          cd dest/linux
-          tar czf ramus-portable-linux-x86_64.tar.gz Ramus
-          rm -rf Ramus
+          ./gradlew linuxPortable --no-daemon
+          rm -rf dest/linux/Ramus
 
       - uses: actions/upload-artifact@v4
         with:

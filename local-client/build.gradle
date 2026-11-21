@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.vitalex.ramus'
-version '2.0.2'
+version '0.2.1'
 
 repositories {
     mavenCentral()
@@ -94,24 +94,28 @@ def packagingArch = {
             : ((arch == 'x86_64' || arch == 'amd64') ? 'x86_64' : arch)
 }
 
-def nameWithArch = { File destDir, String extension, String arch ->
-    destDir.listFiles()?.findAll {
-        it.name.startsWith('Ramus-') && it.name.endsWith(extension) &&
-                !it.name.contains(arch)
-    }?.each { built ->
-        def target = new File(destDir, built.name.replaceFirst(
-                java.util.regex.Pattern.quote(extension) + '$', "-${arch}${extension}"))
-        if (target.exists()) target.delete()
-        if (built.renameTo(target))
-            println "Package: ${target}"
-        else
-            println "Package: ${built} (could not add the architecture to the name)"
-    }
-}
-
 def packagingVersion = {
     def raw = (project.version ?: '1.0.0').toString().replaceAll(/[^0-9.]/, '')
     return (raw ==~ /\d+(\.\d+){0,2}/) ? raw : '1.0.0'
+}
+
+// Final release file names: Ramus-<version>-<platform>-<arch>[-purpose].<ext>.
+// jpackage's own output names differ per OS (Ramus-0.2.1.exe, ramus_0.2.1_amd64.deb,
+// ramus-0.2.1-1.x86_64.rpm), so the newest matching file is renamed to one
+// intuitive scheme; the README's downloads table documents it.
+def renameForRelease = { File destDir, String platform, String arch, String purpose, String ext ->
+    def v = packagingVersion()
+    def finalName = "Ramus-${v}-${platform}-${arch}" + (purpose ? "-${purpose}" : '') + ext
+    def built = destDir.listFiles()?.findAll { it.name.endsWith(ext) && it.name != finalName }
+            ?.sort { a, b -> b.lastModified() <=> a.lastModified() }?.first()
+    if (built == null) {
+        println "Nothing to rename in ${destDir} for ${finalName}"
+        return
+    }
+    def target = new File(destDir, finalName)
+    if (target.exists()) target.delete()
+    if (!built.renameTo(target)) throw new GradleException("could not rename ${built.name} -> ${finalName}")
+    println "Package: ${target}"
 }
 
 tasks.register('prepareMacIcons') {
@@ -398,7 +402,7 @@ tasks.register('macDmg') {
     description = 'Builds a drag-to-Applications DMG (with background) at dest/macos.'
     dependsOn 'buildCustomDmg'
     doLast {
-        nameWithArch(dmgDestDir, '.dmg', packagingArch())
+        renameForRelease(dmgDestDir, 'macos', packagingArch(), null, '.dmg')
     }
 }
 // --- Windows packaging (MSI or EXE via jpackage + WiX) ---
@@ -473,7 +477,12 @@ tasks.register('winPackage', Exec) {
     workingDir packagingWorkDir
 
     doLast {
-        nameWithArch(winDestDir, ".${type}", packagingArch())
+        // EXE is the wizard installer; MSI stays a plain silent package;
+        // app-image yields a folder (Ramus/), nothing to rename.
+        if (type == 'exe')
+            renameForRelease(winDestDir, 'windows', 'x64', 'setup', '.exe')
+        else if (type == 'msi')
+            renameForRelease(winDestDir, 'windows', 'x64', null, '.msi')
     }
 }
 
@@ -536,7 +545,23 @@ tasks.register('linuxPackage', Exec) {
     workingDir packagingWorkDir
 
     doLast {
-        nameWithArch(linuxDestDir, ".${type}", packagingArch())
+        if (type in ['deb', 'rpm'])
+            renameForRelease(linuxDestDir, 'linux', 'x64', null, ".${type}")
+    }
+}
+
+tasks.register('linuxPortable') {
+    group = 'distribution'
+    description = 'Tars the Linux app-image as Ramus-<version>-linux-x64-portable.tar.gz (run after linuxPackage -PpackagingLinuxType=app-image)'
+    doLast {
+        def dir = file("${rootProject.projectDir}/dest/linux")
+        def app = new File(dir, 'Ramus')
+        if (!app.isDirectory())
+            throw new GradleException("no Linux app-image at ${app} — run linuxPackage -PpackagingLinuxType=app-image first")
+        def out = new File(dir, "Ramus-${packagingVersion()}-linux-x64-portable.tar.gz")
+        if (out.exists()) out.delete()
+        exec { workingDir dir; commandLine 'tar', 'czf', out.name, 'Ramus' }
+        println "Package: ${out}"
     }
 }
 

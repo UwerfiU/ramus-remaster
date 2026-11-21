@@ -1,5 +1,7 @@
 group 'com.vitalex.ramus'
-version '2.0.2'
+// v0.2.1 — the remaster's own release line (the original project was 2.0.x).
+// The number here flows into jpackage installers and release file names.
+version '0.2.1'
 
 // Load optional local overrides from gradle-local.properties (gitignored)
 def localPropsFile = rootProject.file('gradle-local.properties')

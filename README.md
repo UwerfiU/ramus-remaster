@@ -11,18 +11,33 @@ A modernized fork of **Ramus**, a Java-based IDEF0 & DFD business-process modell
 
 ## Что в remaster / What's new
 
+### v0.2 — новый интерфейс / fresh UI
+
+- **FlatLaf 3.8** — современный вид, светлая и тёмная темы; выбор темы
+  сохраняется между запусками (переключатель: *View → Switch light/dark theme*);
+- **Современные иконки**: весь набор перерисован в едином outline-стиле
+  (SVG) и следует за темой — включая кнопки рабочих пространств;
+- **Палитра команд** `Ctrl+K` — быстрый переход к любому пункту меню;
+- **Строка состояния** внизу окна (имя файла, версия);
+- **Недавние файлы** в меню «Файл», автоматическое открытие последней модели;
+- **Простой режим**: панель инструментов активна сразу после запуска;
+- **Чёткие линии схем**: контуры элементов и стрелок — сплошные, рамка листа
+  (АВТОР/ПРОЕКТ/ЗАМЕЧАНИЯ) — контрастная в обеих темах.
+
+### База / the base
+
 - **JDK 21** (оригинал — JDK 8) / modernized toolchain
-- **FlatLaf 3.8** — современный вид интерфейса, светлая и тёмная темы (переключатель: *View → Toggle light/dark theme*)
 - **Обновлены зависимости**: POI 5.5, OpenPDF (вместо AGPL iText), JFreeChart 1.5, H2 2.5
 - **Совместимость с .rsf в обе стороны**:
   - remaster открывает старые файлы, включая эпохи Ramus 1.x (отсутствующие плагины пропускаются с предупреждением в лог);
   - файлы, сохранённые remaster, открываются в оригинальном приложении.
-- **Упаковка**: портативная сборка (`app-image`), Windows EXE (мастер: каталог + ярлыки) и MSI (тихая установка) через CI.
+- **Упаковка**: инсталляторы и портативные сборки для Windows, macOS и Linux через CI
+  (имена файлов — в таблице ниже / file names in the table below).
 
-![Light theme](docs/baseline/t58_main_light.png)
+![Light theme](docs/screenshots/main-light.png)
 *Светлая тема / Light theme*
 
-![Dark theme](docs/baseline/t58_main_dark.png)
+![Dark theme](docs/screenshots/main-dark.png)
 *Тёмная тема / Dark theme (View → Switch light/dark theme)*
 
 ## Установка / Installation
@@ -33,26 +48,48 @@ JDK на компьютере пользователя не нужен. / Ready-
 [releases](https://github.com/UwerfiU/ramus-remaster/releases) on every `v*` tag;
 each one bundles its own Java runtime, so no JDK is needed on the user's machine.
 
+### Имена файлов в релизе / Release file names
+
+| Файл | Что это |
+|---|---|
+| `Ramus-<версия>-windows-x64-setup.exe` | установщик Windows с мастером (каталог + ярлыки) |
+| `Ramus-<версия>-windows-x64.msi` | MSI для тихой/корпоративной установки |
+| `Ramus-<версия>-macos-arm64.dmg` | macOS, Apple Silicon (M1/M2/…) |
+| `Ramus-<версия>-macos-x86_64.dmg` | macOS, Intel |
+| `Ramus-<версия>-linux-x64.deb` | Debian / Ubuntu |
+| `Ramus-<версия>-linux-x64.rpm` | Fedora / RHEL / openSUSE |
+| `Ramus-<версия>-linux-x64-portable.tar.gz` | портативная версия, установка не нужна |
+
+| File | What it is |
+|---|---|
+| `Ramus-<version>-windows-x64-setup.exe` | Windows installer with a wizard (directory + shortcuts) |
+| `Ramus-<version>-windows-x64.msi` | MSI for silent/enterprise installs |
+| `Ramus-<version>-macos-arm64.dmg` | macOS, Apple Silicon (M1/M2/…) |
+| `Ramus-<version>-macos-x86_64.dmg` | macOS, Intel |
+| `Ramus-<version>-linux-x64.deb` | Debian / Ubuntu |
+| `Ramus-<version>-linux-x64.rpm` | Fedora / RHEL / openSUSE |
+| `Ramus-<version>-linux-x64-portable.tar.gz` | portable build, no installation needed |
+
 ### Windows
 
-1. Рекомендуемый вариант — установщик `Ramus-<версия>.exe`: мастер установки
-   позволяет выбрать каталог установки и поставить/снять галки ярлыков
+1. Рекомендуемый вариант — `Ramus-<версия>-windows-x64-setup.exe`: мастер
+   установки позволяет выбрать каталог и поставить/снять галки ярлыков
    (рабочий стол и меню Пуск). Установка per-user, без прав администратора,
    ассоциация файлов `.rsf`. Удаление — через «Приложения и возможности».
-2. `Ramus-<версия>.msi` — тот же продукт в виде MSI (для тихой установки:
-   `msiexec /i Ramus.msi /qn`), без мастера выбора параметров.
+2. `Ramus-<версия>-windows-x64.msi` — тот же продукт в виде MSI (тихая
+   установка: `msiexec /i Ramus-…-windows-x64.msi /qn`), без мастера.
 3. Портативная версия без установки (собирается локально):
    ```bat
    gradlew.bat winPackage -PpackagingWinType=app-image
    ```
    → папка `dest\windows\Ramus\`, запускается `Ramus.exe`.
 
-1. Recommended: the `Ramus-<version>.exe` installer — its wizard lets you choose
-   the install directory and tick/untick the shortcuts (desktop and Start menu).
-   Per-user install, no administrator rights, `.rsf` file association. Uninstall
-   via "Apps & features".
-2. `Ramus-<version>.msi` — the same product as an MSI (for silent installs:
-   `msiexec /i Ramus.msi /qn`), without the wizard options.
+1. Recommended: `Ramus-<version>-windows-x64-setup.exe` — its wizard lets you
+   choose the install directory and tick/untick the shortcuts (desktop and
+   Start menu). Per-user install, no administrator rights, `.rsf` association.
+   Uninstall via "Apps & features".
+2. `Ramus-<version>-windows-x64.msi` — the same product as an MSI (silent:
+   `msiexec /i Ramus-…-windows-x64.msi /qn`), without the wizard options.
 3. Portable version without installation (built locally):
    ```bat
    gradlew.bat winPackage -PpackagingWinType=app-image
@@ -61,15 +98,15 @@ each one bundles its own Java runtime, so no JDK is needed on the user's machine
 
 ### macOS
 
-1. Скачайте DMG под свой процессор: Apple Silicon (M1/M2/…) — `...-arm64.dmg`,
-   Intel — `...-x86_64.dmg`.
+1. Скачайте DMG под свой процессор: Apple Silicon (M1/M2/…) —
+   `Ramus-<версия>-macos-arm64.dmg`, Intel — `Ramus-<версия>-macos-x86_64.dmg`.
 2. Откройте DMG и перетащите **Ramus** в **Applications**.
 3. Приложение не подписано, поэтому при первом запуске macOS заблокирует его:
    правый клик по Ramus в Finder → **Open** → **Open**
    (либо один раз выполните `xattr -dr com.apple.quarantine /Applications/Ramus.app`).
 
-1. Download the DMG for your chip: Apple Silicon (M1/M2/…) — `...-arm64.dmg`,
-   Intel — `...-x86_64.dmg`.
+1. Download the DMG for your chip: Apple Silicon (M1/M2/…) —
+   `Ramus-<version>-macos-arm64.dmg`, Intel — `Ramus-<version>-macos-x86_64.dmg`.
 2. Open the DMG and drag **Ramus** into **Applications**.
 3. The app is unsigned, so macOS blocks it on first launch: right-click Ramus in
    Finder → **Open** → **Open** (or run
@@ -78,16 +115,16 @@ each one bundles its own Java runtime, so no JDK is needed on the user's machine
 ### Linux
 
 - Портативная версия (любой дистрибутив, x86_64): распакуйте
-  `ramus-portable-linux-x86_64.tar.gz` и запустите `Ramus/bin/Ramus`
+  `Ramus-<версия>-linux-x64-portable.tar.gz` и запустите `Ramus/bin/Ramus`
   (удобно сделать symlink в `~/bin`).
-- Debian/Ubuntu: `sudo dpkg -i ramus_*.deb`
-- Fedora/RHEL: `sudo rpm -i ramus-*.rpm` (или `dnf install ./ramus-*.rpm`)
+- Debian/Ubuntu: `sudo dpkg -i Ramus-…-linux-x64.deb`
+- Fedora/RHEL: `sudo rpm -i Ramus-…-linux-x64.rpm` (или `dnf install ./Ramus-…-linux-x64.rpm`)
 
 - Portable build (any x86_64 distro): unpack
-  `ramus-portable-linux-x86_64.tar.gz` and run `Ramus/bin/Ramus`
+  `Ramus-<version>-linux-x64-portable.tar.gz` and run `Ramus/bin/Ramus`
   (a symlink in `~/bin` is convenient).
-- Debian/Ubuntu: `sudo dpkg -i ramus_*.deb`
-- Fedora/RHEL: `sudo rpm -i ramus-*.rpm` (or `dnf install ./ramus-*.rpm`)
+- Debian/Ubuntu: `sudo dpkg -i Ramus-…-linux-x64.deb`
+- Fedora/RHEL: `sudo rpm -i Ramus-…-linux-x64.rpm` (or `dnf install ./Ramus-…-linux-x64.rpm`)
 
 ## Запуск из исходников / Run from source
 
