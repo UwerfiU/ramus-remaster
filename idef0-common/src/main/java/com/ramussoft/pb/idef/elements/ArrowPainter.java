@@ -615,7 +615,10 @@ public class ArrowPainter {
                 g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
                         RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
                 g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
+                        // T5.11b: OFF for shapes — at fractional zoom (auto-fit to
+                        // window) AA fringes make 1-2px lines look pale gray; text stays
+                        // smooth via KEY_TEXT_ANTIALIASING set below.
+                        RenderingHints.VALUE_ANTIALIAS_OFF);
                 g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
                         RenderingHints.VALUE_COLOR_RENDER_QUALITY);
                 g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
@@ -842,7 +845,10 @@ public class ArrowPainter {
                 g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
                         RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
                 g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                        RenderingHints.VALUE_ANTIALIAS_ON);
+                        // T5.11b: OFF for shapes — at fractional zoom (auto-fit to
+                        // window) AA fringes make 1-2px lines look pale gray; text stays
+                        // smooth via KEY_TEXT_ANTIALIASING set below.
+                        RenderingHints.VALUE_ANTIALIAS_OFF);
                 g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
                         RenderingHints.VALUE_COLOR_RENDER_QUALITY);
                 g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
