@@ -460,8 +460,7 @@ public class MainFrame implements ActionListener {
 
     protected void createActions() {
         createAction(NEW_PROJECT, ResourceLoader.getString(NEW_PROJECT),
-                ResourceLoader.getString(NEW_PROJECT), new ImageIcon(getClass()
-                        .getResource("/images/new.png")),
+                ResourceLoader.getString(NEW_PROJECT), RamusIcons.get("new"),
                 KeyStroke.getKeyStroke(KeyEvent.VK_N, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         createAction(OPEN_PROJECT, ResourceLoader.getString(OPEN_PROJECT),
                 ResourceLoader.getString(OPEN_PROJECT), RamusIcons.get("open"),
@@ -479,36 +478,29 @@ public class MainFrame implements ActionListener {
                 ResourceLoader.getString(OPEN_WEB_SERVER), null, null);
 
         createAction(ADD, ResourceLoader.getString(ADD),
-                ResourceLoader.getString(ADD), new ImageIcon(getClass()
-                        .getResource("/images/add.png")),
+                ResourceLoader.getString(ADD), RamusIcons.get("add"),
                 KeyStroke.getKeyStroke(KeyEvent.VK_ADD, ActionEvent.CTRL_MASK));
 
         createAction(REMOVE, ResourceLoader.getString(REMOVE),
-                ResourceLoader.getString(REMOVE), new ImageIcon(getClass()
-                        .getResource("/images/remove.png")),
+                ResourceLoader.getString(REMOVE), RamusIcons.get("remove"),
                 KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
 
         createAction(EDIT, ResourceLoader.getString(EDIT),
-                ResourceLoader.getString(EDIT), new ImageIcon(getClass()
-                        .getResource("/images/edit.png")), null);
+                ResourceLoader.getString(EDIT), RamusIcons.get("edit"), null);
 
         createAction(BRAKE_DFDSROLE_CONNECTION);
         createAction(INSERT, ResourceLoader.getString(INSERT),
-                ResourceLoader.getString(INSERT), new ImageIcon(getClass()
-                        .getResource("/images/insert.png")),
+                ResourceLoader.getString(INSERT), RamusIcons.get("insert"),
                 KeyStroke.getKeyStroke(KeyEvent.VK_K, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         createAction(ADD_CHILD, ResourceLoader.getString(ADD_CHILD),
-                ResourceLoader.getString(ADD_CHILD), new ImageIcon(getClass()
-                        .getResource("/images/add_child.png")),
+                ResourceLoader.getString(ADD_CHILD), RamusIcons.get("add-child"),
                 KeyStroke.getKeyStroke(KeyEvent.VK_L, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         createAction(LEVEL_UP, ResourceLoader.getString(LEVEL_UP),
-                ResourceLoader.getString(LEVEL_UP), new ImageIcon(getClass()
-                        .getResource("/images/left.png")),
+                ResourceLoader.getString(LEVEL_UP), RamusIcons.get("left"),
                 KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
         createAction(LEVEL_DOWN, ResourceLoader.getString(LEVEL_DOWN),
-                ResourceLoader.getString(LEVEL_DOWN), new ImageIcon(getClass()
-                        .getResource("/images/right.png")),
+                ResourceLoader.getString(LEVEL_DOWN), RamusIcons.get("right"),
                 KeyStroke
                         .getKeyStroke(KeyEvent.VK_RIGHT, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         createAction(ADD_MODEL_TO_TEMPLATE);
@@ -541,18 +533,15 @@ public class MainFrame implements ActionListener {
                 ResourceLoader.getString(SELECT_CLEAN), RamusIcons.get("eraser"), null);
 
         createAction(CUT, ResourceLoader.getString(CUT),
-                ResourceLoader.getString(CUT), new ImageIcon(getClass()
-                        .getResource("/images/cut.png")),
+                ResourceLoader.getString(CUT), RamusIcons.get("cut"),
                 KeyStroke.getKeyStroke(KeyEvent.VK_X, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
         createAction(COPY, ResourceLoader.getString(COPY),
-                ResourceLoader.getString(COPY), new ImageIcon(getClass()
-                        .getResource("/images/copy.png")),
+                ResourceLoader.getString(COPY), RamusIcons.get("copy"),
                 KeyStroke.getKeyStroke(KeyEvent.VK_C, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
         createAction(PASTE, ResourceLoader.getString(PASTE),
-                ResourceLoader.getString(PASTE), new ImageIcon(getClass()
-                        .getResource("/images/paste.png")),
+                ResourceLoader.getString(PASTE), RamusIcons.get("paste"),
                 KeyStroke.getKeyStroke(KeyEvent.VK_V, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
         createAction(MOVE_ROWS);
@@ -576,8 +565,7 @@ public class MainFrame implements ActionListener {
                 KeyStroke.getKeyStroke(KeyEvent.VK_X, 0));
 
         createAction(CURSOR_TOOL, ResourceLoader.getString(CURSOR_TOOL),
-                ResourceLoader.getString(CURSOR_TOOL), new ImageIcon(getClass()
-                        .getResource("/images/cursor.gif")),
+                ResourceLoader.getString(CURSOR_TOOL), RamusIcons.get("cursor"),
                 KeyStroke.getKeyStroke(KeyEvent.VK_Z, 0));
 
 		/*
@@ -588,18 +576,15 @@ public class MainFrame implements ActionListener {
 		 */
 
         createAction(ARROW_TOOL, ResourceLoader.getString(ARROW_TOOL),
-                ResourceLoader.getString(ARROW_TOOL), new ImageIcon(getClass()
-                        .getResource("/images/arrow.gif")),
+                ResourceLoader.getString(ARROW_TOOL), RamusIcons.get("arrow"),
                 KeyStroke.getKeyStroke(KeyEvent.VK_C, 0));
 
         createAction(TILDA_TOOL, ResourceLoader.getString(TILDA_TOOL),
-                ResourceLoader.getString(TILDA_TOOL), new ImageIcon(getClass()
-                        .getResource("/images/tilda.gif")),
+                ResourceLoader.getString(TILDA_TOOL), RamusIcons.get("tilda"),
                 KeyStroke.getKeyStroke(KeyEvent.VK_V, 0));
 
         createAction(TEXT_TOOL, ResourceLoader.getString(TEXT_TOOL),
-                ResourceLoader.getString(TEXT_TOOL), new ImageIcon(getClass()
-                        .getResource("/images/text.gif")),
+                ResourceLoader.getString(TEXT_TOOL), RamusIcons.get("text-el"),
                 KeyStroke.getKeyStroke(KeyEvent.VK_B, 0));
 
         createAction(
@@ -623,16 +608,13 @@ public class MainFrame implements ActionListener {
                 ResourceLoader.getString(GO_TO_PARENT), RamusIcons.get("up"), null);
 
         createAction(GO_TO_CHILD, ResourceLoader.getString(GO_TO_CHILD),
-                ResourceLoader.getString(GO_TO_CHILD), new ImageIcon(getClass()
-                        .getResource("/images/down.gif")), null);
+                ResourceLoader.getString(GO_TO_CHILD), RamusIcons.get("down"), null);
 
         createAction(RELOAD_SAVE, ResourceLoader.getString(RELOAD_SAVE),
-                ResourceLoader.getString(RELOAD_SAVE), new ImageIcon(getClass()
-                        .getResource("/images/refresh.png")), null);
+                ResourceLoader.getString(RELOAD_SAVE), RamusIcons.get("refresh"), null);
 
         createAction(IDEF0_NET, ResourceLoader.getString(IDEF0_NET),
-                ResourceLoader.getString(IDEF0_NET), new ImageIcon(getClass()
-                        .getResource("/images/net.png")),
+                ResourceLoader.getString(IDEF0_NET), RamusIcons.get("net"),
                 KeyStroke.getKeyStroke(KeyEvent.VK_N, 0));
 
         createAction(CENTER_ALL_SECTORS,
@@ -704,16 +686,13 @@ public class MainFrame implements ActionListener {
         // --------------report tool bar--
 
         createAction(MOVE_UP, ResourceLoader.getString(MOVE_UP),
-                ResourceLoader.getString(MOVE_UP), new ImageIcon(getClass()
-                        .getResource("/images/top.png")), null);
+                ResourceLoader.getString(MOVE_UP), RamusIcons.get("top"), null);
 
         createAction(MOVE_DOWN, ResourceLoader.getString(MOVE_DOWN),
-                ResourceLoader.getString(MOVE_DOWN), new ImageIcon(getClass()
-                        .getResource("/images/bottom.png")), null);
+                ResourceLoader.getString(MOVE_DOWN), RamusIcons.get("bottom"), null);
 
         createAction(GENARATE, ResourceLoader.getString(GENARATE),
-                ResourceLoader.getString(GENARATE), new ImageIcon(getClass()
-                        .getResource("/images/build.png")), null);
+                ResourceLoader.getString(GENARATE), RamusIcons.get("build"), null);
 
         createAction(IMPORT_REPORT_FROM_XML,
                 ResourceLoader.getString(IMPORT_REPORT_FROM_XML),

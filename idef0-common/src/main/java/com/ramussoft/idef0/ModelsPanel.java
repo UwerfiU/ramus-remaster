@@ -241,8 +241,7 @@ public abstract class ModelsPanel extends AbstractModelsPanel {
                 fixTable(node2);
     }
 
-    private Icon note = new ImageIcon(getClass()
-            .getResource("/images/note.png"));
+    private Icon note = RamusIcons.get("note");
 
     private Icon function = RamusIcons.get("function-el");
 

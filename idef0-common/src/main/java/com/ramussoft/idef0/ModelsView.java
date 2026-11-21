@@ -453,8 +453,7 @@ public class ModelsView extends AbstractUniqueView implements UniqueView {
 
                 {
                     putValue(ACTION_COMMAND_KEY, "CreateFunction");
-                    this.putValue(SMALL_ICON, new ImageIcon(getClass()
-                            .getResource("/images/create-diagram.png")));
+                    this.putValue(SMALL_ICON, RamusIcons.get("create-diagram"));
                     this.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                             KeyEvent.VK_ADD, KeyEvent.CTRL_MASK));
                     this.setEnabled(rules.canCreateQualifier());

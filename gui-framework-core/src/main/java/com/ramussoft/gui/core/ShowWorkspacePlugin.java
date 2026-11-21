@@ -3,12 +3,10 @@ package com.ramussoft.gui.core;
 import java.awt.event.ActionEvent;
 
 import java.awt.event.KeyEvent;
-import java.net.URL;
 import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
@@ -17,6 +15,7 @@ import javax.swing.KeyStroke;
 import com.ramussoft.gui.common.AbstractGUIPluginFactory;
 import com.ramussoft.gui.common.AbstractViewPlugin;
 import com.ramussoft.gui.common.ActionDescriptor;
+import com.ramussoft.gui.common.RamusIcons;
 import com.ramussoft.gui.common.GUIFramework;
 import com.ramussoft.gui.common.GlobalResourcesManager;
 import com.ramussoft.gui.common.event.ActionListener;
@@ -99,10 +98,9 @@ public class ShowWorkspacePlugin extends AbstractViewPlugin {
                 action.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                         KeyEvent.VK_1 + i, menuMask | KeyEvent.SHIFT_MASK));
 
-                URL resource = getClass().getResource(
-                        "/com/ramussoft/gui/" + workspace + ".png");
-                if (resource != null)
-                    action.putValue(Action.SMALL_ICON, new ImageIcon(resource));
+                // T5.10: theme-aware SVG per workspace (icons/modern/<workspace>.svg),
+                // replaces the legacy colored 16x16 rasters.
+                action.putValue(Action.SMALL_ICON, RamusIcons.get(workspace));
 
                 action.putValue(Action.ACTION_COMMAND_KEY, factory
                         .getPluginForWorkspace(workspace).getString(workspace));

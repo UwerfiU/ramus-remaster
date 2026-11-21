@@ -78,8 +78,7 @@ public class TablePlugin extends AbstractAttributePlugin implements
 
                 {
                     this.putValue(ACTION_COMMAND_KEY, "CreateAttribute");
-                    this.putValue(SMALL_ICON, new ImageIcon(getClass()
-                            .getResource("/com/ramussoft/gui/table/add.png")));
+                    this.putValue(SMALL_ICON, RamusIcons.get("add"));
             this.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_ADD, java.awt.Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
                 }

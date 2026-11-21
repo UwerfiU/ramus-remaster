@@ -75,8 +75,7 @@ public class RolesView extends AbstractUniqueView implements UniqueView {
     }
 
     private Action selectActiveRole = new AbstractAction(
-            getString("Owners.Clasificator"), new ImageIcon(getClass()
-            .getResource("/images/roles.png"))) {
+            getString("Owners.Clasificator"), RamusIcons.get("roles")) {
 
         {
             putValue(SHORT_DESCRIPTION, getString("Owners.Clasificator"));
